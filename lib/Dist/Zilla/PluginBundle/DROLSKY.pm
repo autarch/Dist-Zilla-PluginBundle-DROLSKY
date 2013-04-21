@@ -91,7 +91,6 @@ sub _build_plugins {
         qw(
             Authority
             AutoPrereqs
-            CheckChangesHasContent
             CheckPrereqsIndexed
             InstallGuide
             MetaJSON
