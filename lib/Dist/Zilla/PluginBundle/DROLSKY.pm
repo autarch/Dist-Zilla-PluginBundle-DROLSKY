@@ -165,7 +165,7 @@ sub configure {
     );
 
     $self->add_plugins( map { [ $_ => $self->_plugin_options_for($_) ] }
-            @{ $self->_plugins }, );
+            @{ $self->_plugins } );
 
     return;
 }
