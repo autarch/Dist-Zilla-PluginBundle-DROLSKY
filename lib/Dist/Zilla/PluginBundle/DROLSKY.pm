@@ -29,6 +29,12 @@ has authority => (
     default => 'DROLSKY',
 );
 
+has prereqs_skip => (
+    is       => 'ro',
+    isa      => 'ArrayRef[Str]',
+    required => 1,
+);
+
 has stopwords => (
     is       => 'ro',
     isa      => 'ArrayRef[Str]',
@@ -132,10 +138,12 @@ around BUILDARGS => sub {
 
     my %args = ( %{ $p->{payload} }, %{$p} );
 
-    if ( $args{stopwords} && !ref $args{stopwords} ) {
-        $args{stopwords} = [ delete $args{stopwords} ];
+    for my $key ( qw(  prereqs_skip stopwords ) ) {
+        if ( $args{$key} && !ref $args{$key} ) {
+            $args{$key} = [ delete $args{$key} ];
+        }
+        $args{$key} //= [];
     }
-    $args{stopwords} //= [];
 
     push @{ $args{stopwords} }, $class->_default_stopwords();
 
@@ -175,6 +183,7 @@ sub _build_plugin_options {
 
     return {
         Authority => { authority => 'cpan:' . $self->authority() },
+        AutoPrereqs => { skip => $self->prereqs_skip() },
         MetaResources => $self->_meta_resources(),
         NextRelease   => {
             format => '%-' . $self->next_release_width() . 'v %{yyyy-MM-dd}d'
