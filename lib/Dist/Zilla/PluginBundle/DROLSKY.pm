@@ -67,6 +67,10 @@ has _plugin_options => (
     },
 );
 
+sub mvp_multivalue_args {
+    return qw( prereqs_skip stopwords );
+}
+
 sub _plugin_options_for {
     $_[0]->__plugin_options_for( $_[1] ) // {};
 }
