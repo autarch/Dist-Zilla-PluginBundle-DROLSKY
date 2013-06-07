@@ -67,6 +67,14 @@ has _plugin_options => (
     },
 );
 
+=begin Pod::Coverage
+
+  mvp_multivalue_args
+
+=end Pod::Coverage
+
+=cut
+
 sub mvp_multivalue_args {
     return qw( prereqs_skip stopwords );
 }
