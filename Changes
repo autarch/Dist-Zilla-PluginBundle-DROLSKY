@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Added ContributorsFromGit and Meta::Contributors plugins.
+
+
 0.04     2013-12-13
 
 - Added more plugins and support for removing plugins.

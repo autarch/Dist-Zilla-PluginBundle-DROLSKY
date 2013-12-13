@@ -118,9 +118,11 @@ sub _build_plugins {
         qw(
             Authority
             AutoPrereqs
+            ContributorsFromGit
             CopyReadmeFromBuild
             CheckPrereqsIndexed
             InstallGuide
+            Meta::Contributors
             MetaJSON
             MetaResources
             NextRelease
