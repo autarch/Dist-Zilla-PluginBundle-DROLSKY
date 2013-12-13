@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Added more plugins and support for removing plugins.
+
+
 0.03     2013-06-07
 
 - Allow multiple prereqs_skip and stopwords properties
