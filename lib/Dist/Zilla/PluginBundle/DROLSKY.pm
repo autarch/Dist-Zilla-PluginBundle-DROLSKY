@@ -219,7 +219,8 @@ sub _build_plugin_options {
             authority  => 'cpan:' . $self->authority(),
             do_munging => 0,
         },
-        AutoPrereqs   => { skip => $self->prereqs_skip() },
+        AutoPrereqs   => { skip        => $self->prereqs_skip() },
+        'Git::Commit' => { allow_dirty => [qw( Changes README )] },
         MetaResources => $self->_meta_resources(),
         NextRelease   => {
             format => '%-' . $self->next_release_width() . 'v %{yyyy-MM-dd}d'
