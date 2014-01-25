@@ -214,13 +214,15 @@ sub configure {
 sub _build_plugin_options {
     my $self = shift;
 
+    my @allow_dirty = qw( Changes README );
     return {
         Authority => {
             authority  => 'cpan:' . $self->authority(),
             do_munging => 0,
         },
         AutoPrereqs   => { skip        => $self->prereqs_skip() },
-        'Git::Commit' => { allow_dirty => [qw( Changes README )] },
+        'Git::Check'  => { allow_dirty => \@allow_dirty },
+        'Git::Commit' => { allow_dirty => \@allow_dirty },
         MetaResources => $self->_meta_resources(),
         NextRelease   => {
             format => '%-' . $self->next_release_width() . 'v %{yyyy-MM-dd}d'
