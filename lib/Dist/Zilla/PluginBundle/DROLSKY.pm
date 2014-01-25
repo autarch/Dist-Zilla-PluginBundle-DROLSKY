@@ -127,6 +127,7 @@ sub _build_plugins {
             MetaResources
             NextRelease
             PkgVersion
+            PruneFiles
             ReadmeFromPod
             SurgicalPodWeaver
             ),
@@ -215,6 +216,7 @@ sub _build_plugin_options {
         NextRelease   => {
             format => '%-' . $self->next_release_width() . 'v %{yyyy-MM-dd}d'
         },
+        PruneFiles          => { filename  => [qw( README )] },
         'Test::PodSpelling' => { stopwords => $self->stopwords() },
     };
 }
