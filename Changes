@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Added "do_munging => 0" to the options for the Authority plugin so it
+  doesn't add a useless $AUTHORITY var to packages.
+
+
 0.05     2013-12-13
 
 - Added ContributorsFromGit and Meta::Contributors plugins.
