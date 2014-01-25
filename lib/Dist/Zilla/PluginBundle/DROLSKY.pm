@@ -29,6 +29,12 @@ has authority => (
     default => 'DROLSKY',
 );
 
+has prune_files => (
+    is       => 'ro',
+    isa      => 'ArrayRef[Str]',
+    required => 1,
+);
+
 has prereqs_skip => (
     is       => 'ro',
     isa      => 'ArrayRef[Str]',
@@ -82,7 +88,7 @@ has _plugin_options => (
 =cut
 
 sub mvp_multivalue_args {
-    return qw( prereqs_skip remove stopwords );
+    return qw( prune_files prereqs_skip remove stopwords );
 }
 
 sub _plugin_options_for {
@@ -163,7 +169,7 @@ around BUILDARGS => sub {
 
     my %args = ( %{ $p->{payload} }, %{$p} );
 
-    for my $key (qw(  prereqs_skip stopwords )) {
+    for my $key (qw( prune_files prereqs_skip stopwords )) {
         if ( $args{$key} && !ref $args{$key} ) {
             $args{$key} = [ delete $args{$key} ];
         }
@@ -216,7 +222,9 @@ sub _build_plugin_options {
         NextRelease   => {
             format => '%-' . $self->next_release_width() . 'v %{yyyy-MM-dd}d'
         },
-        PruneFiles          => { filename  => [qw( README )] },
+        PruneFiles => {
+            filename => [ qw( README ), @{ $self->prune_files() } ],
+        },
         'Test::PodSpelling' => { stopwords => $self->stopwords() },
     };
 }
