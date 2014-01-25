@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.07     2014-01-25
+
 - Added the PruneFiles plugin to prune the README file that gets copied from
   the build.
 
