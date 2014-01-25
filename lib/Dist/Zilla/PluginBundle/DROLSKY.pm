@@ -6,6 +6,8 @@ use strict;
 use warnings;
 
 use Dist::Zilla;
+# Not used here, but we want it installed
+use Pod::Weaver::Section::Contributors;
 
 use Moose;
 
