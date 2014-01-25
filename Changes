@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.06     2014-01-25
+
 - Added "do_munging => 0" to the options for the Authority plugin so it
   doesn't add a useless $AUTHORITY var to packages.
 
