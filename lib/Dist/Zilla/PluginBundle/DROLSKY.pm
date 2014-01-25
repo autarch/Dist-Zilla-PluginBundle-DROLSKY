@@ -206,8 +206,11 @@ sub _build_plugin_options {
     my $self = shift;
 
     return {
-        Authority   => { authority => 'cpan:' . $self->authority() },
-        AutoPrereqs => { skip      => $self->prereqs_skip() },
+        Authority => {
+            authority  => 'cpan:' . $self->authority(),
+            do_munging => 0,
+        },
+        AutoPrereqs   => { skip => $self->prereqs_skip() },
         MetaResources => $self->_meta_resources(),
         NextRelease   => {
             format => '%-' . $self->next_release_width() . 'v %{yyyy-MM-dd}d'
