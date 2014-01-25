@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+- Added the PruneFiles plugin to prune the README file that gets copied from
+  the build.
+
+- Allow the README to be dirty for Git::Commit.
+
+
 0.06     2014-01-25
 
 - Added "do_munging => 0" to the options for the Authority plugin so it
