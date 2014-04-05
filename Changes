@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+- Internals fixes to work with Config::MVP that is stricter about handling
+  plugin options passed by this bundle. Reported by Karen Etheridge. RT
+  #94466.
+
+
 0.07     2014-01-25
 
 - Added the PruneFiles plugin to prune the README file that gets copied from

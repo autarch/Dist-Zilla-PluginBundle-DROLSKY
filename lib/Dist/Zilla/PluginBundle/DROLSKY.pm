@@ -38,15 +38,23 @@ has prune_files => (
 );
 
 has prereqs_skip => (
+    traits   => ['Array'],
     is       => 'ro',
     isa      => 'ArrayRef[Str]',
     required => 1,
+    handles  => {
+        _has_prereqs_skip => 'count',
+    },
 );
 
 has stopwords => (
+    traits   => ['Array'],
     is       => 'ro',
     isa      => 'ArrayRef[Str]',
     required => 1,
+    handles  => {
+        _has_stopwords => 'count',
+    },
 );
 
 has next_release_width => (
@@ -220,7 +228,12 @@ sub _build_plugin_options {
             authority  => 'cpan:' . $self->authority(),
             do_munging => 0,
         },
-        AutoPrereqs   => { skip        => $self->prereqs_skip() },
+        AutoPrereqs => {
+            (
+                $self->_has_prereqs_skip() ? ( skip => $self->prereqs_skip() )
+                : ()
+            )
+        },
         'Git::Check'  => { allow_dirty => \@allow_dirty },
         'Git::Commit' => { allow_dirty => \@allow_dirty },
         MetaResources => $self->_meta_resources(),
@@ -230,7 +243,12 @@ sub _build_plugin_options {
         PruneFiles => {
             filename => [ qw( README ), @{ $self->prune_files() } ],
         },
-        'Test::PodSpelling' => { stopwords => $self->stopwords() },
+        'Test::PodSpelling' => {
+            (
+                $self->_has_stopwords() ? ( stopwords => $self->stopwords() )
+                : ()
+            ),
+        },
     };
 }
 
