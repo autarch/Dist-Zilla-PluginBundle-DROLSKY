@@ -4,6 +4,9 @@
   plugin options passed by this bundle. Reported by Karen Etheridge. RT
   #94466.
 
+- Make sure all the plugins this bundle uses end up declared as
+  prereqs. Reported by Dagfinn Ilmari Mannsåker. RT #94363.
+
 
 0.07     2014-01-25
 
