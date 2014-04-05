@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.08     2014-04-05
+
 - Internals fixes to work with Config::MVP that is stricter about handling
   plugin options passed by this bundle. Reported by Karen Etheridge. RT
   #94466.
