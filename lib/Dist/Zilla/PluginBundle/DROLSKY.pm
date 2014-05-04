@@ -13,32 +13,32 @@ use Pod::Weaver::Section::Contributors;
 # For the benefit of AutoPrereqs
 use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
+use Dist::Zilla::Plugin::CheckPrereqsIndexed;
 use Dist::Zilla::Plugin::ContributorsFromGit;
 use Dist::Zilla::Plugin::CopyReadmeFromBuild;
-use Dist::Zilla::Plugin::CheckPrereqsIndexed;
+use Dist::Zilla::Plugin::EOLTests;
+use Dist::Zilla::Plugin::Git::Check;
+use Dist::Zilla::Plugin::Git::Commit;
+use Dist::Zilla::Plugin::Git::Push;
+use Dist::Zilla::Plugin::Git::Tag;
 use Dist::Zilla::Plugin::InstallGuide;
 use Dist::Zilla::Plugin::Meta::Contributors;
 use Dist::Zilla::Plugin::MetaJSON;
 use Dist::Zilla::Plugin::MetaResources;
 use Dist::Zilla::Plugin::NextRelease;
 use Dist::Zilla::Plugin::PkgVersion;
+use Dist::Zilla::Plugin::PodCoverageTests;
+use Dist::Zilla::Plugin::PodSyntaxTests;
 use Dist::Zilla::Plugin::PruneFiles;
 use Dist::Zilla::Plugin::ReadmeFromPod;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
-use Dist::Zilla::Plugin::EOLTests;
-use Dist::Zilla::Plugin::NoTabsTests;
-use Dist::Zilla::Plugin::PodCoverageTests;
-use Dist::Zilla::Plugin::PodSyntaxTests;
 use Dist::Zilla::Plugin::Test::CPAN::Changes;
 use Dist::Zilla::Plugin::Test::Compile;
+use Dist::Zilla::Plugin::Test::NoTabs;
 use Dist::Zilla::Plugin::Test::Pod::LinkCheck;
 use Dist::Zilla::Plugin::Test::Pod::No404s;
 use Dist::Zilla::Plugin::Test::PodSpelling;
 use Dist::Zilla::Plugin::Test::Synopsis;
-use Dist::Zilla::Plugin::Git::Check;
-use Dist::Zilla::Plugin::Git::Commit;
-use Dist::Zilla::Plugin::Git::Tag;
-use Dist::Zilla::Plugin::Git::Push;
 
 use Moose;
 
@@ -181,11 +181,11 @@ sub _build_plugins {
 
         qw(
             EOLTests
-            NoTabsTests
             PodCoverageTests
             PodSyntaxTests
             Test::CPAN::Changes
             Test::Compile
+            Test::NoTabs
             Test::Pod::LinkCheck
             Test::Pod::No404s
             Test::PodSpelling

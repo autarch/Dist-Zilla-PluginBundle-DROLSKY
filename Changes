@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Use Test::NoTabs plugin instead of NoTabsTests.
+
+
 0.08     2014-04-05
 
 - Internals fixes to work with Config::MVP that is stricter about handling
