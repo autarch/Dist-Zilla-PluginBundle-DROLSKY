@@ -2,7 +2,7 @@ NAME
     Dist::Zilla::PluginBundle::DROLSKY - DROLSKY's plugin bundle
 
 VERSION
-    version 0.08
+    version 0.09
 
 AUTHOR
     Dave Rolsky <autarch@urth.org>
