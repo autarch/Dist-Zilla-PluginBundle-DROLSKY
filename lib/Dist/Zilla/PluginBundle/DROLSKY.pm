@@ -30,7 +30,7 @@ use Dist::Zilla::Plugin::PkgVersion;
 use Dist::Zilla::Plugin::PodCoverageTests;
 use Dist::Zilla::Plugin::PodSyntaxTests;
 use Dist::Zilla::Plugin::PruneFiles;
-use Dist::Zilla::Plugin::ReadmeFromPod;
+use Dist::Zilla::Plugin::ReadmeAnyFromPod;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
 use Dist::Zilla::Plugin::Test::CPAN::Changes;
 use Dist::Zilla::Plugin::Test::Compile;
@@ -156,7 +156,6 @@ sub _build_plugins {
             ManifestSkip
             MetaYAML
             License
-            Readme
             ExtraTests
             ExecDir
             ShareDir
@@ -181,7 +180,6 @@ sub _build_plugins {
             NextRelease
             PkgVersion
             PruneFiles
-            ReadmeFromPod
             SurgicalPodWeaver
             ),
 
@@ -247,7 +245,17 @@ sub configure {
                 -type        => 'requires',
                 'Test::More' => '0.88',
             }
-        ]
+        ],
+        [
+            'ReadmeAnyFromPod' => 'ReadmeMarkdownInBuild' => {
+                filename => 'README.md',
+            },
+        ],
+        [
+            'ReadmeAnyFromPod' => 'ReadmeMarkdownInRoot' => {
+                filename => 'README.md',
+            },
+        ],
     );
 
     $self->add_plugins( map { [ $_ => $self->_plugin_options_for($_) ] }
@@ -259,8 +267,8 @@ sub configure {
 sub _build_plugin_options {
     my $self = shift;
 
-    my @allow_dirty = qw( Changes README );
-    return {
+    my @allow_dirty = qw( Changes README.md );
+    my %options     = (
         Authority => {
             authority  => 'cpan:' . $self->authority(),
             do_munging => 0,
@@ -271,14 +279,12 @@ sub _build_plugin_options {
                 : ()
             )
         },
-        'Git::Check'  => { allow_dirty => \@allow_dirty },
-        'Git::Commit' => { allow_dirty => \@allow_dirty },
+        GatherDir     => { exclude_filename => 'README.md' },
+        'Git::Check'  => { allow_dirty      => \@allow_dirty },
+        'Git::Commit' => { allow_dirty      => \@allow_dirty },
         MetaResources => $self->_meta_resources(),
         NextRelease   => {
             format => '%-' . $self->next_release_width() . 'v %{yyyy-MM-dd}d'
-        },
-        PruneFiles => {
-            filename => [ qw( README ), @{ $self->prune_files() } ],
         },
         'Test::PodSpelling' => {
             (
@@ -286,7 +292,11 @@ sub _build_plugin_options {
                 : ()
             ),
         },
-    };
+    );
+    $options{PruneFiles}{filename} = $self->prune_files()
+        if @{ $self->prune_files() };
+
+    return \%options;
 }
 
 sub _meta_resources {
