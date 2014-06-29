@@ -50,6 +50,12 @@ has dist => (
     required => 1,
 );
 
+has github_organization => (
+    is      => 'ro',
+    isa     => 'Str',
+    default => 'autarch',
+);
+
 has make_tool => (
     is      => 'ro',
     isa     => 'Str',
@@ -288,10 +294,16 @@ sub _meta_resources {
 
     return {
         'repository.type' => 'git',
-        'repository.url' =>
-            sprintf( 'git://git.urth.org/%s.git', $self->dist() ),
-        'repository.web' =>
-            sprintf( 'http://git.urth.org/%s.git', $self->dist() ),
+        'repository.url'  => sprintf(
+            'git://github.com/%s/%s.git',
+            $self->github_organization(),
+            $self->dist()
+        ),
+        'repository.web' => sprintf(
+            'http://github.com/%s/%s',
+            $self->github_organization(),
+            $self->dist()
+        ),
         'bugtracker.web' => sprintf(
             'http://rt.cpan.org/Public/Dist/Display.html?Name=%s',
             $self->dist()
