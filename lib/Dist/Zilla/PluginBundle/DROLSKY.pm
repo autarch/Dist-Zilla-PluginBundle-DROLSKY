@@ -24,6 +24,7 @@ use Dist::Zilla::Plugin::Git::Describe;
 use Dist::Zilla::Plugin::Git::Push;
 use Dist::Zilla::Plugin::Git::Tag;
 use Dist::Zilla::Plugin::GitHub::Meta;
+use Dist::Zilla::Plugin::GitHub::Update;
 use Dist::Zilla::Plugin::InstallGuide;
 use Dist::Zilla::Plugin::Meta::Contributors;
 use Dist::Zilla::Plugin::MetaConfig;
@@ -183,6 +184,7 @@ sub _build_plugins {
             Git::CheckFor::MergeConflicts
             Git::Describe
             GitHub::Meta
+            GitHub::Update
             InstallGuide
             Meta::Contributors
             MetaConfig
@@ -304,6 +306,7 @@ sub _build_plugin_options {
         'Git::Check'            => { allow_dirty      => \@allow_dirty },
         'Git::Commit'           => { allow_dirty      => \@allow_dirty },
         'GitHub::Meta'          => { bugs             => 0 },
+        'GitHub::Update'        => { metacpan         => 1 },
         MetaResources           => $self->_meta_resources(),
         'MetaProvides::Package' => { meta_noindex     => 1 },
         NextRelease             => {
