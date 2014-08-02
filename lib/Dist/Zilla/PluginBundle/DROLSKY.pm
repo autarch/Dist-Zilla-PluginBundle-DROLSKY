@@ -18,17 +18,24 @@ use Dist::Zilla::Plugin::ContributorsFromGit;
 use Dist::Zilla::Plugin::CopyReadmeFromBuild;
 use Dist::Zilla::Plugin::EOLTests;
 use Dist::Zilla::Plugin::Git::Check;
+use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
 use Dist::Zilla::Plugin::Git::Commit;
+use Dist::Zilla::Plugin::Git::Describe;
 use Dist::Zilla::Plugin::Git::Push;
 use Dist::Zilla::Plugin::Git::Tag;
+use Dist::Zilla::Plugin::GitHub::Meta;
 use Dist::Zilla::Plugin::InstallGuide;
 use Dist::Zilla::Plugin::Meta::Contributors;
+use Dist::Zilla::Plugin::MetaConfig;
 use Dist::Zilla::Plugin::MetaJSON;
+use Dist::Zilla::Plugin::MetaProvides::Package;
 use Dist::Zilla::Plugin::MetaResources;
+use Dist::Zilla::Plugin::MojibakeTests;
 use Dist::Zilla::Plugin::NextRelease;
 use Dist::Zilla::Plugin::PkgVersion;
 use Dist::Zilla::Plugin::PodCoverageTests;
 use Dist::Zilla::Plugin::PodSyntaxTests;
+use Dist::Zilla::Plugin::PromptIfStale;
 use Dist::Zilla::Plugin::PruneFiles;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
@@ -38,22 +45,21 @@ use Dist::Zilla::Plugin::Test::NoTabs;
 use Dist::Zilla::Plugin::Test::Pod::LinkCheck;
 use Dist::Zilla::Plugin::Test::Pod::No404s;
 use Dist::Zilla::Plugin::Test::PodSpelling;
+use Dist::Zilla::Plugin::Test::Portability;
+use Dist::Zilla::Plugin::Test::ReportPrereqs;
 use Dist::Zilla::Plugin::Test::Synopsis;
+
+
 
 use Moose;
 
-with 'Dist::Zilla::Role::PluginBundle::Easy';
+with 'Dist::Zilla::Role::PluginBundle::Easy',
+    'Dist::Zilla::Role::PluginBundle::PluginRemover';
 
 has dist => (
     is       => 'ro',
     isa      => 'Str',
     required => 1,
-);
-
-has github_organization => (
-    is      => 'ro',
-    isa     => 'Str',
-    default => 'autarch',
 );
 
 has make_tool => (
@@ -170,12 +176,18 @@ sub _build_plugins {
         qw(
             Authority
             AutoPrereqs
+            CheckPrereqsIndexed
             ContributorsFromGit
             CopyReadmeFromBuild
-            CheckPrereqsIndexed
+            Git::CheckFor::CorrectBranch
+            Git::CheckFor::MergeConflicts
+            Git::Describe
+            GitHub::Meta
             InstallGuide
             Meta::Contributors
+            MetaConfig
             MetaJSON
+            MetaProvides::Package
             MetaResources
             NextRelease
             PkgVersion
@@ -193,6 +205,8 @@ sub _build_plugins {
             Test::Pod::LinkCheck
             Test::Pod::No404s
             Test::PodSpelling
+            Test::Portability
+            Test::ReportPrereqs
             Test::Synopsis
             ),
 
@@ -247,6 +261,13 @@ sub configure {
             }
         ],
         [
+            'PromptIfStale' => 'stale modules, release' => {
+                phase             => 'release',
+                check_all_plugins => 1,
+                check_all_prereqs => 1,
+            }
+        ],
+        [
             'ReadmeAnyFromPod' => 'ReadmeMarkdownInBuild' => {
                 filename => 'README.md',
             },
@@ -267,7 +288,7 @@ sub configure {
 sub _build_plugin_options {
     my $self = shift;
 
-    my @allow_dirty = qw( Changes README.md );
+    my @allow_dirty = qw( Changes CONTRIBUTING.md README.md );
     my %options     = (
         Authority => {
             authority  => 'cpan:' . $self->authority(),
@@ -279,11 +300,13 @@ sub _build_plugin_options {
                 : ()
             )
         },
-        GatherDir     => { exclude_filename => 'README.md' },
-        'Git::Check'  => { allow_dirty      => \@allow_dirty },
-        'Git::Commit' => { allow_dirty      => \@allow_dirty },
-        MetaResources => $self->_meta_resources(),
-        NextRelease   => {
+        GatherDir               => { exclude_filename => 'README.md' },
+        'Git::Check'            => { allow_dirty      => \@allow_dirty },
+        'Git::Commit'           => { allow_dirty      => \@allow_dirty },
+        'GitHub::Meta'          => { bugs             => 0 },
+        MetaResources           => $self->_meta_resources(),
+        'MetaProvides::Package' => { meta_noindex     => 1 },
+        NextRelease             => {
             format => '%-' . $self->next_release_width() . 'v %{yyyy-MM-dd}d'
         },
         'Test::PodSpelling' => {
@@ -292,6 +315,7 @@ sub _build_plugin_options {
                 : ()
             ),
         },
+        'Test::ReportPrereqs' => { verify_prereqs => 1 },
     );
     $options{PruneFiles}{filename} = $self->prune_files()
         if @{ $self->prune_files() };
@@ -303,17 +327,6 @@ sub _meta_resources {
     my $self = shift;
 
     return {
-        'repository.type' => 'git',
-        'repository.url'  => sprintf(
-            'git://github.com/%s/%s.git',
-            $self->github_organization(),
-            $self->dist()
-        ),
-        'repository.web' => sprintf(
-            'http://github.com/%s/%s',
-            $self->github_organization(),
-            $self->dist()
-        ),
         'bugtracker.web' => sprintf(
             'http://rt.cpan.org/Public/Dist/Display.html?Name=%s',
             $self->dist()

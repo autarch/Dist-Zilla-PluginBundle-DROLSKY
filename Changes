@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+- Added a number of additional plugins to help me make better dists.
+
+- Moved this distro to GitHub.
+
+
 0.09     2014-05-04
 
 - Use Test::NoTabs plugin instead of NoTabsTests.
