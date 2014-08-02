@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.10     2014-08-02
+
 - Added a number of additional plugins to help me make better dists.
 
 - Moved this distro to GitHub.
