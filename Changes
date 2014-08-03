@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.12     2014-08-03
+
 - Added Test::Pod::Coverage::Configurable plugin.
 
 - Removed the remove option in favor of -remove
