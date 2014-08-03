@@ -4,6 +4,7 @@ use v5.10;
 
 use strict;
 use warnings;
+use autodie;
 
 use Dist::Zilla;
 
@@ -43,14 +44,13 @@ use Dist::Zilla::Plugin::SurgicalPodWeaver;
 use Dist::Zilla::Plugin::Test::CPAN::Changes;
 use Dist::Zilla::Plugin::Test::Compile;
 use Dist::Zilla::Plugin::Test::NoTabs;
+use Dist::Zilla::Plugin::Test::Pod::Coverage::Configurable;
 use Dist::Zilla::Plugin::Test::Pod::LinkCheck;
 use Dist::Zilla::Plugin::Test::Pod::No404s;
 use Dist::Zilla::Plugin::Test::PodSpelling;
 use Dist::Zilla::Plugin::Test::Portability;
 use Dist::Zilla::Plugin::Test::ReportPrereqs;
 use Dist::Zilla::Plugin::Test::Synopsis;
-
-
 
 use Moose;
 
@@ -91,14 +91,43 @@ has prereqs_skip => (
     },
 );
 
-has stopwords => (
+has coverage_class => (
+    is        => 'ro',
+    isa       => 'Str',
+    predicate => '_has_coverage_class',
+);
+
+has coverage_skip => (
     traits   => ['Array'],
     is       => 'ro',
     isa      => 'ArrayRef[Str]',
     required => 1,
     handles  => {
-        _has_stopwords => 'count',
+        _has_coverage_skip => 'count',
     },
+);
+
+has coverage_trustme => (
+    traits   => ['Array'],
+    is       => 'ro',
+    isa      => 'ArrayRef[Str]',
+    required => 1,
+    handles  => {
+        _has_coverage_trustme => 'count',
+    },
+);
+
+has stopwords => (
+    traits   => ['Array'],
+    is       => 'ro',
+    isa      => 'ArrayRef[Str]',
+    required => 1,
+);
+
+has stopwords_file => (
+    is        => 'ro',
+    isa       => 'Str',
+    predicate => '_has_stopwords_file',
 );
 
 has next_release_width => (
@@ -107,154 +136,96 @@ has next_release_width => (
     default => 8,
 );
 
-has remove => (
-    is      => 'ro',
-    isa     => 'ArrayRef[Str]',
-    default => sub { [] },
-);
-
 has _plugins => (
     is       => 'ro',
-    isa      => 'ArrayRef[Str]',
+    isa      => 'ArrayRef',
     init_arg => undef,
     lazy     => 1,
     builder  => '_build_plugins',
 );
 
-has _plugin_options => (
-    traits   => ['Hash'],
-    is       => 'ro',
-    isa      => 'HashRef[HashRef]',
-    init_arg => undef,
-    lazy     => 1,
-    builder  => '_build_plugin_options',
-    handles  => {
-        __plugin_options_for => 'get',
-    },
-);
-
-=begin Pod::Coverage
-
-  mvp_multivalue_args
-
-=end Pod::Coverage
-
-=cut
+my @array_params = grep { !/^_/ } map { $_->name() }
+    grep {
+           $_->has_type_constraint()
+        && $_->type_constraint()->is_a_type_of('ArrayRef')
+    } __PACKAGE__->meta()->get_all_attributes();
 
 sub mvp_multivalue_args {
-    return qw( prune_files prereqs_skip remove stopwords );
-}
-
-sub _plugin_options_for {
-    $_[0]->__plugin_options_for( $_[1] ) // {};
+    return @array_params;
 }
 
 sub _build_plugins {
     my $self = shift;
 
-    my %remove = map { $_ => 1 } @{ $self->remove() };
-    return [
-        grep { !$remove{$_} } $self->make_tool(),
-
-        # from @Basic
-        qw(
-            GatherDir
-            PruneCruft
-            ManifestSkip
-            MetaYAML
-            License
-            ExtraTests
-            ExecDir
-            ShareDir
-
-            Manifest
-
-            TestRelease
-            ConfirmRelease
-            UploadToCPAN
-            ),
-
-        qw(
-            Authority
-            AutoPrereqs
-            CheckPrereqsIndexed
-            ContributorsFromGit
-            CopyReadmeFromBuild
-            Git::CheckFor::CorrectBranch
-            Git::CheckFor::MergeConflicts
-            Git::Describe
-            GitHub::Meta
-            GitHub::Update
-            InstallGuide
-            Meta::Contributors
-            MetaConfig
-            MetaJSON
-            MetaProvides::Package
-            MetaResources
-            NextRelease
-            PkgVersion
-            PruneFiles
-            SurgicalPodWeaver
-            ),
-
-        qw(
-            EOLTests
-            PodCoverageTests
-            PodSyntaxTests
-            Test::CPAN::Changes
-            Test::Compile
-            Test::NoTabs
-            Test::Pod::LinkCheck
-            Test::Pod::No404s
-            Test::PodSpelling
-            Test::Portability
-            Test::ReportPrereqs
-            Test::Synopsis
-            ),
-
-        # from @Git
-        qw(
-            Git::Check
-            Git::Commit
-            Git::Tag
-            Git::Push
-            ),
-    ];
-}
-
-around BUILDARGS => sub {
-    my $orig  = shift;
-    my $class = shift;
-
-    my $p = $class->$orig(@_);
-
-    my %args = ( %{ $p->{payload} }, %{$p} );
-
-    for my $key (qw( prune_files prereqs_skip stopwords )) {
-        if ( $args{$key} && !ref $args{$key} ) {
-            $args{$key} = [ delete $args{$key} ];
+    my @prune_filename;
+    my @prune_match;
+    for my $prune ( @{ $self->prune_files() } ) {
+        if ( $prune =~ m{^[\w\-\./]+$} ) {
+            push @prune_filename, $prune;
         }
-        $args{$key} //= [];
+        else {
+            push @prune_match, $prune;
+        }
     }
 
-    push @{ $args{stopwords} }, $class->_default_stopwords();
-
-    return \%args;
-};
-
-sub _default_stopwords {
-    qw(
-        DROLSKY
-        DROLSKY's
-        Rolsky
-        Rolsky's
-    );
-}
-
-sub configure {
-    my $self = shift;
-
-    $self->add_plugins(
+    my @allow_dirty = qw( Changes CONTRIBUTING.md README.md );
+    my @plugins     = (
+        $self->make_tool(),
+        [
+            Authority => {
+                authority  => 'cpan:' . $self->authority(),
+                do_munging => 0,
+            },
+        ],
+        [
+            AutoPrereqs => {
+                $self->_has_prereqs_skip() ? ( skip => $self->prereqs_skip() )
+                : ()
+            },
+        ],
+        [ GatherDir        => { exclude_filename => 'README.md' }, ],
+        [ 'Git::Check'     => { allow_dirty      => \@allow_dirty }, ],
+        [ 'Git::Commit'    => { allow_dirty      => \@allow_dirty }, ],
+        [ 'GitHub::Meta'   => { bugs             => 0 }, ],
+        [ 'GitHub::Update' => { metacpan         => 1 }, ],
+        [ MetaResources           => $self->_meta_resources(), ],
+        [ 'MetaProvides::Package' => { meta_noindex => 1 }, ],
+        [
+            NextRelease => {
+                      format => '%-'
+                    . $self->next_release_width()
+                    . 'v %{yyyy-MM-dd}d'
+            },
+        ],
+        [
+            PruneFiles => {
+                ( @prune_filename ? ( filename => \@prune_filename ) : () ),
+                ( @prune_match    ? ( match    => \@prune_match )    : () ),
+            },
+        ],
+        [
+            'Test::Pod::Coverage::Configurable' => {
+                (
+                    $self->_has_coverage_skip()
+                    ? ( skip => $self->coverage_skip() )
+                    : ()
+                ),
+                (
+                    $self->_has_coverage_trustme()
+                    ? ( trustme => $self->coverage_trustme() )
+                    : ()
+                ),
+                (
+                    $self->_has_coverage_class()
+                    ? ( class => $self->coverage_class() )
+                    : ()
+                ),
+            },
+        ],
+        [
+            'Test::PodSpelling' => { stopwords => $self->_all_stopwords() },
+        ],
+        [ 'Test::ReportPrereqs' => { verify_prereqs => 1 }, ],
         [
             'Prereqs' => 'TestMoreDoneTesting' => {
                 -phase       => 'test',
@@ -279,51 +250,108 @@ sub configure {
                 filename => 'README.md',
             },
         ],
+
+        # from @Basic
+        qw(
+            PruneCruft
+            ManifestSkip
+            MetaYAML
+            License
+            ExtraTests
+            ExecDir
+            ShareDir
+            Manifest
+            TestRelease
+            ConfirmRelease
+            UploadToCPAN
+            ),
+        qw(
+            CheckPrereqsIndexed
+            ContributorsFromGit
+            CopyReadmeFromBuild
+            Git::CheckFor::CorrectBranch
+            Git::CheckFor::MergeConflicts
+            Git::Describe
+            InstallGuide
+            Meta::Contributors
+            MetaConfig
+            MetaJSON
+            PkgVersion
+            SurgicalPodWeaver
+            ),
+        qw(
+            EOLTests
+            PodSyntaxTests
+            Test::CPAN::Changes
+            Test::Compile
+            Test::NoTabs
+            Test::Pod::LinkCheck
+            Test::Pod::No404s
+            Test::Portability
+            Test::Synopsis
+            ),
+
+        # from @Git
+        qw(
+            Git::Tag
+            Git::Push
+            ),
     );
 
-    $self->add_plugins( map { [ $_ => $self->_plugin_options_for($_) ] }
-            @{ $self->_plugins } );
-
-    return;
+    return \@plugins;
 }
 
-sub _build_plugin_options {
+{
+
+    around BUILDARGS => sub {
+        my $orig  = shift;
+        my $class = shift;
+
+        my $p = $class->$orig(@_);
+
+        my %args = ( %{ $p->{payload} }, %{$p} );
+
+        for my $key (@array_params) {
+            if ( $args{$key} && !ref $args{$key} ) {
+                $args{$key} = [ delete $args{$key} ];
+            }
+            $args{$key} //= [];
+        }
+
+        return \%args;
+    };
+}
+
+sub _all_stopwords {
     my $self = shift;
 
-    my @allow_dirty = qw( Changes CONTRIBUTING.md README.md );
-    my %options     = (
-        Authority => {
-            authority  => 'cpan:' . $self->authority(),
-            do_munging => 0,
-        },
-        AutoPrereqs => {
-            (
-                $self->_has_prereqs_skip() ? ( skip => $self->prereqs_skip() )
-                : ()
-            )
-        },
-        GatherDir               => { exclude_filename => 'README.md' },
-        'Git::Check'            => { allow_dirty      => \@allow_dirty },
-        'Git::Commit'           => { allow_dirty      => \@allow_dirty },
-        'GitHub::Meta'          => { bugs             => 0 },
-        'GitHub::Update'        => { metacpan         => 1 },
-        MetaResources           => $self->_meta_resources(),
-        'MetaProvides::Package' => { meta_noindex     => 1 },
-        NextRelease             => {
-            format => '%-' . $self->next_release_width() . 'v %{yyyy-MM-dd}d'
-        },
-        'Test::PodSpelling' => {
-            (
-                $self->_has_stopwords() ? ( stopwords => $self->stopwords() )
-                : ()
-            ),
-        },
-        'Test::ReportPrereqs' => { verify_prereqs => 1 },
-    );
-    $options{PruneFiles}{filename} = $self->prune_files()
-        if @{ $self->prune_files() };
+    my @stopwords = $self->_default_stopwords();
+    push @stopwords, @{ $self->stopwords() };
 
-    return \%options;
+    if ( $self->_has_stopwords_file() ) {
+        open my $fh, '<:encoding(UTF-8)', $self->stopwords_file();
+        push @stopwords, map { chomp; $_ } <$fh>;
+        close $fh;
+    }
+
+    return \@stopwords;
+}
+
+sub _default_stopwords {
+    qw(
+        DROLSKY
+        DROLSKY's
+        Rolsky
+        Rolsky's
+    );
+}
+
+sub configure {
+    my $self = shift;
+
+    $self->add_plugins( @{ $self->_plugins } );
+
+    return;
 }
 
 sub _meta_resources {
@@ -347,4 +375,4 @@ sub _meta_resources {
 
 __END__
 
-=for Pod::Coverage configure
+=for Pod::Coverage .*
