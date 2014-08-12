@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Use GatherDir to exclude files rather than PruneFiles.
+
+
 0.12     2014-08-03
 
 - Added Test::Pod::Coverage::Configurable plugin.
