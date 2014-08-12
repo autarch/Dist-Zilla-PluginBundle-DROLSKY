@@ -190,10 +190,8 @@ sub _build_plugins {
                 ),
             },
         ],
-        [ 'Git::Check'     => { allow_dirty => \@allow_dirty }, ],
-        [ 'Git::Commit'    => { allow_dirty => \@allow_dirty }, ],
-        [ 'GitHub::Meta'   => { bugs        => 0 }, ],
-        [ 'GitHub::Update' => { metacpan    => 1 }, ],
+        [ 'GitHub::Meta'          => { bugs         => 0 }, ],
+        [ 'GitHub::Update'        => { metacpan     => 1 }, ],
         [ MetaResources           => $self->_meta_resources(), ],
         [ 'MetaProvides::Package' => { meta_noindex => 1 }, ],
         [
@@ -296,6 +294,8 @@ sub _build_plugins {
             Git::Tag
             Git::Push
             ),
+        [ 'Git::Check'  => { allow_dirty => \@allow_dirty }, ],
+        [ 'Git::Commit' => { allow_dirty => \@allow_dirty }, ],
     );
 
     return \@plugins;

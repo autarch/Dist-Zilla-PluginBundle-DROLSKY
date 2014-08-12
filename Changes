@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+- Hopefully fix an ordering issue with the Git plugins.
+
+
+0.13     2014-08-12
+
 - Use GatherDir to exclude files rather than PruneFiles.
 
 
@@ -7,7 +12,7 @@
 
 - Added Test::Pod::Coverage::Configurable plugin.
 
-- Removed the remove option in favor of -remove
+- Removed the remove option in favor of -remove.
 
 
 0.11     2014-08-02
