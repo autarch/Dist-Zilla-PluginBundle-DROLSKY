@@ -289,13 +289,13 @@ sub _build_plugins {
             Test::Synopsis
             ),
 
-        # from @Git
+        # from @Git - note that the order here is important!
+        [ 'Git::Check'  => { allow_dirty => \@allow_dirty }, ],
+        [ 'Git::Commit' => { allow_dirty => \@allow_dirty }, ],
         qw(
             Git::Tag
             Git::Push
             ),
-        [ 'Git::Check'  => { allow_dirty => \@allow_dirty }, ],
-        [ 'Git::Commit' => { allow_dirty => \@allow_dirty }, ],
     );
 
     return \@plugins;
