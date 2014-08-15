@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Renamed some options - coverage_* => pod_coverage_*
+
+
 0.15     2014-08-12
 
 - Ordering fix take 2.
