@@ -205,17 +205,17 @@ sub _build_plugins {
             'Test::Pod::Coverage::Configurable' => {
                 (
                     $self->_has_coverage_skip()
-                    ? ( skip => $self->coverage_skip() )
+                    ? ( skip => $self->pod_coverage_skip() )
                     : ()
                 ),
                 (
                     $self->_has_coverage_trustme()
-                    ? ( trustme => $self->coverage_trustme() )
+                    ? ( trustme => $self->pod_coverage_trustme() )
                     : ()
                 ),
                 (
                     $self->_has_coverage_class()
-                    ? ( class => $self->coverage_class() )
+                    ? ( class => $self->pod_coverage_class() )
                     : ()
                 ),
             },

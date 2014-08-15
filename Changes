@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Renamed the attributes but didn't fix the method calls in the last version.
+
+
 0.16     2014-08-15
 
 - Renamed some options - coverage_* => pod_coverage_*
