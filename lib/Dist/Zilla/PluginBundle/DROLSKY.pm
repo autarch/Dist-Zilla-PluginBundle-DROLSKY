@@ -90,13 +90,13 @@ has prereqs_skip => (
     },
 );
 
-has coverage_class => (
+has pod_coverage_class => (
     is        => 'ro',
     isa       => 'Str',
     predicate => '_has_coverage_class',
 );
 
-has coverage_skip => (
+has pod_coverage_skip => (
     traits   => ['Array'],
     is       => 'ro',
     isa      => 'ArrayRef[Str]',
@@ -106,7 +106,7 @@ has coverage_skip => (
     },
 );
 
-has coverage_trustme => (
+has pod_coverage_trustme => (
     traits   => ['Array'],
     is       => 'ro',
     isa      => 'ArrayRef[Str]',
