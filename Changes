@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Switched from ContributorsFromGit to Git::Contributors.
+
+
 0.17     2014-08-15
 
 - Renamed the attributes but didn't fix the method calls in the last version.

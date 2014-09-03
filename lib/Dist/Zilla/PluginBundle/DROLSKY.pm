@@ -15,12 +15,12 @@ use Pod::Weaver::Section::Contributors;
 use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed;
-use Dist::Zilla::Plugin::ContributorsFromGit;
 use Dist::Zilla::Plugin::CopyReadmeFromBuild;
 use Dist::Zilla::Plugin::EOLTests;
 use Dist::Zilla::Plugin::Git::Check;
 use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
 use Dist::Zilla::Plugin::Git::Commit;
+use Dist::Zilla::Plugin::Git::Contributors;
 use Dist::Zilla::Plugin::Git::Describe;
 use Dist::Zilla::Plugin::Git::Push;
 use Dist::Zilla::Plugin::Git::Tag;
@@ -265,11 +265,11 @@ sub _build_plugins {
             ),
         qw(
             CheckPrereqsIndexed
-            ContributorsFromGit
             CopyReadmeFromBuild
             Git::CheckFor::CorrectBranch
             Git::CheckFor::MergeConflicts
             Git::Describe
+            Git::Contributors
             InstallGuide
             Meta::Contributors
             MetaConfig
