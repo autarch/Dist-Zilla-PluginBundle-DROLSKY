@@ -197,7 +197,7 @@ sub _build_plugins {
             NextRelease => {
                       format => '%-'
                     . $self->next_release_width()
-                    . 'v %{yyyy-MM-dd}d'
+                    . 'v %{yyyy-MM-dd}d%{ (TRIAL RELEASE)}T'
             },
         ],
         [
