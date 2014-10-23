@@ -201,28 +201,11 @@ sub _build_plugins {
             },
         ],
         [
-            'Test::Pod::Coverage::Configurable' => {
-                (
-                    $self->_has_coverage_skip()
-                    ? ( skip => $self->pod_coverage_skip() )
-                    : ()
-                ),
-                (
-                    $self->_has_coverage_trustme()
-                    ? ( trustme => $self->pod_coverage_trustme() )
-                    : ()
-                ),
-                (
-                    $self->_has_coverage_class()
-                    ? ( class => $self->pod_coverage_class() )
-                    : ()
-                ),
+            PkgVersion => {
+                die_on_existing_version => 1,
+                die_on_line_insertion   => 1,
             },
         ],
-        [
-            'Test::PodSpelling' => { stopwords => $self->_all_stopwords() },
-        ],
-        [ 'Test::ReportPrereqs' => { verify_prereqs => 1 }, ],
         [
             'Prereqs' => 'TestMoreDoneTesting' => {
                 -phase       => 'test',
@@ -247,6 +230,29 @@ sub _build_plugins {
                 filename => 'README.md',
             },
         ],
+        [
+            'Test::Pod::Coverage::Configurable' => {
+                (
+                    $self->_has_coverage_skip()
+                    ? ( skip => $self->pod_coverage_skip() )
+                    : ()
+                ),
+                (
+                    $self->_has_coverage_trustme()
+                    ? ( trustme => $self->pod_coverage_trustme() )
+                    : ()
+                ),
+                (
+                    $self->_has_coverage_class()
+                    ? ( class => $self->pod_coverage_class() )
+                    : ()
+                ),
+            },
+        ],
+        [
+            'Test::PodSpelling' => { stopwords => $self->_all_stopwords() },
+        ],
+        [ 'Test::ReportPrereqs' => { verify_prereqs => 1 }, ],
 
         # from @Basic
         qw(
@@ -273,7 +279,6 @@ sub _build_plugins {
             Meta::Contributors
             MetaConfig
             MetaJSON
-            PkgVersion
             SurgicalPodWeaver
             ),
         qw(
