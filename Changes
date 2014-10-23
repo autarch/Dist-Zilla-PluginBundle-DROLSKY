@@ -1,5 +1,13 @@
 {{$NEXT}}
 
+- Switched to Test::EOL (0.14)
+
+- Make PkgVersion use a bit smarter (no line insertion and die on existing
+  $VERSION in module)
+
+- Update next release version to indicate if a release is a trial
+
+
 0.18     2014-09-03
 
 - Switched from ContributorsFromGit to Git::Contributors.
