@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.21     2014-11-01
+
 - Added custom plugins to setup the weaver.ini file for Contributors and to
   automatically provide default license info.
 

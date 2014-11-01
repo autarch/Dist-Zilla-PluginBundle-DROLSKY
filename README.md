@@ -4,7 +4,7 @@ Dist::Zilla::PluginBundle::DROLSKY - DROLSKY's plugin bundle
 
 # VERSION
 
-version 0.20
+version 0.21
 
 # AUTHOR
 
@@ -12,7 +12,7 @@ Dave Rolsky <autarch@urth.org>
 
 # COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2014 by Dave Rolsky.
+This software is Copyright (c) 2014 by David Rolsky.
 
 This is free software, licensed under:
 
