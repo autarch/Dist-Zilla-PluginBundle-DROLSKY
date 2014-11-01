@@ -191,7 +191,12 @@ sub _build_plugins {
                 ),
             },
         ],
-        [ 'GitHub::Meta'          => { bugs         => 0 }, ],
+        [
+            'GitHub::Meta' => {
+                bugs     => 0,
+                homepage => 0,
+            },
+        ],
         [ 'GitHub::Update'        => { metacpan     => 1 }, ],
         [ MetaResources           => $self->_meta_resources(), ],
         [ 'MetaProvides::Package' => { meta_noindex => 1 }, ],
