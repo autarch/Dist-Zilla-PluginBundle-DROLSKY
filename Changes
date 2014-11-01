@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.20     2014-11-01
+
 - Explicitly depend on Dist::Zilla::Plugin::PodWeaver because
   SurgicalPodWeaver doesn't - works around RT #87624.
 
