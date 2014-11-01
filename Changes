@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Added custom plugins to setup the weaver.ini file for Contributors and to
+  automatically provide default license info.
+
+
 0.20     2014-11-01
 
 - Explicitly depend on Dist::Zilla::Plugin::PodWeaver because

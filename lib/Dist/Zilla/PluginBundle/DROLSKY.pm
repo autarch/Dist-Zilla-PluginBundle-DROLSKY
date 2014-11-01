@@ -16,6 +16,8 @@ use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed;
 use Dist::Zilla::Plugin::CopyReadmeFromBuild;
+use Dist::Zilla::Plugin::DROLSKY::Contributors;
+use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::Git::Check;
 use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
 use Dist::Zilla::Plugin::Git::Commit;
@@ -278,10 +280,12 @@ sub _build_plugins {
         qw(
             CheckPrereqsIndexed
             CopyReadmeFromBuild
+            DROLSKY::Contributors
+            DROLSKY::License
             Git::CheckFor::CorrectBranch
             Git::CheckFor::MergeConflicts
-            Git::Describe
             Git::Contributors
+            Git::Describe
             InstallGuide
             Meta::Contributors
             MetaConfig
