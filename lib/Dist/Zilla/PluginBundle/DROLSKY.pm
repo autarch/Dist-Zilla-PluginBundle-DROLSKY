@@ -35,6 +35,8 @@ use Dist::Zilla::Plugin::MojibakeTests;
 use Dist::Zilla::Plugin::NextRelease;
 use Dist::Zilla::Plugin::PkgVersion;
 use Dist::Zilla::Plugin::PodSyntaxTests;
+# SurgicalPodWeaver doesn't list its deps properly
+use Dist::Zilla::Plugin::PodWeaver;
 use Dist::Zilla::Plugin::PromptIfStale;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
