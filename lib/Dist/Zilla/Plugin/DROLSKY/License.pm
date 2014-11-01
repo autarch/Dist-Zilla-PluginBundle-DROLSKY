@@ -42,3 +42,9 @@ sub provide_license {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+# ABSTRACT: Sets up default license and copyright holder
+
+__END__
+
+=for Pod::Coverage .*
