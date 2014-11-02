@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.22     2014-11-02
+
 - The DROLSKY::Contributors plugin now leaves existing .mailmap and weaver.ini
   files alone.
 
