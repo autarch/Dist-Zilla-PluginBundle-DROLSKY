@@ -15,6 +15,7 @@ use Pod::Weaver::Section::Contributors;
 use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed;
+use Dist::Zilla::Plugin::CopyFilesFromBuild;
 use Dist::Zilla::Plugin::CPANFile;
 use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;

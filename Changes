@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Oops, accidentally removed the CopyFilesFromBuild plugin from the prereq
+  list in the last release.
+
+
 0.22     2014-11-02
 
 - The DROLSKY::Contributors plugin now leaves existing .mailmap and weaver.ini
