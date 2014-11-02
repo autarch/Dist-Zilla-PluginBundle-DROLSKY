@@ -41,15 +41,25 @@ my %files = (
     '.mailmap'   => $mailmap,
 );
 
+has _files_written => (
+    is      => 'ro',
+    isa     => 'ArrayRef',
+    default => sub { [] },
+);
+
 # These files need to actually exist on disk for the Pod::Weaver plugin to see
 # them, so we can't simply add them as InMemory files via file injection.
 sub before_build {
     my $self = shift;
 
     for my $file ( keys %files ) {
+        next if -f $file;
+
         open my $fh, '>:encoding(UTF-8)', $file;
         print {$fh} $files{$file};
         close $fh;
+
+        push @{ $self->_files_written() }, $file;
     }
 
     return;
@@ -58,7 +68,7 @@ sub before_build {
 sub after_build {
     my $self = shift;
 
-    unlink $_ for keys %files;
+    unlink $_ for @{ $self->_files_written() };
 
     return;
 }
