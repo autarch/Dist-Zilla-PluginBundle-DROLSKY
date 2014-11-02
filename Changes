@@ -3,6 +3,8 @@
 - The DROLSKY::Contributors plugin now leaves existing .mailmap and weaver.ini
   files alone.
 
+- Exclude plugins shipped with this bundle when checking for stale modules.
+
 
 0.21     2014-11-01
 

@@ -227,6 +227,10 @@ sub _build_plugins {
                 phase             => 'release',
                 check_all_plugins => 1,
                 check_all_prereqs => 1,
+                skip              => [
+                    'Dist::Zilla::Plugin::DROLSKY::Contributors',
+                    'Dist::Zilla::Plugin::DROLSKY::License',
+                ],
             }
         ],
         [
