@@ -4,6 +4,7 @@ requires "Dist::Zilla::Plugin::Authority" => "0";
 requires "Dist::Zilla::Plugin::AutoPrereqs" => "0";
 requires "Dist::Zilla::Plugin::CPANFile" => "0";
 requires "Dist::Zilla::Plugin::CheckPrereqsIndexed" => "0";
+requires "Dist::Zilla::Plugin::CopyFilesFromBuild" => "0";
 requires "Dist::Zilla::Plugin::Git::Check" => "0";
 requires "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts" => "0";
 requires "Dist::Zilla::Plugin::Git::Commit" => "0";

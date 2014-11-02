@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.23     2014-11-02
+
 - Oops, accidentally removed the CopyFilesFromBuild plugin from the prereq
   list in the last release.
 
