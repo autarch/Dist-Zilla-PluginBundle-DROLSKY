@@ -15,7 +15,7 @@ use Pod::Weaver::Section::Contributors;
 use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed;
-use Dist::Zilla::Plugin::CopyReadmeFromBuild;
+use Dist::Zilla::Plugin::CPANFile;
 use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::Git::Check;
@@ -159,7 +159,11 @@ sub mvp_multivalue_args {
 sub _build_plugins {
     my $self = shift;
 
-    my %exclude_filename = ( 'README.md' => 1 );
+    my %exclude_filename = map { $_ => 1 } qw(
+        cpanfile
+        LICENSE
+        README.md
+    );
     my @exclude_match;
     for my $exclude ( @{ $self->exclude_files() } ) {
         if ( $exclude =~ m{^[\w\-\./]+$} ) {
@@ -170,7 +174,14 @@ sub _build_plugins {
         }
     }
 
-    my @allow_dirty = qw( Changes CONTRIBUTING.md README.md );
+    my @allow_dirty = qw(
+        Changes
+        cpanfile
+        CONTRIBUTING.md
+        LICENSE
+        README.md
+    );
+
     my @plugins     = (
         $self->make_tool(),
         [
@@ -183,6 +194,11 @@ sub _build_plugins {
             AutoPrereqs => {
                 $self->_has_prereqs_skip() ? ( skip => $self->prereqs_skip() )
                 : ()
+            },
+        ],
+        [
+            CopyFilesFromBuild => {
+                copy => [qw( cpanfile LICENSE )],
             },
         ],
         [
@@ -283,7 +299,7 @@ sub _build_plugins {
             ),
         qw(
             CheckPrereqsIndexed
-            CopyReadmeFromBuild
+            CPANFile
             DROLSKY::Contributors
             DROLSKY::License
             Git::CheckFor::CorrectBranch

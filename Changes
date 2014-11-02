@@ -5,6 +5,10 @@
 
 - Exclude plugins shipped with this bundle when checking for stale modules.
 
+- Generate a cpanfile and copy it into the repo after a build.
+
+- Copy the LICENSE file into the repo after abuild.
+
 
 0.21     2014-11-01
 
