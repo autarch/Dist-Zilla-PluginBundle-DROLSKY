@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.24     2014-11-04
+
 - Make sure that a copyright_holder in dist.ini overrides the default of
   "David Rolsky".
 
