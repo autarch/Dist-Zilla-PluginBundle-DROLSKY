@@ -33,7 +33,7 @@ sub provide_license {
 
     return $license_class->new(
         {
-            holder => 'David Rolsky',
+            holder => $args->{copyright_holder} || 'David Rolsky',
             year   => $years,
         },
     );

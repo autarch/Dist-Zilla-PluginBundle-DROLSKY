@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Make sure that a copyright_holder in dist.ini overrides the default of
+  "David Rolsky".
+
+
 0.23     2014-11-02
 
 - Oops, accidentally removed the CopyFilesFromBuild plugin from the prereq
