@@ -58,7 +58,8 @@ use Dist::Zilla::Plugin::Test::Synopsis;
 use Moose;
 
 with 'Dist::Zilla::Role::PluginBundle::Easy',
-    'Dist::Zilla::Role::PluginBundle::PluginRemover';
+    'Dist::Zilla::Role::PluginBundle::PluginRemover',
+    'Dist::Zilla::Role::PluginBundle::Config::Slicer';
 
 has dist => (
     is       => 'ro',
