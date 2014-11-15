@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- The generated Makefile.PL or Build.PL file is now copied into the repo and
+  checked in for each release.
+
+
 0.25     2014-11-09
 
 - This bundle now consumes the Dist::Zilla::Role::PluginBundle::Config::Slicer

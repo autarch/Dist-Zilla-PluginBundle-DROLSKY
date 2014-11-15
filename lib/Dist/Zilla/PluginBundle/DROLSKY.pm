@@ -162,10 +162,13 @@ sub _build_plugins {
     my $self = shift;
 
     my %exclude_filename = map { $_ => 1 } qw(
+        Build.PL
         cpanfile
         LICENSE
+        Makefile.PL
         README.md
     );
+
     my @exclude_match;
     for my $exclude ( @{ $self->exclude_files() } ) {
         if ( $exclude =~ m{^[\w\-\./]+$} ) {
@@ -176,12 +179,11 @@ sub _build_plugins {
         }
     }
 
-    my @allow_dirty = qw(
-        Changes
-        cpanfile
-        CONTRIBUTING.md
-        LICENSE
-        README.md
+    my @allow_dirty = (
+        keys %exclude_filename, qw(
+            Changes
+            CONTRIBUTING.md
+            )
     );
 
     my @plugins     = (
@@ -200,7 +202,7 @@ sub _build_plugins {
         ],
         [
             CopyFilesFromBuild => {
-                copy => [qw( cpanfile LICENSE )],
+                copy => [qw( Build.PL cpanfile LICENSE Makefile.PL )],
             },
         ],
         [
