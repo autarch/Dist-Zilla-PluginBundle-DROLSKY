@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.26     2014-11-15
+
 - The generated Makefile.PL or Build.PL file is now copied into the repo and
   checked in for each release.
 
