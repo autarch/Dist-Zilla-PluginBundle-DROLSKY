@@ -24,6 +24,7 @@ use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
 use Dist::Zilla::Plugin::Git::Commit;
 use Dist::Zilla::Plugin::Git::Contributors;
 use Dist::Zilla::Plugin::Git::Describe;
+use Dist::Zilla::Plugin::Git::GatherDir;
 use Dist::Zilla::Plugin::Git::Push;
 use Dist::Zilla::Plugin::Git::Tag;
 use Dist::Zilla::Plugin::GitHub::Meta;
@@ -186,7 +187,7 @@ sub _build_plugins {
             )
     );
 
-    my @plugins     = (
+    my @plugins = (
         $self->make_tool(),
         [
             Authority => {
@@ -206,7 +207,7 @@ sub _build_plugins {
             },
         ],
         [
-            GatherDir => {
+            'Git::GatherDir' => {
                 exclude_filename => [ keys %exclude_filename ],
                 (
                     @exclude_match ? ( exclude_match => \@exclude_match ) : ()
@@ -289,7 +290,6 @@ sub _build_plugins {
 
         # from @Basic
         qw(
-            PruneCruft
             ManifestSkip
             MetaYAML
             License
