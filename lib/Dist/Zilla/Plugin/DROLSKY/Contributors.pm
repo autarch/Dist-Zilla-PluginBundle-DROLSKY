@@ -6,8 +6,6 @@ use strict;
 use warnings;
 use autodie;
 
-use Dist::Zilla::File::InMemory;
-
 use Moose;
 
 with 'Dist::Zilla::Role::BeforeBuild', 'Dist::Zilla::Role::AfterBuild';
