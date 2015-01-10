@@ -23,7 +23,6 @@ use Dist::Zilla::Plugin::Git::Check;
 use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
 use Dist::Zilla::Plugin::Git::Commit;
 use Dist::Zilla::Plugin::Git::Contributors;
-use Dist::Zilla::Plugin::Git::Describe;
 use Dist::Zilla::Plugin::Git::GatherDir;
 use Dist::Zilla::Plugin::Git::Push;
 use Dist::Zilla::Plugin::Git::Tag;
@@ -309,7 +308,6 @@ sub _build_plugins {
             Git::CheckFor::CorrectBranch
             Git::CheckFor::MergeConflicts
             Git::Contributors
-            Git::Describe
             InstallGuide
             Meta::Contributors
             MetaConfig
