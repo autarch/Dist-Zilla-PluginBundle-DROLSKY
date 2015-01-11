@@ -86,7 +86,7 @@ my %WriteMakefileArgs = (
     "File::Spec" => 0,
     "IO::Handle" => 0,
     "IPC::Open3" => 0,
-    "Test::More" => "0.88"
+    "Test::More" => "0.96"
   },
   "VERSION" => "0.29",
   "test" => {
@@ -155,7 +155,7 @@ my %FallbackPrereqs = (
   "Perl::Critic::Moose" => "1.01",
   "Pod::Weaver::Section::Contributors" => 0,
   "String::RewritePrefix" => 0,
-  "Test::More" => "0.88",
+  "Test::More" => "0.96",
   "autodie" => 0,
   "namespace::autoclean" => 0,
   "strict" => 0,

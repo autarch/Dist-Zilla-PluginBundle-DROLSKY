@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.29     2015-01-11
+
 - Made the plugin bundle commit and push the post-release version bump.
 
 
