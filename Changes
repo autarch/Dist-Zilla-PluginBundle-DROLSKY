@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.28     2015-01-11
+
 - Replaced PkgVersion with BumpVersionAfterRelease and added
   CheckVersionIncrement and Test::Version for good measure.
 
