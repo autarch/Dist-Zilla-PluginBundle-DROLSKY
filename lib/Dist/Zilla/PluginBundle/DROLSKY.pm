@@ -243,7 +243,7 @@ sub _build_plugins {
             }
         ],
         [
-            'PromptIfStale' => 'stale modules, release' => {
+            'PromptIfStale' => {
                 phase             => 'release',
                 check_all_plugins => 1,
                 check_all_prereqs => 1,
@@ -255,12 +255,12 @@ sub _build_plugins {
             }
         ],
         [
-            'ReadmeAnyFromPod' => 'ReadmeMarkdownInBuild' => {
+            'ReadmeAnyFromPod' => 'README.md in build' => {
                 filename => 'README.md',
             },
         ],
         [
-            'ReadmeAnyFromPod' => 'ReadmeMarkdownInRoot' => {
+            'ReadmeAnyFromPod' => 'README.md in root' => {
                 filename => 'README.md',
             },
         ],
