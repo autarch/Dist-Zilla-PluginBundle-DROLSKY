@@ -26,8 +26,8 @@ sub provide_license {
 
     my $license_class = String::RewritePrefix->rewrite(
         {
-            '=' => '',
-            ''  => 'Software::License::'
+            '=' => q{},
+            q{} => 'Software::License::'
         },
         $self->zilla()->_license_class() // 'Artistic_2_0',
     );
@@ -37,7 +37,7 @@ sub provide_license {
     return $license_class->new(
         {
             holder => $args->{copyright_holder} || 'David Rolsky',
-            year   => $years,
+            year => $years,
         },
     );
 }

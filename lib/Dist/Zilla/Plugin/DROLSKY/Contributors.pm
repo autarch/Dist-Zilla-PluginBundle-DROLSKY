@@ -57,7 +57,8 @@ sub before_build {
         next if -f $file;
 
         open my $fh, '>:encoding(UTF-8)', $file;
-        print {$fh} $files{$file};
+        print {$fh} $files{$file}
+            or die "Cannot write to $files{$file}: $!";
         close $fh;
 
         push @{ $self->_files_written() }, $file;

@@ -150,6 +150,8 @@ sub _maybe_write_file {
     print {$fh} $content
         or die "Cannot write to $file: $!";
     close $fh;
+
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -376,7 +376,10 @@ sub _all_stopwords {
 
     if ( $self->_has_stopwords_file() ) {
         open my $fh, '<:encoding(UTF-8)', $self->stopwords_file();
-        push @stopwords, map { chomp; $_ } <$fh>;
+        while (<$fh>) {
+            chomp;
+            push @stopwords, $_;
+        }
         close $fh;
     }
 
@@ -384,7 +387,7 @@ sub _all_stopwords {
 }
 
 sub _default_stopwords {
-    qw(
+    return qw(
         DROLSKY
         DROLSKY's
         Rolsky
@@ -414,6 +417,8 @@ sub _meta_resources {
             sprintf( 'http://metacpan.org/release/%s', $self->dist() ),
     };
 }
+
+__PACKAGE__->meta->make_immutable;
 
 1;
 
