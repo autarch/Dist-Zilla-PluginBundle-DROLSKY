@@ -36,7 +36,7 @@ argv = --profile=\$ROOT/perltidyrc
 
 [PerlCritic]
 $file_selection
-argv = --profile \$ROOT/perlcriticrc
+argv = --profile \$ROOT/perlcriticrc --program-extensions .pl  --program-extensions .t --program-extensions .psgi
 EOF
 
 my $perltidyrc = <<'EOF';
@@ -105,8 +105,7 @@ severity = 3
 severity = 3
 
 [Variables::ProhibitPackageVars]
-add_packages = Carp
-add_packages = Test::Builder
+add_packages = Carp Test::Builder
 
 [-Subroutines::RequireFinalReturn]
 
