@@ -108,6 +108,8 @@ severity = 3
 add_packages = Carp
 add_packages = Test::Builder
 
+[-Subroutines::RequireFinalReturn]
+
 [-ErrorHandling::RequireCarping]
 
 # No need for /xsm everywhere
