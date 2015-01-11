@@ -6,6 +6,8 @@ use strict;
 use warnings;
 use autodie;
 
+our $VERSION = '0.28';
+
 use Dist::Zilla;
 
 # Not used here, but we want it installed
@@ -14,11 +16,14 @@ use Pod::Weaver::Section::Contributors;
 # For the benefit of AutoPrereqs
 use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
+use Dist::Zilla::Plugin::BumpVersionAfterRelease;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed;
+use Dist::Zilla::Plugin::CheckVersionIncrement;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
 use Dist::Zilla::Plugin::CPANFile;
 use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;
+use Dist::Zilla::Plugin::DROLSKY::TidyAll;
 use Dist::Zilla::Plugin::Git::Check;
 use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
 use Dist::Zilla::Plugin::Git::Commit;
@@ -36,12 +41,10 @@ use Dist::Zilla::Plugin::MetaProvides::Package;
 use Dist::Zilla::Plugin::MetaResources;
 use Dist::Zilla::Plugin::MojibakeTests;
 use Dist::Zilla::Plugin::NextRelease;
-use Dist::Zilla::Plugin::PkgVersion;
 use Dist::Zilla::Plugin::PodSyntaxTests;
-# SurgicalPodWeaver doesn't list its deps properly
-use Dist::Zilla::Plugin::PodWeaver;
 use Dist::Zilla::Plugin::PromptIfStale;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
+use Dist::Zilla::Plugin::RewriteVersion;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
 use Dist::Zilla::Plugin::Test::CPAN::Changes;
 use Dist::Zilla::Plugin::Test::Compile;
@@ -54,6 +57,8 @@ use Dist::Zilla::Plugin::Test::PodSpelling;
 use Dist::Zilla::Plugin::Test::Portability;
 use Dist::Zilla::Plugin::Test::ReportPrereqs;
 use Dist::Zilla::Plugin::Test::Synopsis;
+use Dist::Zilla::Plugin::Test::TidyAll;
+use Dist::Zilla::Plugin::Test::Version;
 
 use Moose;
 
@@ -230,12 +235,6 @@ sub _build_plugins {
             },
         ],
         [
-            PkgVersion => {
-                die_on_existing_version => 1,
-                die_on_line_insertion   => 1,
-            },
-        ],
-        [
             'Prereqs' => 'TestMoreDoneTesting' => {
                 -phase       => 'test',
                 -type        => 'requires',
@@ -250,6 +249,7 @@ sub _build_plugins {
                 skip              => [
                     'Dist::Zilla::Plugin::DROLSKY::Contributors',
                     'Dist::Zilla::Plugin::DROLSKY::License',
+                    'Dist::Zilla::Plugin::DROLSKY::TidyAll',
                 ],
             }
         ],
@@ -286,6 +286,7 @@ sub _build_plugins {
             'Test::PodSpelling' => { stopwords => $self->_all_stopwords() },
         ],
         [ 'Test::ReportPrereqs' => { verify_prereqs => 1 }, ],
+        [ 'Test::Version'       => { is_strict      => 1 }, ],
 
         # from @Basic
         qw(
@@ -305,6 +306,7 @@ sub _build_plugins {
             CPANFile
             DROLSKY::Contributors
             DROLSKY::License
+            DROLSKY::TidyAll
             Git::CheckFor::CorrectBranch
             Git::CheckFor::MergeConflicts
             Git::Contributors
@@ -324,6 +326,12 @@ sub _build_plugins {
             Test::Pod::No404s
             Test::Portability
             Test::Synopsis
+            Test::TidyAll
+            ),
+        qw(
+            RewriteVersion
+            BumpVersionAfterRelease
+            CheckVersionIncrement
             ),
 
         # from @Git - note that the order here is important!

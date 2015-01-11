@@ -6,6 +6,8 @@ use strict;
 use warnings;
 use autodie;
 
+our $VERSION = '0.28';
+
 use Moose;
 
 with 'Dist::Zilla::Role::BeforeBuild', 'Dist::Zilla::Role::AfterBuild';
