@@ -236,10 +236,10 @@ sub _build_plugins {
             },
         ],
         [
-            'Prereqs' => 'TestMoreDoneTesting' => {
+            'Prereqs' => 'Test::More with subtest()' => {
                 -phase       => 'test',
                 -type        => 'requires',
-                'Test::More' => '0.88',
+                'Test::More' => '0.96',
             }
         ],
         [
