@@ -1,5 +1,12 @@
 {{$NEXT}}
 
+- Replaced PkgVersion with BumpVersionAfterRelease and added
+  CheckVersionIncrement and Test::Version for good measure.
+
+- Added Test::TidyAll and a plugin to generate default tidyall.ini,
+  perltidyrc, and perlcriticrc files for my distros.
+
+
 0.27     2014-12-20
 
 - Replace GatherDir and PruneCruft with Git::GatherDir.
