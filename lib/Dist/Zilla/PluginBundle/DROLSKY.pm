@@ -289,7 +289,7 @@ sub _build_plugins {
         [ 'Test::ReportPrereqs' => { verify_prereqs => 1 }, ],
         [ 'Test::Version'       => { is_strict      => 1 }, ],
 
-        # from @Basic
+        # mostly from @Basic
         qw(
             ManifestSkip
             MetaYAML
@@ -298,6 +298,7 @@ sub _build_plugins {
             ExecDir
             ShareDir
             Manifest
+            CheckVersionIncrement
             TestRelease
             ConfirmRelease
             UploadToCPAN
@@ -315,6 +316,7 @@ sub _build_plugins {
             Meta::Contributors
             MetaConfig
             MetaJSON
+            RewriteVersion
             SurgicalPodWeaver
             ),
         qw(
@@ -329,19 +331,27 @@ sub _build_plugins {
             Test::Synopsis
             Test::TidyAll
             ),
-        qw(
-            RewriteVersion
-            BumpVersionAfterRelease
-            CheckVersionIncrement
-            ),
 
         # from @Git - note that the order here is important!
-        [ 'Git::Check'  => { allow_dirty => \@allow_dirty }, ],
-        [ 'Git::Commit' => { allow_dirty => \@allow_dirty }, ],
+        [ 'Git::Check' => { allow_dirty => \@allow_dirty }, ],
+        [
+            'Git::Commit' => 'commit generated files' => {
+                allow_dirty => \@allow_dirty,
+            },
+        ],
         qw(
             Git::Tag
             Git::Push
             ),
+
+        'BumpVersionAfterRelease',
+        [
+            'Git::Commit' => 'commit version bump' => {
+                allow_dirty_match => ['.+'],
+                commit_msg        => 'Bump version after release'
+            },
+        ],
+        [ 'Git::Push' => 'push version bump' ],
     );
 
     return \@plugins;

@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Made the plugin bundle commit and push the post-release version bump.
+
+
 0.28     2015-01-11
 
 - Replaced PkgVersion with BumpVersionAfterRelease and added
