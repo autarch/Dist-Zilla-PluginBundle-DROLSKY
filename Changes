@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.30     2015-01-13
+
 - Make sure that Perl::Critic and Perl::Tidy end up in the prereqs for the
   benefit of the tidyall test.
 
