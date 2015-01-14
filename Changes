@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Make sure that Perl::Critic and Perl::Tidy end up in the prereqs for the
+  benefit of the tidyall test.
+
+
 0.29     2015-01-11
 
 - Made the plugin bundle commit and push the post-release version bump.

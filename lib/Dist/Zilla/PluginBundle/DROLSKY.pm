@@ -14,6 +14,10 @@ use Dist::Zilla;
 # Not used here, but we want it installed
 use Pod::Weaver::Section::Contributors;
 
+# Because Code::TidyAll does not depend on them
+use Perl::Critic;
+use Perl::Tidy;
+
 # For the benefit of AutoPrereqs
 use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
