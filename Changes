@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Perl::Critic and Perl::Tidy need to be the develop requires list for modules
+  using this bundle, not in the prereqs of the bundle itself.
+
+
 0.30     2015-01-13
 
 - Make sure that Perl::Critic and Perl::Tidy end up in the prereqs for the

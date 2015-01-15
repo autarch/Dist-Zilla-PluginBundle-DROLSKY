@@ -14,10 +14,6 @@ use Dist::Zilla;
 # Not used here, but we want it installed
 use Pod::Weaver::Section::Contributors;
 
-# Because Code::TidyAll does not depend on them
-use Perl::Critic;
-use Perl::Tidy;
-
 # For the benefit of AutoPrereqs
 use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
@@ -206,7 +202,8 @@ sub _build_plugins {
         ],
         [
             AutoPrereqs => {
-                $self->_has_prereqs_skip() ? ( skip => $self->prereqs_skip() )
+                $self->_has_prereqs_skip()
+                ? ( skip => $self->prereqs_skip() )
                 : ()
             },
         ],
@@ -244,6 +241,16 @@ sub _build_plugins {
                 -phase       => 'test',
                 -type        => 'requires',
                 'Test::More' => '0.96',
+            }
+        ],
+
+        # Because Code::TidyAll does not depend on them
+        [
+            'Prereqs' => 'Modules for use with tidyall' => {
+                -phase         => 'develop',
+                -type          => 'requires',
+                'Perl::Critic' => '1.123',
+                'Perl::Tidy'   => '20140711',
             }
         ],
         [
