@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Set --blank-lines-before-packages=0 in generated perltidyrc.
+
+
 0.31     2015-01-15
 
 - Perl::Critic and Perl::Tidy need to be the develop requires list for modules

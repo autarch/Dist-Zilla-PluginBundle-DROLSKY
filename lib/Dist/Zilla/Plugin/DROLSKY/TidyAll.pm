@@ -57,6 +57,7 @@ my $perltidyrc = <<'EOF';
 -nolq
 -npro
 -nsfs
+--blank-lines-before-packages=0
 --opening-hash-brace-right
 --no-outdent-long-comments
 -wbb="% + - * / x != == >= <= =~ !~ < > | & >= < = **= += *= &= <<= &&= -= /= |= >>= ||= .= %= ^= x="
