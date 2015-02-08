@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.32     2015-02-08
+
 - Set --blank-lines-before-packages=0 in generated perltidyrc.
 
 
