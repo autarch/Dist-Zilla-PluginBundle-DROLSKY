@@ -60,6 +60,7 @@ my $perltidyrc = <<'EOF';
 --blank-lines-before-packages=0
 --opening-hash-brace-right
 --no-outdent-long-comments
+--iterations=2
 -wbb="% + - * / x != == >= <= =~ !~ < > | & >= < = **= += *= &= <<= &&= -= /= |= >>= ||= .= %= ^= x="
 EOF
 
