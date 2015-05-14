@@ -333,7 +333,6 @@ sub _build_plugins {
         qw(
             PodSyntaxTests
             Test::CPAN::Changes
-            Test::Compile
             Test::EOL
             Test::NoTabs
             Test::Pod::LinkCheck
@@ -342,6 +341,7 @@ sub _build_plugins {
             Test::Synopsis
             Test::TidyAll
             ),
+        [ 'Test::Compile' => { xt_mode => 1 } ],
 
         # from @Git - note that the order here is important!
         [ 'Git::Check' => { allow_dirty => \@allow_dirty }, ],
