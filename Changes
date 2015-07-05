@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.35     2015-07-05
+
 - Make it possible to use GitHub issues instead of rt.cpan.org.
 
 
