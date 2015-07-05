@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Make it possible to use GitHub issues instead of rt.cpan.org.
+
+
 0.34     2015-05-14
 
 - Always set xt_mode to true for Test::Compile.

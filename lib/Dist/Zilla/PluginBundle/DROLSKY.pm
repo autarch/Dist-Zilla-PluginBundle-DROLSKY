@@ -146,6 +146,12 @@ has next_release_width => (
     default => 8,
 );
 
+has use_github_issues => (
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 0,
+);
+
 has _plugins => (
     is       => 'ro',
     isa      => 'ArrayRef',
@@ -222,7 +228,7 @@ sub _build_plugins {
         ],
         [
             'GitHub::Meta' => {
-                bugs     => 0,
+                bugs     => $self->use_github_issues,
                 homepage => 0,
             },
         ],
@@ -427,16 +433,24 @@ sub configure {
 sub _meta_resources {
     my $self = shift;
 
-    return {
-        'bugtracker.web' => sprintf(
-            'http://rt.cpan.org/Public/Dist/Display.html?Name=%s',
-            $self->dist()
-        ),
-        'bugtracker.mailto' =>
-            sprintf( 'bug-%s@rt.cpan.org', lc $self->dist() ),
+    my %resources = (
         'homepage' =>
             sprintf( 'http://metacpan.org/release/%s', $self->dist() ),
-    };
+    );
+
+    unless ( $self->use_github_issues ) {
+        %resources = (
+            %resources,
+            'bugtracker.web' => sprintf(
+                'http://rt.cpan.org/Public/Dist/Display.html?Name=%s',
+                $self->dist()
+            ),
+            'bugtracker.mailto' =>
+                sprintf( 'bug-%s@rt.cpan.org', lc $self->dist() ),
+        );
+    }
+
+    return \%resources;
 }
 
 __PACKAGE__->meta->make_immutable;
