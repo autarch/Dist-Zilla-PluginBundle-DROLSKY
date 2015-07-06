@@ -374,26 +374,23 @@ sub _build_plugins {
     return \@plugins;
 }
 
-{
+around BUILDARGS => sub {
+    my $orig  = shift;
+    my $class = shift;
 
-    around BUILDARGS => sub {
-        my $orig  = shift;
-        my $class = shift;
+    my $p = $class->$orig(@_);
 
-        my $p = $class->$orig(@_);
+    my %args = ( %{ $p->{payload} }, %{$p} );
 
-        my %args = ( %{ $p->{payload} }, %{$p} );
-
-        for my $key (@array_params) {
-            if ( $args{$key} && !ref $args{$key} ) {
-                $args{$key} = [ delete $args{$key} ];
-            }
-            $args{$key} //= [];
+    for my $key (@array_params) {
+        if ( $args{$key} && !ref $args{$key} ) {
+            $args{$key} = [ delete $args{$key} ];
         }
+        $args{$key} //= [];
+    }
 
-        return \%args;
-    };
-}
+    return \%args;
+};
 
 sub _all_stopwords {
     my $self = shift;
