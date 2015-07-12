@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Don't include Test::Pod::LinkCheck and Test::Pod::No404s when running under Travis.
+
+
 0.35     2015-07-05
 
 - Make it possible to use GitHub issues instead of rt.cpan.org.

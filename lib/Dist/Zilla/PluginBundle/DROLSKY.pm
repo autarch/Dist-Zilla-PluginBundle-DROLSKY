@@ -341,8 +341,6 @@ sub _build_plugins {
             Test::CPAN::Changes
             Test::EOL
             Test::NoTabs
-            Test::Pod::LinkCheck
-            Test::Pod::No404s
             Test::Portability
             Test::Synopsis
             Test::TidyAll
@@ -370,6 +368,13 @@ sub _build_plugins {
         ],
         [ 'Git::Push' => 'push version bump' ],
     );
+
+    unless ( $ENV{TRAVIS} ) {
+        push @plugins, qw(
+            Test::Pod::LinkCheck
+            Test::Pod::No404s
+        );
+    }
 
     return \@plugins;
 }
