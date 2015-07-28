@@ -419,6 +419,7 @@ sub _default_stopwords {
     return qw(
         DROLSKY
         DROLSKY's
+        PayPal
         Rolsky
         Rolsky's
     );
