@@ -7,7 +7,7 @@ use warnings;
 use autodie;
 use namespace::autoclean;
 
-our $VERSION = '0.37';
+our $VERSION = '0.38';
 
 use Perl::Critic::Moose 1.01;
 
