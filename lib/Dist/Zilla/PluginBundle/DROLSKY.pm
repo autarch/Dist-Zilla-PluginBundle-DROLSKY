@@ -337,6 +337,7 @@ sub _build_plugins {
             SurgicalPodWeaver
             ),
         qw(
+            MojibakeTests
             PodSyntaxTests
             Test::CPAN::Changes
             Test::EOL
