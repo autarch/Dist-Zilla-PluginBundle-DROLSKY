@@ -25,6 +25,7 @@ use Dist::Zilla::Plugin::CPANFile;
 use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::DROLSKY::TidyAll;
+use Dist::Zilla::Plugin::DROLSKY::VersionProvider;
 use Dist::Zilla::Plugin::Git::Check;
 use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
 use Dist::Zilla::Plugin::Git::Commit;
@@ -45,7 +46,6 @@ use Dist::Zilla::Plugin::NextRelease;
 use Dist::Zilla::Plugin::PodSyntaxTests;
 use Dist::Zilla::Plugin::PromptIfStale;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
-use Dist::Zilla::Plugin::RewriteVersion;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
 use Dist::Zilla::Plugin::Test::CPAN::Changes;
 use Dist::Zilla::Plugin::Test::Compile;
@@ -268,6 +268,7 @@ sub _build_plugins {
                     'Dist::Zilla::Plugin::DROLSKY::Contributors',
                     'Dist::Zilla::Plugin::DROLSKY::License',
                     'Dist::Zilla::Plugin::DROLSKY::TidyAll',
+                    'Dist::Zilla::Plugin::DROLSKY::VersionProvider',
                 ],
             }
         ],
@@ -326,6 +327,7 @@ sub _build_plugins {
             DROLSKY::Contributors
             DROLSKY::License
             DROLSKY::TidyAll
+            DROLSKY::VersionProvider
             Git::CheckFor::CorrectBranch
             Git::CheckFor::MergeConflicts
             Git::Contributors
@@ -333,7 +335,6 @@ sub _build_plugins {
             Meta::Contributors
             MetaConfig
             MetaJSON
-            RewriteVersion
             SurgicalPodWeaver
             ),
         qw(

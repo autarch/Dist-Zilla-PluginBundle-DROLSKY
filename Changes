@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+- Remove the RewriteVersion plugin and use my own version provider that simply
+  reads the version from the main module. I don't want things appending '#
+  TRIAL' comments to my version lines and un-tidying my code.
+
+
 0.37     2015-08-15
 
 - Include MojibakeTests plugin.
