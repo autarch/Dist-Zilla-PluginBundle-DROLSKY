@@ -146,6 +146,12 @@ has next_release_width => (
     default => 8,
 );
 
+has use_github_homepage => (
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 0,
+);
+
 has use_github_issues => (
     is      => 'ro',
     isa     => 'Bool',
@@ -229,7 +235,7 @@ sub _build_plugins {
         [
             'GitHub::Meta' => {
                 bugs     => $self->use_github_issues,
-                homepage => 0,
+                homepage => $self->use_github_homepage,
             },
         ],
         [ 'GitHub::Update'        => { metacpan     => 1 }, ],
@@ -438,10 +444,12 @@ sub configure {
 sub _meta_resources {
     my $self = shift;
 
-    my %resources = (
-        'homepage' =>
-            sprintf( 'http://metacpan.org/release/%s', $self->dist() ),
-    );
+    my %resources;
+
+    unless ( $self->use_github_homepage ) {
+        $resources{homepage}
+            = sprintf( 'http://metacpan.org/release/%s', $self->dist() );
+    }
 
     unless ( $self->use_github_issues ) {
         %resources = (
