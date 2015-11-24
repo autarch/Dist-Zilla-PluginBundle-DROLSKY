@@ -54,7 +54,7 @@ sub before_build {
     my $self = shift;
 
     for my $file ( keys %files ) {
-        next if -f $file;
+        next if -e $file;
 
         open my $fh, '>:encoding(UTF-8)', $file;
         print {$fh} $files{$file}

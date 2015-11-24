@@ -21,7 +21,7 @@ sub provide_version {
     ( my $module = $self->zilla->name ) =~ s{-}{/}g;
     my $file = "lib/$module.pm";
     $self->log_fatal("Cannot find $file to get \$VERSION from")
-        unless -f $file;
+        unless -e $file;
 
     my ( $info, $e ) = Parse::PMFile->new->parse($file);
     ( my $package = $self->zilla->name ) =~ s/-/::/g;
