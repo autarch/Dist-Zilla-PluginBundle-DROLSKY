@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Added a use_github_homepage config option.
+
+
 0.38     2015-09-28
 
 - Remove the RewriteVersion plugin and use my own version provider that simply
