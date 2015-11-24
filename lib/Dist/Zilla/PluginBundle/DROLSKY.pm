@@ -334,7 +334,7 @@ sub _build_plugins {
             DROLSKY::License
             DROLSKY::TidyAll
             DROLSKY::VersionProvider
-            Git::CheckFor::CorrectBranch
+            DROLSKY::Git::CheckFor::CorrectBranch
             Git::CheckFor::MergeConflicts
             Git::Contributors
             InstallGuide
