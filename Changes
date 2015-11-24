@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.40     2015-11-24
+
 - Added a new plugin, DROLSKY::Git::CheckFor::CorrectBranch. This plugin only
   checks that the branch is correct on non-TRIAL releases.
 

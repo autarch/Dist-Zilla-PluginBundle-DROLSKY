@@ -7,6 +7,7 @@ requires "Dist::Zilla::Plugin::CheckPrereqsIndexed" => "0";
 requires "Dist::Zilla::Plugin::CheckVersionIncrement" => "0";
 requires "Dist::Zilla::Plugin::CopyFilesFromBuild" => "0";
 requires "Dist::Zilla::Plugin::Git::Check" => "0";
+requires "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch" => "0";
 requires "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts" => "0";
 requires "Dist::Zilla::Plugin::Git::Commit" => "0";
 requires "Dist::Zilla::Plugin::Git::Contributors" => "0";
