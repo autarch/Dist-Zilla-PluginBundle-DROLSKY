@@ -166,11 +166,11 @@ has _plugins => (
     builder  => '_build_plugins',
 );
 
-my @array_params = grep { !/^_/ } map { $_->name() }
+my @array_params = grep { !/^_/ } map { $_->name }
     grep {
-           $_->has_type_constraint()
-        && $_->type_constraint()->is_a_type_of('ArrayRef')
-    } __PACKAGE__->meta()->get_all_attributes();
+           $_->has_type_constraint
+        && $_->type_constraint->is_a_type_of('ArrayRef')
+    } __PACKAGE__->meta->get_all_attributes;
 
 sub mvp_multivalue_args {
     return @array_params;
@@ -188,7 +188,7 @@ sub _build_plugins {
     );
 
     my @exclude_match;
-    for my $exclude ( @{ $self->exclude_files() } ) {
+    for my $exclude ( @{ $self->exclude_files } ) {
         if ( $exclude =~ m{^[\w\-\./]+$} ) {
             $exclude_filename{$exclude} = 1;
         }
@@ -205,17 +205,17 @@ sub _build_plugins {
     );
 
     my @plugins = (
-        $self->make_tool(),
+        $self->make_tool,
         [
             Authority => {
-                authority  => 'cpan:' . $self->authority(),
+                authority  => 'cpan:' . $self->authority,
                 do_munging => 0,
             },
         ],
         [
             AutoPrereqs => {
-                $self->_has_prereqs_skip()
-                ? ( skip => $self->prereqs_skip() )
+                $self->_has_prereqs_skip
+                ? ( skip => $self->prereqs_skip )
                 : ()
             },
         ],
@@ -239,17 +239,17 @@ sub _build_plugins {
             },
         ],
         [ 'GitHub::Update'        => { metacpan     => 1 }, ],
-        [ MetaResources           => $self->_meta_resources(), ],
+        [ MetaResources           => $self->_meta_resources, ],
         [ 'MetaProvides::Package' => { meta_noindex => 1 }, ],
         [
             NextRelease => {
                       format => '%-'
-                    . $self->next_release_width()
+                    . $self->next_release_width
                     . 'v %{yyyy-MM-dd}d%{ (TRIAL RELEASE)}T'
             },
         ],
         [
-            'Prereqs' => 'Test::More with subtest()' => {
+            'Prereqs' => 'Test::More with subtest' => {
                 -phase       => 'test',
                 -type        => 'requires',
                 'Test::More' => '0.96',
@@ -291,24 +291,24 @@ sub _build_plugins {
         [
             'Test::Pod::Coverage::Configurable' => {
                 (
-                    $self->_has_coverage_skip()
-                    ? ( skip => $self->pod_coverage_skip() )
+                    $self->_has_coverage_skip
+                    ? ( skip => $self->pod_coverage_skip )
                     : ()
                 ),
                 (
-                    $self->_has_coverage_trustme()
-                    ? ( trustme => $self->pod_coverage_trustme() )
+                    $self->_has_coverage_trustme
+                    ? ( trustme => $self->pod_coverage_trustme )
                     : ()
                 ),
                 (
-                    $self->_has_coverage_class()
-                    ? ( class => $self->pod_coverage_class() )
+                    $self->_has_coverage_class
+                    ? ( class => $self->pod_coverage_class )
                     : ()
                 ),
             },
         ],
         [
-            'Test::PodSpelling' => { stopwords => $self->_all_stopwords() },
+            'Test::PodSpelling' => { stopwords => $self->_all_stopwords },
         ],
         [ 'Test::ReportPrereqs' => { verify_prereqs => 1 }, ],
         [ 'Test::Version'       => { is_strict      => 1 }, ],
@@ -408,11 +408,11 @@ around BUILDARGS => sub {
 sub _all_stopwords {
     my $self = shift;
 
-    my @stopwords = $self->_default_stopwords();
-    push @stopwords, @{ $self->stopwords() };
+    my @stopwords = $self->_default_stopwords;
+    push @stopwords, @{ $self->stopwords };
 
-    if ( $self->_has_stopwords_file() ) {
-        open my $fh, '<:encoding(UTF-8)', $self->stopwords_file();
+    if ( $self->_has_stopwords_file ) {
+        open my $fh, '<:encoding(UTF-8)', $self->stopwords_file;
         while (<$fh>) {
             chomp;
             push @stopwords, $_;
@@ -448,7 +448,7 @@ sub _meta_resources {
 
     unless ( $self->use_github_homepage ) {
         $resources{homepage}
-            = sprintf( 'http://metacpan.org/release/%s', $self->dist() );
+            = sprintf( 'http://metacpan.org/release/%s', $self->dist );
     }
 
     unless ( $self->use_github_issues ) {
@@ -456,10 +456,10 @@ sub _meta_resources {
             %resources,
             'bugtracker.web' => sprintf(
                 'http://rt.cpan.org/Public/Dist/Display.html?Name=%s',
-                $self->dist()
+                $self->dist
             ),
             'bugtracker.mailto' =>
-                sprintf( 'bug-%s@rt.cpan.org', lc $self->dist() ),
+                sprintf( 'bug-%s@rt.cpan.org', lc $self->dist ),
         );
     }
 
