@@ -18,10 +18,10 @@ use Pod::Weaver::Section::Contributors;
 use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
 use Dist::Zilla::Plugin::BumpVersionAfterRelease;
+use Dist::Zilla::Plugin::CPANFile;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed;
 use Dist::Zilla::Plugin::CheckVersionIncrement;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
-use Dist::Zilla::Plugin::CPANFile;
 use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::DROLSKY::TidyAll;
@@ -48,6 +48,7 @@ use Dist::Zilla::Plugin::PromptIfStale;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
 use Dist::Zilla::Plugin::Test::CPAN::Changes;
+use Dist::Zilla::Plugin::Test::CPAN::Meta::JSON;
 use Dist::Zilla::Plugin::Test::Compile;
 use Dist::Zilla::Plugin::Test::EOL 0.14;
 use Dist::Zilla::Plugin::Test::NoTabs;
@@ -347,6 +348,7 @@ sub _build_plugins {
             MojibakeTests
             PodSyntaxTests
             Test::CPAN::Changes
+            Test::CPAN::Meta::JSON
             Test::EOL
             Test::NoTabs
             Test::Portability
