@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Disabled the Subroutines::ProhibitExplicitReturnUndef policy in the
+  generated perlcriticrc file.
+
+
 0.41     2016-01-29
 
 - Added the Test::CPAN::Meta::JSON plugin.
