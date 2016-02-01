@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.42     2016-02-01
+
 - Disabled the Subroutines::ProhibitExplicitReturnUndef policy in the
   generated perlcriticrc file.
 
