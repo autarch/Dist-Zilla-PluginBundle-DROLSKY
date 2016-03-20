@@ -13,7 +13,9 @@ use Pod::Weaver::Config::Assembler;
 use Pod::Weaver::Section::Contributors;
 use Pod::Weaver::Section::GenerateSection;
 
-sub _exp { Pod::Weaver::Config::Assembler->expand_package( $_[0] ) }
+sub _exp {
+    return Pod::Weaver::Config::Assembler->expand_package( $_[0] );
+}
 
 sub configure {
     my $self = shift;
@@ -149,7 +151,7 @@ sub _prefix {
     my $self = shift;
     return $prefix if defined $prefix;
     ( $prefix = ( ref($self) || $self ) ) =~ s/^Pod::Weaver::PluginBundle:://;
-    $prefix;
+    return $prefix;
 }
 
 sub _expand_config {

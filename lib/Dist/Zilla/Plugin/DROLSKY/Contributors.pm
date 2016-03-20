@@ -18,7 +18,7 @@ Dave Rolsky <autarch@urth.org> <devnull@localhost>
 EOF
 
 my %files = (
-    '.mailmap'   => $mailmap,
+    '.mailmap' => $mailmap,
 );
 
 # These files need to actually exist on disk for the Pod::Weaver plugin to see
