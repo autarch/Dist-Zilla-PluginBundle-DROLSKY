@@ -19,6 +19,7 @@ use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
 use Dist::Zilla::Plugin::BumpVersionAfterRelease;
 use Dist::Zilla::Plugin::CPANFile;
+use Dist::Zilla::Plugin::CheckChangesHasContent;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed;
 use Dist::Zilla::Plugin::CheckVersionIncrement;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
@@ -327,6 +328,7 @@ sub _build_plugins {
             UploadToCPAN
             ),
         qw(
+            CheckChangesHasContent
             CheckPrereqsIndexed
             CPANFile
             DROLSKY::Contributors
