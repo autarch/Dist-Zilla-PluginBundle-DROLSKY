@@ -48,6 +48,7 @@ use Dist::Zilla::Plugin::PodSyntaxTests;
 use Dist::Zilla::Plugin::PromptIfStale;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
+use Dist::Zilla::Plugin::Test::CleanNamespaces;
 use Dist::Zilla::Plugin::Test::CPAN::Changes;
 use Dist::Zilla::Plugin::Test::CPAN::Meta::JSON;
 use Dist::Zilla::Plugin::Test::Compile;
@@ -347,6 +348,7 @@ sub _build_plugins {
         qw(
             MojibakeTests
             PodSyntaxTests
+            Test::CleanNamespaces
             Test::CPAN::Changes
             Test::CPAN::Meta::JSON
             Test::EOL
