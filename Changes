@@ -1,5 +1,20 @@
 {{$NEXT}}
 
+- Added [CheckChangesHasContent].
+
+- Added [Test::CLeanNamespaces].
+
+- If the distro has XS code [PPPort] is added and the generated ppport.h is
+  copied from the build into the repo.
+
+- This bundle now generates a CONTRIBUTING.md file automatically.
+
+- Added a new Pod::Weaver author bundle that replaces the one-time generation
+  of a weaver.ini file.
+
+- Fixed README.md generation to happen after pod weaving, instead of before.
+
+
 0.42     2016-02-01
 
 - Disabled the Subroutines::ProhibitExplicitReturnUndef policy in the
