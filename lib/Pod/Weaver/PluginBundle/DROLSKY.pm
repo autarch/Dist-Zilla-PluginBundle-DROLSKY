@@ -208,6 +208,8 @@ __END__
 
 =pod
 
+=for Pod::Coverage .*
+
 =head1 SYNOPSIS
 
 In your F<weaver.ini>:
