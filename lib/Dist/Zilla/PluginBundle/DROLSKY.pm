@@ -280,13 +280,6 @@ sub _build_plugins {
             }
         ],
         [
-            'ReadmeAnyFromPod' => 'README.md in build' => {
-                filename => 'README.md',
-                location => 'build',
-                phase    => 'build',
-            },
-        ],
-        [
             'Test::Pod::Coverage::Configurable' => {
                 (
                     $self->_has_coverage_skip
@@ -349,6 +342,16 @@ sub _build_plugins {
             MetaJSON
             SurgicalPodWeaver
             ),
+
+        # This needs to come after pod weaving
+        [
+            'ReadmeAnyFromPod' => 'README.md in build' => {
+                filename => 'README.md',
+                location => 'build',
+                phase    => 'build',
+            },
+        ],
+
         qw(
             MojibakeTests
             PodSyntaxTests
