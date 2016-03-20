@@ -111,7 +111,7 @@ my $extra = $dist->distmeta->{resources}{x_MailingList}
     ? "\n" . 'There is also a mailing list available for users of this distribution, at' . "\n" . $dist->distmeta->{resources}{x_MailingList}
     : '';
 $extra .= $dist->distmeta->{resources}{x_IRC}
-    ? "\n" . 'There is also an irc channel available for users of this distribution, at' . "\n" . $dist->distmeta->{resources}{x_IRC}
+    ? "\n" . 'There is also an IRC channel available for users of this distribution, at' . "\n" . $dist->distmeta->{resources}{x_IRC}
     : '';
 # send questions to the bugtracker if nowhere better
 $extra ||= 'This is a good place to send your questions about the usage of this distribution.';
