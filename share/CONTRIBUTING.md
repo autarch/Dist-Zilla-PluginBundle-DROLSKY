@@ -116,15 +116,17 @@ $extra .= $dist->distmeta->{resources}{x_IRC}
 # send questions to the bugtracker if nowhere better
 $extra ||= 'This is a good place to send your questions about the usage of this distribution.';
 }}
-{{ if ( -e '.travis' ) {
-'## Travis
+{{ if ( -e '.travis.yml' ) {
+'
+## Travis
 
 All pull requests for this distribution will be automatically tested by
 [Travis](https://travis-ci.org/) and the build status will be reported on the
 pull request page. If your build fails, please take a look at the output.'
 } }}
 {{ if ( -e 'tidyall.ini' ) {
-'## Tidyall
+'
+## Tidyall
 
 This distribution uses
 [Code::TidyAll](https://metacpan.org/release/Code-TidyAll) to enforce a
