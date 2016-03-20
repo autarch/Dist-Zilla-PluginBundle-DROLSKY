@@ -16,10 +16,10 @@ use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
 use Dist::Zilla::Plugin::BumpVersionAfterRelease;
 use Dist::Zilla::Plugin::CPANFile;
-use Dist::Zilla::Plugin::CheckChangesHasContent;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed;
 use Dist::Zilla::Plugin::CheckVersionIncrement;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
+use Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent;
 use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::DROLSKY::TidyAll;
@@ -275,6 +275,7 @@ sub _build_plugins {
                 check_all_plugins => 1,
                 check_all_prereqs => 1,
                 skip              => [
+                    'Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent',
                     'Dist::Zilla::Plugin::DROLSKY::Contributors',
                     'Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch',
                     'Dist::Zilla::Plugin::DROLSKY::License',
@@ -330,9 +331,9 @@ sub _build_plugins {
             },
         ],
         qw(
-            CheckChangesHasContent
             CheckPrereqsIndexed
             CPANFile
+            DROLSKY::CheckChangesHasContent
             DROLSKY::Contributors
             DROLSKY::License
             DROLSKY::TidyAll
@@ -448,6 +449,7 @@ sub _all_stopwords {
 
 sub _default_stopwords {
     return qw(
+        drolsky
         DROLSKY
         DROLSKY's
         PayPal
