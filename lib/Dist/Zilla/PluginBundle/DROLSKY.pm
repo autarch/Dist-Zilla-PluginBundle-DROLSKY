@@ -222,7 +222,8 @@ sub _build_plugins {
         ],
         [
             CopyFilesFromBuild => {
-                copy => [qw( Build.PL cpanfile LICENSE Makefile.PL )],
+                copy =>
+                    [qw( Build.PL cpanfile LICENSE Makefile.PL README.md )],
             },
         ],
         [
@@ -282,11 +283,8 @@ sub _build_plugins {
         [
             'ReadmeAnyFromPod' => 'README.md in build' => {
                 filename => 'README.md',
-            },
-        ],
-        [
-            'ReadmeAnyFromPod' => 'README.md in root' => {
-                filename => 'README.md',
+                location => 'build',
+                phase    => 'build',
             },
         ],
         [
