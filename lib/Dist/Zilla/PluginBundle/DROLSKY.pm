@@ -27,6 +27,7 @@ use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::DROLSKY::TidyAll;
 use Dist::Zilla::Plugin::DROLSKY::VersionProvider;
+use Dist::Zilla::Plugin::GenerateFile::FromShareDir;
 use Dist::Zilla::Plugin::Git::Check;
 use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
 use Dist::Zilla::Plugin::Git::Commit;
@@ -184,6 +185,7 @@ sub _build_plugins {
 
     my %exclude_filename = map { $_ => 1 } qw(
         Build.PL
+        CONTRIBUTING.md
         cpanfile
         LICENSE
         Makefile.PL
@@ -200,12 +202,7 @@ sub _build_plugins {
         }
     }
 
-    my @allow_dirty = (
-        keys %exclude_filename, qw(
-            Changes
-            CONTRIBUTING.md
-            )
-    );
+    my @allow_dirty = ( keys %exclude_filename, 'Changes' );
 
     my @plugins = (
         $self->make_tool,
@@ -328,6 +325,13 @@ sub _build_plugins {
             ConfirmRelease
             UploadToCPAN
             ),
+        [
+            'GenerateFile::FromShareDir' => 'generate CONTRIBUTING' => {
+                -dist     => 'Dist-Zilla-PluginBundle-DROLSKY',
+                -filename => 'CONTRIBUTING.md',
+                has_xs    => !!( scalar glob('*.xs') ),
+            },
+        ],
         qw(
             CheckChangesHasContent
             CheckPrereqsIndexed
