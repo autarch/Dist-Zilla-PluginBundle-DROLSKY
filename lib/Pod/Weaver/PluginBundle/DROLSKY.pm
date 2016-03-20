@@ -104,7 +104,7 @@ SUPPORT
         [
             'GenerateSection' => 'generate DONATIONS' => {
                 title            => 'DONATIONS',
-                main_module_only => 0,
+                main_module_only => 1,
                 is_template      => 0,
                 text             => [
                     <<'DONATIONS',
