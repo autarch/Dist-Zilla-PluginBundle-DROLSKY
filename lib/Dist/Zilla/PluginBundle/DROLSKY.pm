@@ -62,7 +62,6 @@ use Dist::Zilla::Plugin::Test::ReportPrereqs;
 use Dist::Zilla::Plugin::Test::Synopsis;
 use Dist::Zilla::Plugin::Test::TidyAll;
 use Dist::Zilla::Plugin::Test::Version;
-use Pod::Weaver::PluginBundle::DROLSKY;
 
 use Moose;
 
@@ -276,6 +275,7 @@ sub _build_plugins {
                 check_all_prereqs => 1,
                 skip              => [
                     'Dist::Zilla::Plugin::DROLSKY::Contributors',
+                    'Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch',
                     'Dist::Zilla::Plugin::DROLSKY::License',
                     'Dist::Zilla::Plugin::DROLSKY::TidyAll',
                     'Dist::Zilla::Plugin::DROLSKY::VersionProvider',
