@@ -7,7 +7,7 @@ use warnings;
 use autodie;
 use namespace::autoclean;
 
-our $VERSION = '0.43';
+our $VERSION = '0.44';
 
 use CPAN::Changes;
 
