@@ -11,41 +11,14 @@ our $VERSION = '0.43';
 
 use Moose;
 
-with 'Dist::Zilla::Role::BeforeBuild', 'Dist::Zilla::Role::AfterBuild';
-
-my $weaver_ini = <<'EOF';
-[@CorePrep]
-
-[Name]
-[Version]
-
-[Region  / prelude]
-
-[Generic / SYNOPSIS]
-[Generic / DESCRIPTION]
-
-[Leftovers]
-
-[Region  / postlude]
-
-[Authors]
-[Contributors]
-[Legal]
-EOF
+with 'Dist::Zilla::Role::BeforeBuild';
 
 my $mailmap = <<'EOF';
 Dave Rolsky <autarch@urth.org> <devnull@localhost>
 EOF
 
 my %files = (
-    'weaver.ini' => $weaver_ini,
     '.mailmap'   => $mailmap,
-);
-
-has _files_written => (
-    is      => 'ro',
-    isa     => 'ArrayRef',
-    default => sub { [] },
 );
 
 # These files need to actually exist on disk for the Pod::Weaver plugin to see
@@ -60,17 +33,7 @@ sub before_build {
         print {$fh} $files{$file}
             or die "Cannot write to $files{$file}: $!";
         close $fh;
-
-        push @{ $self->_files_written() }, $file;
     }
-
-    return;
-}
-
-sub after_build {
-    my $self = shift;
-
-    unlink $_ for @{ $self->_files_written() };
 
     return;
 }
@@ -79,7 +42,7 @@ __PACKAGE__->meta->make_immutable;
 
 1;
 
-# ABSTRACT: Creates a weaver.ini and .mailmap to populate Contributors in docs
+# ABSTRACT: Creates a .mailmap to populate Contributors in docs
 
 __END__
 

@@ -11,9 +11,6 @@ our $VERSION = '0.43';
 
 use Dist::Zilla;
 
-# Not used here, but we want it installed
-use Pod::Weaver::Section::Contributors;
-
 # For the benefit of AutoPrereqs
 use Dist::Zilla::Plugin::Authority;
 use Dist::Zilla::Plugin::AutoPrereqs;
@@ -65,6 +62,7 @@ use Dist::Zilla::Plugin::Test::ReportPrereqs;
 use Dist::Zilla::Plugin::Test::Synopsis;
 use Dist::Zilla::Plugin::Test::TidyAll;
 use Dist::Zilla::Plugin::Test::Version;
+use Pod::Weaver::PluginBundle::DROLSKY;
 
 use Moose;
 
@@ -345,8 +343,13 @@ sub _build_plugins {
             Meta::Contributors
             MetaConfig
             MetaJSON
-            SurgicalPodWeaver
             ),
+
+        [
+            SurgicalPodWeaver => {
+                config_plugin => '@DROLSKY',
+            },
+        ],
 
         ( $has_xs ? 'PPPort' : () ),
 
@@ -494,3 +497,9 @@ __PACKAGE__->meta->make_immutable;
 __END__
 
 =for Pod::Coverage .*
+
+=head1 DESCRIPTION
+
+This is the L<Dist::Zilla> plugin bundle I use for my distributions. Don't use
+this directly for your own distributions, but you may find it useful as a
+source of ideas for building your own bundle.
