@@ -187,6 +187,7 @@ sub _build_plugins {
         cpanfile
         LICENSE
         Makefile.PL
+        ppport.h
         README.md
     );
 
