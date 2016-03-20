@@ -346,6 +346,7 @@ sub _build_plugins {
         # This needs to come after pod weaving
         [
             'ReadmeAnyFromPod' => 'README.md in build' => {
+                type     => 'markdown',
                 filename => 'README.md',
                 location => 'build',
                 phase    => 'build',
