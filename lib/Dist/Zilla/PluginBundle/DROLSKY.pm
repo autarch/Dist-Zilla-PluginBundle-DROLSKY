@@ -46,6 +46,7 @@ use Dist::Zilla::Plugin::MetaResources;
 use Dist::Zilla::Plugin::MojibakeTests;
 use Dist::Zilla::Plugin::NextRelease;
 use Dist::Zilla::Plugin::PodSyntaxTests;
+use Dist::Zilla::Plugin::PPPort;
 use Dist::Zilla::Plugin::PromptIfStale;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
@@ -204,6 +205,8 @@ sub _build_plugins {
 
     my @allow_dirty = ( keys %exclude_filename, 'Changes' );
 
+    my $has_xs = !!( scalar glob('*.xs') );
+
     my @plugins = (
         $self->make_tool,
         [
@@ -221,8 +224,9 @@ sub _build_plugins {
         ],
         [
             CopyFilesFromBuild => {
-                copy =>
-                    [qw( Build.PL cpanfile LICENSE Makefile.PL README.md )],
+                copy => [
+                    qw( Build.PL cpanfile LICENSE Makefile.PL ppport.h README.md )
+                ],
             },
         ],
         [
@@ -266,6 +270,7 @@ sub _build_plugins {
                 'Perl::Tidy'   => '20140711',
             }
         ],
+
         [
             'PromptIfStale' => {
                 phase             => 'release',
@@ -322,7 +327,7 @@ sub _build_plugins {
             'GenerateFile::FromShareDir' => 'generate CONTRIBUTING' => {
                 -dist     => 'Dist-Zilla-PluginBundle-DROLSKY',
                 -filename => 'CONTRIBUTING.md',
-                has_xs    => !!( scalar glob('*.xs') ),
+                has_xs    => $has_xs,
             },
         ],
         qw(
@@ -342,6 +347,8 @@ sub _build_plugins {
             MetaJSON
             SurgicalPodWeaver
             ),
+
+        ( $has_xs ? 'PPPort' : () ),
 
         # This needs to come after pod weaving
         [
