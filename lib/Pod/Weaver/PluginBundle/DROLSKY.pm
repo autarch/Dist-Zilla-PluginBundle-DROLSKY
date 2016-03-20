@@ -71,7 +71,7 @@ sub configure {
     $distmeta->{resources}{x_MailingList} ? 'There is a mailing list available for users of this distribution, ' . "\nL<" . $distmeta->{resources}{x_MailingList} . '>.' : (),
 
     $distmeta->{resources}{x_IRC}
-        ? 'This distrubtion also has an irc channel at' . "\nL<"
+        ? 'This distribution also has an IRC channel at' . "\nL<"
             . do {
                 # try to extract the channel
                 if (my ($network, $channel) = ($distmeta->{resources}{x_IRC} =~ m!(?:://)?(\w+(?:\.\w+)*)/?(#\w+)!)) {
@@ -85,7 +85,7 @@ sub configure {
         : (),
 
     ($distmeta->{x_authority} // '') eq 'cpan:DROLSKY'
-    ? "I am also usually active on irc as 'drolsky' on C<irc://irc.perl.org>."
+    ? "I am also usually active on IRC as 'drolsky' on C<irc://irc.perl.org>."
     : (),
 ) }}
 SUPPORT
