@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.43     2016-03-20
+
 - Added [CheckChangesHasContent].
 
 - Added [Test::CLeanNamespaces].

@@ -6,17 +6,25 @@ use 5.010000;
 
 use ExtUtils::MakeMaker;
 
+use File::ShareDir::Install;
+$File::ShareDir::Install::INCLUDE_DOTFILES = 1;
+$File::ShareDir::Install::INCLUDE_DOTDIRS = 1;
+install_share dist => "share";
+
+
 my %WriteMakefileArgs = (
   "ABSTRACT" => "DROLSKY's plugin bundle",
   "AUTHOR" => "Dave Rolsky <autarch\@urth.org>",
   "CONFIGURE_REQUIRES" => {
-    "ExtUtils::MakeMaker" => 0
+    "ExtUtils::MakeMaker" => 0,
+    "File::ShareDir::Install" => "0.06"
   },
   "DISTNAME" => "Dist-Zilla-PluginBundle-DROLSKY",
   "LICENSE" => "artistic_2",
   "MIN_PERL_VERSION" => "5.010000",
   "NAME" => "Dist::Zilla::PluginBundle::DROLSKY",
   "PREREQ_PM" => {
+    "CPAN::Changes" => 0,
     "Dist::Zilla" => 0,
     "Dist::Zilla::Plugin::Authority" => 0,
     "Dist::Zilla::Plugin::AutoPrereqs" => 0,
@@ -25,6 +33,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::CheckPrereqsIndexed" => 0,
     "Dist::Zilla::Plugin::CheckVersionIncrement" => 0,
     "Dist::Zilla::Plugin::CopyFilesFromBuild" => 0,
+    "Dist::Zilla::Plugin::GenerateFile::FromShareDir" => 0,
     "Dist::Zilla::Plugin::Git::Check" => 0,
     "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch" => 0,
     "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts" => 0,
@@ -43,12 +52,14 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::MetaResources" => 0,
     "Dist::Zilla::Plugin::MojibakeTests" => 0,
     "Dist::Zilla::Plugin::NextRelease" => 0,
+    "Dist::Zilla::Plugin::PPPort" => 0,
     "Dist::Zilla::Plugin::PodSyntaxTests" => 0,
     "Dist::Zilla::Plugin::PromptIfStale" => 0,
     "Dist::Zilla::Plugin::ReadmeAnyFromPod" => 0,
     "Dist::Zilla::Plugin::SurgicalPodWeaver" => 0,
     "Dist::Zilla::Plugin::Test::CPAN::Changes" => 0,
     "Dist::Zilla::Plugin::Test::CPAN::Meta::JSON" => 0,
+    "Dist::Zilla::Plugin::Test::CleanNamespaces" => 0,
     "Dist::Zilla::Plugin::Test::Compile" => 0,
     "Dist::Zilla::Plugin::Test::EOL" => "0.14",
     "Dist::Zilla::Plugin::Test::NoTabs" => 0,
@@ -61,8 +72,8 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Plugin::Test::Synopsis" => 0,
     "Dist::Zilla::Plugin::Test::TidyAll" => 0,
     "Dist::Zilla::Plugin::Test::Version" => 0,
-    "Dist::Zilla::Role::AfterBuild" => 0,
     "Dist::Zilla::Role::BeforeBuild" => 0,
+    "Dist::Zilla::Role::BeforeRelease" => 0,
     "Dist::Zilla::Role::LicenseProvider" => 0,
     "Dist::Zilla::Role::PluginBundle::Config::Slicer" => 0,
     "Dist::Zilla::Role::PluginBundle::Easy" => 0,
@@ -71,9 +82,12 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Role::VersionProvider" => 0,
     "Module::Runtime" => 0,
     "Moose" => 0,
+    "PadWalker" => 0,
     "Parse::PMFile" => 0,
     "Perl::Critic::Moose" => "1.01",
+    "Pod::Weaver::Config::Assembler" => 0,
     "Pod::Weaver::Section::Contributors" => 0,
+    "Pod::Weaver::Section::GenerateSection" => 0,
     "String::RewritePrefix" => 0,
     "autodie" => 0,
     "namespace::autoclean" => 0,
@@ -93,6 +107,7 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "CPAN::Changes" => 0,
   "Dist::Zilla" => 0,
   "Dist::Zilla::Plugin::Authority" => 0,
   "Dist::Zilla::Plugin::AutoPrereqs" => 0,
@@ -101,6 +116,7 @@ my %FallbackPrereqs = (
   "Dist::Zilla::Plugin::CheckPrereqsIndexed" => 0,
   "Dist::Zilla::Plugin::CheckVersionIncrement" => 0,
   "Dist::Zilla::Plugin::CopyFilesFromBuild" => 0,
+  "Dist::Zilla::Plugin::GenerateFile::FromShareDir" => 0,
   "Dist::Zilla::Plugin::Git::Check" => 0,
   "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch" => 0,
   "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts" => 0,
@@ -119,12 +135,14 @@ my %FallbackPrereqs = (
   "Dist::Zilla::Plugin::MetaResources" => 0,
   "Dist::Zilla::Plugin::MojibakeTests" => 0,
   "Dist::Zilla::Plugin::NextRelease" => 0,
+  "Dist::Zilla::Plugin::PPPort" => 0,
   "Dist::Zilla::Plugin::PodSyntaxTests" => 0,
   "Dist::Zilla::Plugin::PromptIfStale" => 0,
   "Dist::Zilla::Plugin::ReadmeAnyFromPod" => 0,
   "Dist::Zilla::Plugin::SurgicalPodWeaver" => 0,
   "Dist::Zilla::Plugin::Test::CPAN::Changes" => 0,
   "Dist::Zilla::Plugin::Test::CPAN::Meta::JSON" => 0,
+  "Dist::Zilla::Plugin::Test::CleanNamespaces" => 0,
   "Dist::Zilla::Plugin::Test::Compile" => 0,
   "Dist::Zilla::Plugin::Test::EOL" => "0.14",
   "Dist::Zilla::Plugin::Test::NoTabs" => 0,
@@ -137,8 +155,8 @@ my %FallbackPrereqs = (
   "Dist::Zilla::Plugin::Test::Synopsis" => 0,
   "Dist::Zilla::Plugin::Test::TidyAll" => 0,
   "Dist::Zilla::Plugin::Test::Version" => 0,
-  "Dist::Zilla::Role::AfterBuild" => 0,
   "Dist::Zilla::Role::BeforeBuild" => 0,
+  "Dist::Zilla::Role::BeforeRelease" => 0,
   "Dist::Zilla::Role::LicenseProvider" => 0,
   "Dist::Zilla::Role::PluginBundle::Config::Slicer" => 0,
   "Dist::Zilla::Role::PluginBundle::Easy" => 0,
@@ -149,9 +167,12 @@ my %FallbackPrereqs = (
   "File::Spec" => 0,
   "Module::Runtime" => 0,
   "Moose" => 0,
+  "PadWalker" => 0,
   "Parse::PMFile" => 0,
   "Perl::Critic::Moose" => "1.01",
+  "Pod::Weaver::Config::Assembler" => 0,
   "Pod::Weaver::Section::Contributors" => 0,
+  "Pod::Weaver::Section::GenerateSection" => 0,
   "String::RewritePrefix" => 0,
   "Test::More" => "0.96",
   "autodie" => 0,
@@ -171,3 +192,9 @@ delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
   unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
 
 WriteMakefile(%WriteMakefileArgs);
+
+{
+package
+MY;
+use File::ShareDir::Install qw(postamble);
+}
