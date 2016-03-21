@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+- Make sure generated Pod does not have trailing whitespace.
+
+- Fix links to mailing lists to be "mailto:" links.
+
+
 0.44     2016-03-20
 
 - Make sure that all the Pod::Weaver-related modules that this distribution

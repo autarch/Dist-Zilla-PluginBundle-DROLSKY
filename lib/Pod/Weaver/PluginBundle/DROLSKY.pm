@@ -81,7 +81,7 @@ sub configure {
     ? "bugs may be submitted through L<$bugtracker_web>."
     : (),
 
-    $distmeta->{resources}{x_MailingList} ? 'There is a mailing list available for users of this distribution, ' . "\nL<" . $distmeta->{resources}{x_MailingList} . '>.' : (),
+    $distmeta->{resources}{x_MailingList} ? 'There is a mailing list available for users of this distribution,' . "\nL<mailto:" . $distmeta->{resources}{x_MailingList} . '>.' : (),
 
     $distmeta->{resources}{x_IRC}
         ? 'This distribution also has an IRC channel at' . "\nL<"
