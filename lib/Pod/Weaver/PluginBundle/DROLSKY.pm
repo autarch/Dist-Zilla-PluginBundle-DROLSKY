@@ -9,9 +9,22 @@ use namespace::autoclean -also => ['_exp'];
 
 use Module::Runtime qw( use_module );
 use PadWalker qw( peek_sub );
+use Pod::Elemental::Transformer::List;
+use Pod::Elemental::Transformer::Verbatim;
 use Pod::Weaver::Config::Assembler;
+use Pod::Weaver::Plugin::SingleEncoding;
+use Pod::Weaver::Plugin::Transformer;
+use Pod::Weaver::Section::AllowOverride;
+use Pod::Weaver::Section::Authors;
+use Pod::Weaver::Section::Collect;
 use Pod::Weaver::Section::Contributors;
 use Pod::Weaver::Section::GenerateSection;
+use Pod::Weaver::Section::Generic;
+use Pod::Weaver::Section::Leftovers;
+use Pod::Weaver::Section::Legal;
+use Pod::Weaver::Section::Name;
+use Pod::Weaver::Section::Region;
+use Pod::Weaver::Section::Version;
 
 sub _exp {
     return Pod::Weaver::Config::Assembler->expand_package( $_[0] );

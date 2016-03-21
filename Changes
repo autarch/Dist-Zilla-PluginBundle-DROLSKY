@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Make sure that all the Pod::Weaver-related modules that this distribution
+  uses are added to the prereqs list.
+
+
 0.43     2016-03-20
 
 - Added [CheckChangesHasContent].
