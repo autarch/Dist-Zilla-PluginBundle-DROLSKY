@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.44     2016-03-20
+
 - Make sure that all the Pod::Weaver-related modules that this distribution
   uses are added to the prereqs list.
 
