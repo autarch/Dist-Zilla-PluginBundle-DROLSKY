@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.45     2016-03-20
+
 - Make sure generated Pod does not have trailing whitespace.
 
 - Fix links to mailing lists to be "mailto:" links.
