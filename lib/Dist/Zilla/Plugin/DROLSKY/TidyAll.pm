@@ -9,7 +9,12 @@ use namespace::autoclean;
 
 our $VERSION = '0.46';
 
+use Code::TidyAll::Config::INI::Reader 0.44;
+use List::Util 1.45 qw( uniqstr );
+use Path::Class qw( file );
+use Path::Iterator::Rule;
 use Perl::Critic::Moose 1.01;
+use Sort::ByExample qw( sbe );
 
 use Moose;
 
@@ -17,27 +22,6 @@ with qw(
     Dist::Zilla::Role::BeforeBuild
     Dist::Zilla::Role::TextTemplate
 );
-
-my $file_selection = <<'EOF';
-select = **/*.{pl,pm,t,psgi}
-ignore = t/00-*
-ignore = t/author-*
-ignore = t/release-*
-ignore = blib/**/*
-ignore = .build/**/*
-ignore = {{$dist}}-*/**/*
-EOF
-chomp $file_selection;
-
-my $tidyall_ini_template = <<"EOF";
-[PerlTidy]
-$file_selection
-argv = --profile=\$ROOT/perltidyrc
-
-[PerlCritic]
-$file_selection
-argv = --profile \$ROOT/perlcriticrc --program-extensions .pl  --program-extensions .t --program-extensions .psgi
-EOF
 
 my $perltidyrc = <<'EOF';
 -l=78
@@ -133,18 +117,123 @@ EOF
 sub before_build {
     my $self = shift;
 
-    $self->_maybe_write_file(
-        'tidyall.ini',
-        $self->fill_in_string(
-            $tidyall_ini_template,
-            { dist => $self->zilla()->name() },
-        ),
-    );
+    file('tidyall.ini')->spew( $self->_tidyall_ini_content );
 
     $self->_maybe_write_file( 'perlcriticrc', $perlcriticrc );
     $self->_maybe_write_file( 'perltidyrc',   $perltidyrc );
 
     return;
+}
+
+sub _tidyall_ini_content {
+    my $self = shift;
+
+    return $self->_new_tidyall_ini
+        unless -e 'tidyall.ini';
+
+    return $self->_munged_tidyall_ini;
+}
+
+sub _new_tidyall_ini {
+    my $self = shift;
+
+    my $perl_select = '**/*.{pl,pm,t,psgi}';
+    my %tidyall     = (
+        'PerlTidy' => {
+            select => [$perl_select],
+            ignore => [ $self->_default_perl_ignore ],
+            argv   => '--profile=$ROOT/perltidyrc',
+        },
+        'PerlCritic' => {
+            select => [$perl_select],
+            ignore => [ $self->_default_perl_ignore ],
+            argv   => '--profile=$ROOT/perltidyrc',
+        },
+    );
+
+    return $self->_config_to_ini( \%tidyall );
+}
+
+sub _munged_tidyall_ini {
+    my $self = shift;
+
+    my $tidyall
+        = Code::TidyAll::Config::INI::Reader->read_file('tidyall.ini');
+
+    my %has_default_ignore = map { $_ => 1 } qw( PerlTidy PerlCritic );
+    for my $section ( grep { $has_default_ignore{$_} } sort keys %{$tidyall} )
+    {
+        $tidyall->{$section}{ignore} = [
+            uniqstr(
+                @{ $tidyall->{$section}{ignore} },
+                $self->_default_perl_ignore,
+            )
+        ];
+    }
+
+    return $self->_config_to_ini($tidyall);
+}
+
+sub _default_perl_ignore {
+    my $self = shift;
+
+    my @ignore = qw(
+        .build/**/*
+        blib/**/*
+        t/00-*
+        t/author-*
+        t/release-*
+        xt/**/*
+    );
+
+    my $dist = $self->zilla->name;
+    push @ignore, "$dist-*/**/*";
+
+    return @ignore;
+}
+
+sub _config_to_ini {
+    my $self    = shift;
+    my $tidyall = shift;
+
+    my @xt_files = Path::Iterator::Rule->new->file->name(qr/\.t$/)->all('xt');
+
+    if (@xt_files) {
+        my $suffix = 'non-auto-generated xt';
+        for my $plugin (qw( PerlCritic PerlTidy )) {
+            $tidyall->{ $plugin . q{ } . $suffix }{select} = \@xt_files;
+        }
+    }
+
+    my $sorter = sbe(
+        [ 'select', 'ignore' ],
+        {
+            fallback => sub { $_[0] cmp $_[1] },
+        },
+    );
+
+    my $ini = q{};
+    for my $section ( sort keys %{$tidyall} ) {
+        $ini .= "[$section]\n";
+
+        for my $key ( $sorter->( keys %{ $tidyall->{$section} } ) ) {
+            for my $val (
+                sort
+                ref $tidyall->{$section}{$key}
+                ? @{ $tidyall->{$section}{$key} }
+                : $tidyall->{$section}{$key}
+                ) {
+
+                $ini .= "$key = $val\n";
+            }
+        }
+
+        $ini .= "\n";
+    }
+
+    chomp $ini;
+
+    return $ini;
 }
 
 sub _maybe_write_file {
@@ -154,10 +243,7 @@ sub _maybe_write_file {
 
     return if -e $file;
 
-    open my $fh, '>', $file;
-    print {$fh} $content
-        or die "Cannot write to $file: $!";
-    close $fh;
+    file($file)->spew($content);
 
     return;
 }

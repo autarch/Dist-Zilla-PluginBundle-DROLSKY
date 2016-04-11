@@ -42,14 +42,15 @@ use Dist::Zilla::Plugin::MetaProvides::Package;
 use Dist::Zilla::Plugin::MetaResources;
 use Dist::Zilla::Plugin::MojibakeTests;
 use Dist::Zilla::Plugin::NextRelease;
-use Dist::Zilla::Plugin::PodSyntaxTests;
 use Dist::Zilla::Plugin::PPPort;
+use Dist::Zilla::Plugin::PodSyntaxTests;
 use Dist::Zilla::Plugin::PromptIfStale;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
+use Dist::Zilla::Plugin::RunExtraTests;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
-use Dist::Zilla::Plugin::Test::CleanNamespaces;
 use Dist::Zilla::Plugin::Test::CPAN::Changes;
 use Dist::Zilla::Plugin::Test::CPAN::Meta::JSON;
+use Dist::Zilla::Plugin::Test::CleanNamespaces;
 use Dist::Zilla::Plugin::Test::Compile;
 use Dist::Zilla::Plugin::Test::EOL 0.14;
 use Dist::Zilla::Plugin::Test::NoTabs;
@@ -181,6 +182,8 @@ sub mvp_multivalue_args {
 sub _build_plugins {
     my $self = shift;
 
+    # These are files which are generated as part of the build process and
+    # then copied back into the git repo and checked in.
     my %exclude_filename = map { $_ => 1 } qw(
         Build.PL
         CONTRIBUTING.md
@@ -201,7 +204,15 @@ sub _build_plugins {
         }
     }
 
-    my @allow_dirty = ( keys %exclude_filename, 'Changes' );
+    # Anything we auto-generate and check in could be dirty. We also allow any
+    # other file which might get munged by this bundle to be dirty.
+    my @allow_dirty = (
+        keys %exclude_filename,
+        qw(
+            Changes
+            tidyall.ini
+            )
+    );
 
     my $has_xs = !!( scalar glob('*.xs') );
 
@@ -314,7 +325,6 @@ sub _build_plugins {
             ManifestSkip
             MetaYAML
             License
-            ExtraTests
             ExecDir
             ShareDir
             Manifest
@@ -366,6 +376,7 @@ sub _build_plugins {
         ],
 
         qw(
+            RunExtraTests
             MojibakeTests
             PodSyntaxTests
             Test::CleanNamespaces
