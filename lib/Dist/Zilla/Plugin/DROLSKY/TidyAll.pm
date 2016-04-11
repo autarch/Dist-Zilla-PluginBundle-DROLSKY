@@ -95,6 +95,9 @@ add_packages = Carp Test::Builder
 
 [-Subroutines::RequireFinalReturn]
 
+# This incorrectly thinks signatures are prototypes.
+[-Subroutines::ProhibitSubroutinePrototypes]
+
 [-ErrorHandling::RequireCarping]
 
 # No need for /xsm everywhere
