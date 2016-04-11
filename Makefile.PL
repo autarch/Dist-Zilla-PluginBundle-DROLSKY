@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use 5.022000;
+use 5.010000;
 
 use ExtUtils::MakeMaker;
 
@@ -21,7 +21,7 @@ my %WriteMakefileArgs = (
   },
   "DISTNAME" => "Dist-Zilla-PluginBundle-DROLSKY",
   "LICENSE" => "artistic_2",
-  "MIN_PERL_VERSION" => "5.022000",
+  "MIN_PERL_VERSION" => "5.010000",
   "NAME" => "Dist::Zilla::PluginBundle::DROLSKY",
   "PREREQ_PM" => {
     "CPAN::Changes" => 0,
@@ -110,7 +110,6 @@ my %WriteMakefileArgs = (
     "Sort::ByExample" => 0,
     "String::RewritePrefix" => 0,
     "autodie" => 0,
-    "experimental" => 0,
     "namespace::autoclean" => 0,
     "strict" => 0,
     "warnings" => 0
@@ -217,7 +216,6 @@ my %FallbackPrereqs = (
   "String::RewritePrefix" => 0,
   "Test::More" => "0.96",
   "autodie" => 0,
-  "experimental" => 0,
   "namespace::autoclean" => 0,
   "strict" => 0,
   "warnings" => 0
