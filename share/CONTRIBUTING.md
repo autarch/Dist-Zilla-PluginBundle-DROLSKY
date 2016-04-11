@@ -19,12 +19,17 @@ there to see if your issue or patch idea is mentioned.\n"
 The distribution is managed with
 [Dist::Zilla](https://metacpan.org/release/Dist-Zilla).
 
-However, you can still compile and test the code with the `Makefile.PL` in the
-repository:
+However, you can still compile and test the code with the `Makefile.PL` or
+`Build.PL` in the repository:
 
     perl Makefile.PL
     make
     make test
+
+or
+    perl Build.PL
+    ./Build
+    ./Build test
 
 As well as:
 
@@ -130,8 +135,8 @@ pull request page. If your build fails, please take a look at the output.'
 
 This distribution uses
 [Code::TidyAll](https://metacpan.org/release/Code-TidyAll) to enforce a
-uniform coding style. This is tested as part of the author testing. You can
-install and run tidyall by running the following commands:
+uniform coding style. This is tested as part of the author testing suite. You
+can install and run tidyall by running the following commands:
 
     $ cpanm Code::TidyAll
     $ tidyall -a
