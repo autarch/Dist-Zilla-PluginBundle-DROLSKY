@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.46     2016-04-11
+
 - Switched from [ExtraTests] to [RunExtraTests].
 
 - Made the TidyAll plugin in this bundle rewrite existing tidyall.ini files to
