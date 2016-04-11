@@ -40,8 +40,12 @@ severity = 3
 severity = 3
 
 [Variables::ProhibitPackageVars]
-add_packages = Carp
-add_packages = Test::Builder
+add_packages = Carp Test::Builder
+
+[-Subroutines::RequireFinalReturn]
+
+# This incorrectly thinks signatures are prototypes.
+[-Subroutines::ProhibitSubroutinePrototypes]
 
 [-ErrorHandling::RequireCarping]
 
@@ -55,3 +59,8 @@ add_packages = Test::Builder
 
 # "use v5.14" is more readable than "use 5.014"
 [-ValuesAndExpressions::ProhibitVersionStrings]
+
+# Explicitly returning undef is a _good_ thing in many cases, since it
+# prevents very common errors when using a sub in list context to construct a
+# hash and ending up with a missing value or key.
+[-Subroutines::ProhibitExplicitReturnUndef]
