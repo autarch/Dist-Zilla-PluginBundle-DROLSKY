@@ -351,7 +351,15 @@ sub _copy_files_from_build_plugin {
     [
         CopyFilesFromBuild => {
             copy => [
-                qw( Build.PL cpanfile LICENSE Makefile.PL ppport.h README.md )
+                qw(
+                    Build.PL
+                    CONTRIBUTING.md
+                    LICENSE
+                    Makefile.PL
+                    README.md
+                    cpanfile
+                    ppport.h
+                    )
             ],
         },
     ];
