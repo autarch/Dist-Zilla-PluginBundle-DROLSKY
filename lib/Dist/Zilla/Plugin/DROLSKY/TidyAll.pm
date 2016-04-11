@@ -218,8 +218,7 @@ sub _config_to_ini {
 
         for my $key ( $sorter->( keys %{ $tidyall->{$section} } ) ) {
             for my $val (
-                sort
-                ref $tidyall->{$section}{$key}
+                sort ref $tidyall->{$section}{$key}
                 ? @{ $tidyall->{$section}{$key} }
                 : $tidyall->{$section}{$key}
                 ) {
