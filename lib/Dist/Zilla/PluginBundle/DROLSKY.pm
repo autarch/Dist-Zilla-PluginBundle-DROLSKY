@@ -1,6 +1,6 @@
 package Dist::Zilla::PluginBundle::DROLSKY;
 
-use v5.20;
+use v5.10;
 
 use strict;
 use warnings;
@@ -69,8 +69,6 @@ use Path::Iterator::Rule;
 
 use Moose;
 
-use experimental qw( postderef signatures );
-
 with 'Dist::Zilla::Role::PluginBundle::Easy',
     'Dist::Zilla::Role::PluginBundle::PluginRemover',
     'Dist::Zilla::Role::PluginBundle::Config::Slicer';
@@ -120,14 +118,14 @@ has _exclude_filenames => (
     is      => 'ro',
     isa     => 'ArrayRef[Str]',
     lazy    => 1,
-    default => sub ($self) { $self->_exclude->{filenames} },
+    default => sub { $_[0]->_exclude->{filenames} },
 );
 
 has _exclude_match => (
     is      => 'ro',
     isa     => 'ArrayRef[Regexp]',
     lazy    => 1,
-    default => sub ($self) { $self->_exclude->{match} },
+    default => sub { $_[0]->_exclude->{match} },
 );
 
 has _allow_dirty => (
@@ -227,10 +225,13 @@ sub mvp_multivalue_args {
     return @array_params;
 }
 
-around BUILDARGS => sub ( $orig, $class, @args ) {
-    my $p = $class->$orig(@args);
+around BUILDARGS => sub {
+    my $orig  = shift;
+    my $class = shift;
 
-    my %args = ( $p->{payload}->%*, $p->%* );
+    my $p = $class->$orig(@_);
+
+    my %args = ( %{ $p->{payload} }, %{$p} );
 
     for my $key (@array_params) {
         if ( $args{$key} && !ref $args{$key} ) {
@@ -242,12 +243,15 @@ around BUILDARGS => sub ( $orig, $class, @args ) {
     return \%args;
 };
 
-sub configure ($self) {
-    $self->add_plugins( $self->_plugins->@* );
+sub configure {
+    my $self = shift;
+    $self->add_plugins( @{ $self->_plugins } );
     return;
 }
 
-sub _build_plugins ($self) {
+sub _build_plugins {
+    my $self = shift;
+
     return [
         $self->make_tool,
         $self->_gather_dir_plugin,
@@ -278,7 +282,9 @@ sub _build_plugins ($self) {
     ];
 }
 
-sub _gather_dir_plugin ($self) {
+sub _gather_dir_plugin {
+    my $self = shift;
+
     my $match = $self->_exclude_match;
     [
         'Git::GatherDir' => {
@@ -306,7 +312,9 @@ sub _basic_plugins {
     );
 }
 
-sub _authority_plugin ($self) {
+sub _authority_plugin {
+    my $self = shift;
+
     return [
         Authority => {
             authority  => 'cpan:' . $self->authority,
@@ -315,8 +323,10 @@ sub _authority_plugin ($self) {
     ];
 }
 
-sub _auto_prereqs_plugin ($self) {
-    [
+sub _auto_prereqs_plugin {
+    my $self = shift;
+
+    return [
         AutoPrereqs => {
             $self->_has_prereqs_skip
             ? ( skip => $self->prereqs_skip )
@@ -325,11 +335,13 @@ sub _auto_prereqs_plugin ($self) {
     ];
 }
 
-sub _build_exclude ($self) {
-    my @filenames = $self->_files_to_copy_from_build->@*;
+sub _build_exclude {
+    my $self = shift;
+
+    my @filenames = @{ $self->_files_to_copy_from_build };
 
     my @match;
-    for my $exclude ( $self->exclude_files->@* ) {
+    for my $exclude ( @{ $self->exclude_files } ) {
         if ( $exclude =~ m{^[\w\-\./]+$} ) {
             push @filenames, $exclude;
         }
@@ -344,8 +356,10 @@ sub _build_exclude ($self) {
     };
 }
 
-sub _copy_files_from_build_plugin ($self) {
-    [
+sub _copy_files_from_build_plugin {
+    my $self = shift;
+
+    return [
         CopyFilesFromBuild => {
             copy => $self->_files_to_copy_from_build,
         },
@@ -368,7 +382,9 @@ sub _build_files_to_copy_from_build {
     ];
 }
 
-sub _github_plugins ($self) {
+sub _github_plugins {
+    my $self = shift;
+
     return (
         [
             'GitHub::Meta' => {
@@ -380,12 +396,13 @@ sub _github_plugins ($self) {
     );
 }
 
-sub _build_allow_dirty ($self) {
+sub _build_allow_dirty {
+    my $self = shift;
 
     # Anything we auto-generate and check in could be dirty. We also allow any
     # other file which might get munged by this bundle to be dirty.
     return [
-        $self->_exclude_filenames->@*,
+        @{ $self->_exclude_filenames },
         qw(
             Changes
             tidyall.ini
@@ -393,7 +410,9 @@ sub _build_allow_dirty ($self) {
     ];
 }
 
-sub _meta_plugins ($self) {
+sub _meta_plugins {
+    my $self = shift;
+
     return (
         [ MetaResources           => $self->_meta_resources, ],
         [ 'MetaProvides::Package' => { meta_noindex => 1 } ],
@@ -406,7 +425,9 @@ sub _meta_plugins ($self) {
     );
 }
 
-sub _meta_resources ($self) {
+sub _meta_resources {
+    my $self = shift;
+
     my %resources;
 
     unless ( $self->use_github_homepage ) {
@@ -429,8 +450,10 @@ sub _meta_resources ($self) {
     return \%resources;
 }
 
-sub _next_release_plugin ($self) {
-    [
+sub _next_release_plugin {
+    my $self = shift;
+
+    return [
         NextRelease => {
                   format => '%-'
                 . $self->next_release_width
@@ -461,8 +484,8 @@ sub _explicit_prereq_plugins {
     );
 }
 
-sub _prompt_if_stale_plugin ($self) {
-    [
+sub _prompt_if_stale_plugin {
+    return [
         'PromptIfStale' => {
             phase             => 'release',
             check_all_plugins => 1,
@@ -482,7 +505,9 @@ sub _prompt_if_stale_plugin ($self) {
     ];
 }
 
-sub _pod_test_plugins ($self) {
+sub _pod_test_plugins {
+    my $self = shift;
+
     return (
         [
             'Test::Pod::Coverage::Configurable' => {
@@ -518,9 +543,11 @@ sub _pod_test_plugins ($self) {
     );
 }
 
-sub _all_stopwords ($self) {
+sub _all_stopwords {
+    my $self = shift;
+
     my @stopwords = $self->_default_stopwords;
-    push @stopwords, $self->stopwords->@*;
+    push @stopwords, @{ $self->stopwords };
 
     if ( $self->_has_stopwords_file ) {
         open my $fh, '<:encoding(UTF-8)', $self->stopwords_file;
@@ -591,8 +618,10 @@ sub _readme_md_plugin {
     ];
 }
 
-sub _contributing_md_plugin ($self) {
-    [
+sub _contributing_md_plugin {
+    my $self = shift;
+
+    return [
         'GenerateFile::FromShareDir' => 'generate CONTRIBUTING' => {
             -dist     => 'Dist-Zilla-PluginBundle-DROLSKY',
             -filename => 'CONTRIBUTING.md',
@@ -601,7 +630,9 @@ sub _contributing_md_plugin ($self) {
     ];
 }
 
-sub _maybe_ppport_plugin ($self) {
+sub _maybe_ppport_plugin {
+    my $self = shift;
+
     return unless $self->_has_xs;
     return 'PPPort';
 }
@@ -615,7 +646,8 @@ sub _release_check_plugins {
     );
 }
 
-sub _git_plugins ($self) {
+sub _git_plugins {
+    my $self = shift;
 
     # These are mostly from @Git, except for BumpVersionAfterRelease. That
     # one's in here because the order of all these plugins is
