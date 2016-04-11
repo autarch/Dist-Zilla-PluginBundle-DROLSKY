@@ -209,6 +209,14 @@ has _plugins => (
     builder  => '_build_plugins',
 );
 
+has _files_to_copy_from_build => (
+    is       => 'ro',
+    isa      => 'ArrayRef[Str]',
+    init_arg => undef,
+    lazy     => 1,
+    builder  => '_build_files_to_copy_from_build',
+);
+
 my @array_params = grep { !/^_/ } map { $_->name }
     grep {
            $_->has_type_constraint
@@ -318,18 +326,7 @@ sub _auto_prereqs_plugin ($self) {
 }
 
 sub _build_exclude ($self) {
-
-    # These are files which are generated as part of the build process and
-    # then copied back into the git repo and checked in.
-    my @filenames = qw(
-        Build.PL
-        CONTRIBUTING.md
-        cpanfile
-        LICENSE
-        Makefile.PL
-        ppport.h
-        README.md
-    );
+    my @filenames = $self->_files_to_copy_from_build->@*;
 
     my @match;
     for my $exclude ( $self->exclude_files->@* ) {
@@ -347,21 +344,27 @@ sub _build_exclude ($self) {
     };
 }
 
-sub _copy_files_from_build_plugin {
+sub _copy_files_from_build_plugin ($self) {
     [
         CopyFilesFromBuild => {
-            copy => [
-                qw(
-                    Build.PL
-                    CONTRIBUTING.md
-                    LICENSE
-                    Makefile.PL
-                    README.md
-                    cpanfile
-                    ppport.h
-                    )
-            ],
+            copy => $self->_files_to_copy_from_build,
         },
+    ];
+}
+
+# These are files which are generated as part of the build process and then
+# copied back into the git repo and checked in.
+sub _build_files_to_copy_from_build {
+    [
+        qw(
+            Build.PL
+            CONTRIBUTING.md
+            LICENSE
+            Makefile.PL
+            README.md
+            cpanfile
+            ppport.h
+            )
     ];
 }
 
