@@ -1,6 +1,6 @@
 package Dist::Zilla::PluginBundle::DROLSKY;
 
-use v5.10;
+use v5.22;
 
 use strict;
 use warnings;
@@ -63,8 +63,14 @@ use Dist::Zilla::Plugin::Test::ReportPrereqs;
 use Dist::Zilla::Plugin::Test::Synopsis;
 use Dist::Zilla::Plugin::Test::TidyAll;
 use Dist::Zilla::Plugin::Test::Version;
+use List::Gather;
+use Parse::PMFile;
+use Path::Iterator::Rule;
 
 use Moose;
+
+use feature qw( postderef signatures );
+no warnings qw( experimental::postderef experimental::signatures );
 
 with 'Dist::Zilla::Role::PluginBundle::Easy',
     'Dist::Zilla::Role::PluginBundle::PluginRemover',
@@ -88,12 +94,6 @@ has authority => (
     default => 'DROLSKY',
 );
 
-has exclude_files => (
-    is       => 'ro',
-    isa      => 'ArrayRef[Str]',
-    required => 1,
-);
-
 has prereqs_skip => (
     traits   => ['Array'],
     is       => 'ro',
@@ -102,6 +102,47 @@ has prereqs_skip => (
     handles  => {
         _has_prereqs_skip => 'count',
     },
+);
+
+has exclude_files => (
+    is       => 'ro',
+    isa      => 'ArrayRef[Str]',
+    required => 1,
+);
+
+has _exclude => (
+    is      => 'ro',
+    isa     => 'HashRef[ArrayRef]',
+    lazy    => 1,
+    builder => '_build_exclude',
+);
+
+has _exclude_filenames => (
+    is      => 'ro',
+    isa     => 'ArrayRef[Str]',
+    lazy    => 1,
+    default => sub ($self) { $self->_exclude->{filenames} },
+);
+
+has _exclude_match => (
+    is      => 'ro',
+    isa     => 'ArrayRef[Regexp]',
+    lazy    => 1,
+    default => sub ($self) { $self->_exclude->{match} },
+);
+
+has _allow_dirty => (
+    is      => 'ro',
+    isa     => 'ArrayRef[Str]',
+    lazy    => 1,
+    builder => '_build_allow_dirty',
+);
+
+has _has_xs => (
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub { !!( scalar glob('*.xs') ) },
 );
 
 has pod_coverage_class => (
@@ -179,12 +220,109 @@ sub mvp_multivalue_args {
     return @array_params;
 }
 
-sub _build_plugins {
-    my $self = shift;
+around BUILDARGS => sub ( $orig, $class, @args ) {
+    my $p = $class->$orig(@args);
+
+    my %args = ( $p->{payload}->%*, $p->%* );
+
+    for my $key (@array_params) {
+        if ( $args{$key} && !ref $args{$key} ) {
+            $args{$key} = [ delete $args{$key} ];
+        }
+        $args{$key} //= [];
+    }
+
+    return \%args;
+};
+
+sub configure ($self) {
+    $self->add_plugins( $self->_plugins->@* );
+    return;
+}
+
+sub _build_plugins ($self) {
+    return [
+        $self->make_tool,
+        $self->_gather_dir_plugin,
+        $self->_basic_plugins,
+        $self->_authority_plugin,
+        $self->_auto_prereqs_plugin,
+        $self->_copy_files_from_build_plugin,
+        $self->_github_plugins,
+        $self->_meta_plugins,
+        $self->_next_release_plugin,
+        $self->_explicit_prereq_plugins,
+        $self->_prompt_if_stale_plugin,
+        $self->_pod_test_plugins,
+        $self->_extra_test_plugins,
+        $self->_contributors_plugins,
+        $self->_pod_weaver_plugin,
+
+        # README.md generation needs to come after pod weaving
+        $self->_readme_md_plugin,
+        $self->_contributing_md_plugin,
+        'InstallGuide',
+        'CPANFile',
+        $self->_maybe_ppport_plugin,
+        'DROLSKY::License',
+        $self->_release_check_plugins,
+        'DROLSKY::TidyAll',
+        $self->_git_plugins,
+    ];
+}
+
+sub _gather_dir_plugin ($self) {
+    my $match = $self->_exclude_match;
+    [
+        'Git::GatherDir' => {
+            exclude_filename => $self->_exclude_filenames,
+            ( @{$match} ? ( exclude_match => $match ) : () ),
+        },
+    ];
+}
+
+sub _basic_plugins {
+
+    # These are a subset of the @Basic bundle except for CheckVersionIncrement
+    # and DROLSKY::VersionProvider.
+    qw(
+        ManifestSkip
+        License
+        ExecDir
+        ShareDir
+        Manifest
+        CheckVersionIncrement
+        TestRelease
+        ConfirmRelease
+        UploadToCPAN
+        DROLSKY::VersionProvider
+    );
+}
+
+sub _authority_plugin ($self) {
+    return [
+        Authority => {
+            authority  => 'cpan:' . $self->authority,
+            do_munging => 0,
+        },
+    ];
+}
+
+sub _auto_prereqs_plugin ($self) {
+    [
+        AutoPrereqs => {
+            $self->_has_prereqs_skip
+            ? ( skip => $self->prereqs_skip )
+            : ()
+        },
+    ];
+}
+
+sub _build_exclude ($self) {
 
     # These are files which are generated as part of the build process and
     # then copied back into the git repo and checked in.
-    my %exclude_filename = map { $_ => 1 } qw(
+    my @filenames = qw(
         Build.PL
         CONTRIBUTING.md
         cpanfile
@@ -194,74 +332,105 @@ sub _build_plugins {
         README.md
     );
 
-    my @exclude_match;
-    for my $exclude ( @{ $self->exclude_files } ) {
+    my @match;
+    for my $exclude ( $self->exclude_files->@* ) {
         if ( $exclude =~ m{^[\w\-\./]+$} ) {
-            $exclude_filename{$exclude} = 1;
+            push @filenames, $exclude;
         }
         else {
-            push @exclude_match, $exclude;
+            push @match, $exclude;
         }
     }
 
-    # Anything we auto-generate and check in could be dirty. We also allow any
-    # other file which might get munged by this bundle to be dirty.
-    my @allow_dirty = (
-        keys %exclude_filename,
-        qw(
-            Changes
-            tidyall.ini
-            )
-    );
+    return {
+        filenames => \@filenames,
+        match     => \@match,
+    };
+}
 
-    my $has_xs = !!( scalar glob('*.xs') );
+sub _copy_files_from_build_plugin {
+    [
+        CopyFilesFromBuild => {
+            copy => [
+                qw( Build.PL cpanfile LICENSE Makefile.PL ppport.h README.md )
+            ],
+        },
+    ];
+}
 
-    my @plugins = (
-        $self->make_tool,
-        [
-            Authority => {
-                authority  => 'cpan:' . $self->authority,
-                do_munging => 0,
-            },
-        ],
-        [
-            AutoPrereqs => {
-                $self->_has_prereqs_skip
-                ? ( skip => $self->prereqs_skip )
-                : ()
-            },
-        ],
-        [
-            CopyFilesFromBuild => {
-                copy => [
-                    qw( Build.PL cpanfile LICENSE Makefile.PL ppport.h README.md )
-                ],
-            },
-        ],
-        [
-            'Git::GatherDir' => {
-                exclude_filename => [ keys %exclude_filename ],
-                (
-                    @exclude_match ? ( exclude_match => \@exclude_match ) : ()
-                ),
-            },
-        ],
+sub _github_plugins ($self) {
+    return (
         [
             'GitHub::Meta' => {
                 bugs     => $self->use_github_issues,
                 homepage => $self->use_github_homepage,
             },
         ],
-        [ 'GitHub::Update'        => { metacpan     => 1 }, ],
+        [ 'GitHub::Update' => { metacpan => 1 } ],
+    );
+}
+
+sub _build_allow_dirty ($self) {
+
+    # Anything we auto-generate and check in could be dirty. We also allow any
+    # other file which might get munged by this bundle to be dirty.
+    return [
+        $self->_exclude_filenames->@*,
+        qw(
+            Changes
+            tidyall.ini
+            )
+    ];
+}
+
+sub _meta_plugins ($self) {
+    return (
         [ MetaResources           => $self->_meta_resources, ],
-        [ 'MetaProvides::Package' => { meta_noindex => 1 }, ],
-        [
-            NextRelease => {
-                      format => '%-'
-                    . $self->next_release_width
-                    . 'v %{yyyy-MM-dd}d%{ (TRIAL RELEASE)}T'
-            },
-        ],
+        [ 'MetaProvides::Package' => { meta_noindex => 1 } ],
+        qw(
+            MetaYAML
+            Meta::Contributors
+            MetaConfig
+            MetaJSON
+            ),
+    );
+}
+
+sub _meta_resources ($self) {
+    my %resources;
+
+    unless ( $self->use_github_homepage ) {
+        $resources{homepage}
+            = sprintf( 'http://metacpan.org/release/%s', $self->dist );
+    }
+
+    unless ( $self->use_github_issues ) {
+        %resources = (
+            %resources,
+            'bugtracker.web' => sprintf(
+                'http://rt.cpan.org/Public/Dist/Display.html?Name=%s',
+                $self->dist
+            ),
+            'bugtracker.mailto' =>
+                sprintf( 'bug-%s@rt.cpan.org', lc $self->dist ),
+        );
+    }
+
+    return \%resources;
+}
+
+sub _next_release_plugin ($self) {
+    [
+        NextRelease => {
+                  format => '%-'
+                . $self->next_release_width
+                . 'v %{yyyy-MM-dd}d%{ (TRIAL RELEASE)}T'
+        },
+    ];
+}
+
+sub _explicit_prereq_plugins {
+    return (
         [
             'Prereqs' => 'Test::More with subtest' => {
                 -phase       => 'test',
@@ -279,22 +448,32 @@ sub _build_plugins {
                 'Perl::Tidy'   => '20140711',
             }
         ],
+    );
+}
 
-        [
-            'PromptIfStale' => {
-                phase             => 'release',
-                check_all_plugins => 1,
-                check_all_prereqs => 1,
-                skip              => [
-                    'Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent',
-                    'Dist::Zilla::Plugin::DROLSKY::Contributors',
-                    'Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch',
-                    'Dist::Zilla::Plugin::DROLSKY::License',
-                    'Dist::Zilla::Plugin::DROLSKY::TidyAll',
-                    'Dist::Zilla::Plugin::DROLSKY::VersionProvider',
-                ],
-            }
-        ],
+sub _prompt_if_stale_plugin ($self) {
+    [
+        'PromptIfStale' => {
+            phase             => 'release',
+            check_all_plugins => 1,
+            check_all_prereqs => 1,
+            skip              => [
+                qw(
+                    Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent
+                    Dist::Zilla::Plugin::DROLSKY::Contributors
+                    Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
+                    Dist::Zilla::Plugin::DROLSKY::License
+                    Dist::Zilla::Plugin::DROLSKY::TidyAll
+                    Dist::Zilla::Plugin::DROLSKY::VersionProvider
+                    Pod::Weaver::PluginBundle::DROLSKY
+                    )
+            ],
+        }
+    ];
+}
+
+sub _pod_test_plugins ($self) {
+    return (
         [
             'Test::Pod::Coverage::Configurable' => {
                 (
@@ -317,134 +496,21 @@ sub _build_plugins {
         [
             'Test::PodSpelling' => { stopwords => $self->_all_stopwords },
         ],
-        [ 'Test::ReportPrereqs' => { verify_prereqs => 1 }, ],
-        [ 'Test::Version'       => { is_strict      => 1 }, ],
-
-        # mostly from @Basic
-        qw(
-            ManifestSkip
-            MetaYAML
-            License
-            ExecDir
-            ShareDir
-            Manifest
-            CheckVersionIncrement
-            TestRelease
-            ConfirmRelease
-            UploadToCPAN
-            ),
-        [
-            'GenerateFile::FromShareDir' => 'generate CONTRIBUTING' => {
-                -dist     => 'Dist-Zilla-PluginBundle-DROLSKY',
-                -filename => 'CONTRIBUTING.md',
-                has_xs    => $has_xs,
-            },
-        ],
-        qw(
-            CheckPrereqsIndexed
-            CPANFile
-            DROLSKY::CheckChangesHasContent
-            DROLSKY::Contributors
-            DROLSKY::License
-            DROLSKY::TidyAll
-            DROLSKY::VersionProvider
-            DROLSKY::Git::CheckFor::CorrectBranch
-            Git::CheckFor::MergeConflicts
-            Git::Contributors
-            InstallGuide
-            Meta::Contributors
-            MetaConfig
-            MetaJSON
-            ),
-
-        [
-            SurgicalPodWeaver => {
-                config_plugin => '@DROLSKY',
-            },
-        ],
-
-        ( $has_xs ? 'PPPort' : () ),
-
-        # This needs to come after pod weaving
-        [
-            'ReadmeAnyFromPod' => 'README.md in build' => {
-                type     => 'markdown',
-                filename => 'README.md',
-                location => 'build',
-                phase    => 'build',
-            },
-        ],
-
-        qw(
-            RunExtraTests
-            MojibakeTests
-            PodSyntaxTests
-            Test::CleanNamespaces
-            Test::CPAN::Changes
-            Test::CPAN::Meta::JSON
-            Test::EOL
-            Test::NoTabs
-            Test::Portability
-            Test::Synopsis
-            Test::TidyAll
-            ),
-        [ 'Test::Compile' => { xt_mode => 1 } ],
-
-        # from @Git - note that the order here is important!
-        [ 'Git::Check' => { allow_dirty => \@allow_dirty }, ],
-        [
-            'Git::Commit' => 'commit generated files' => {
-                allow_dirty => \@allow_dirty,
-            },
-        ],
-        qw(
-            Git::Tag
-            Git::Push
-            ),
-
-        'BumpVersionAfterRelease',
-        [
-            'Git::Commit' => 'commit version bump' => {
-                allow_dirty_match => ['.+'],
-                commit_msg        => 'Bump version after release'
-            },
-        ],
-        [ 'Git::Push' => 'push version bump' ],
+        'PodSyntaxTests',
+        (
+            $ENV{TRAVIS} ? () : (
+                qw(
+                    Test::Pod::LinkCheck
+                    Test::Pod::No404s
+                    )
+            )
+        ),
     );
-
-    unless ( $ENV{TRAVIS} ) {
-        push @plugins, qw(
-            Test::Pod::LinkCheck
-            Test::Pod::No404s
-        );
-    }
-
-    return \@plugins;
 }
 
-around BUILDARGS => sub {
-    my $orig  = shift;
-    my $class = shift;
-
-    my $p = $class->$orig(@_);
-
-    my %args = ( %{ $p->{payload} }, %{$p} );
-
-    for my $key (@array_params) {
-        if ( $args{$key} && !ref $args{$key} ) {
-            $args{$key} = [ delete $args{$key} ];
-        }
-        $args{$key} //= [];
-    }
-
-    return \%args;
-};
-
-sub _all_stopwords {
-    my $self = shift;
-
+sub _all_stopwords ($self) {
     my @stopwords = $self->_default_stopwords;
-    push @stopwords, @{ $self->stopwords };
+    push @stopwords, $self->stopwords->@*;
 
     if ( $self->_has_stopwords_file ) {
         open my $fh, '<:encoding(UTF-8)', $self->stopwords_file;
@@ -469,37 +535,115 @@ sub _default_stopwords {
     );
 }
 
-sub configure {
-    my $self = shift;
-
-    $self->add_plugins( @{ $self->_plugins } );
-
-    return;
+sub _contributors_plugins {
+    qw(
+        DROLSKY::Contributors
+        Git::Contributors
+    );
 }
 
-sub _meta_resources {
-    my $self = shift;
-
-    my %resources;
-
-    unless ( $self->use_github_homepage ) {
-        $resources{homepage}
-            = sprintf( 'http://metacpan.org/release/%s', $self->dist );
-    }
-
-    unless ( $self->use_github_issues ) {
-        %resources = (
-            %resources,
-            'bugtracker.web' => sprintf(
-                'http://rt.cpan.org/Public/Dist/Display.html?Name=%s',
-                $self->dist
+sub _extra_test_plugins {
+    return (
+        qw(
+            RunExtraTests
+            MojibakeTests
+            Test::CleanNamespaces
+            Test::CPAN::Changes
+            Test::CPAN::Meta::JSON
+            Test::EOL
+            Test::NoTabs
+            Test::Portability
+            Test::Synopsis
+            Test::TidyAll
             ),
-            'bugtracker.mailto' =>
-                sprintf( 'bug-%s@rt.cpan.org', lc $self->dist ),
-        );
-    }
+        [ 'Test::Compile'       => { xt_mode        => 1 } ],
+        [ 'Test::ReportPrereqs' => { verify_prereqs => 1 } ],
+        [ 'Test::Version'       => { is_strict      => 1 } ],
+    );
+}
 
-    return \%resources;
+sub _pod_weaver_plugin {
+    [
+        SurgicalPodWeaver => {
+            config_plugin => '@DROLSKY',
+        },
+    ];
+}
+
+sub _readme_md_plugin {
+    [
+        'ReadmeAnyFromPod' => 'README.md in build' => {
+            type     => 'markdown',
+            filename => 'README.md',
+            location => 'build',
+            phase    => 'build',
+        },
+    ];
+}
+
+sub _contributing_md_plugin ($self) {
+    [
+        'GenerateFile::FromShareDir' => 'generate CONTRIBUTING' => {
+            -dist     => 'Dist-Zilla-PluginBundle-DROLSKY',
+            -filename => 'CONTRIBUTING.md',
+            has_xs    => $self->_has_xs,
+        },
+    ];
+}
+
+sub _maybe_ppport_plugin ($self) {
+    return unless $self->_has_xs;
+    return 'PPPort';
+}
+
+sub _release_check_plugins {
+    qw(
+        CheckPrereqsIndexed
+        DROLSKY::CheckChangesHasContent
+        DROLSKY::Git::CheckFor::CorrectBranch
+        Git::CheckFor::MergeConflicts
+    );
+}
+
+sub _git_plugins ($self) {
+
+    # These are mostly from @Git, except for BumpVersionAfterRelease. That
+    # one's in here because the order of all these plugins is
+    # important. We want to check the release, then we ...
+
+    return (
+        # Check that the working directory does not contain any surprising uncommitted
+        # changes (except for things we expect to be dirty like the README.md or
+        # Changes).
+        [ 'Git::Check' => { allow_dirty => $self->_allow_dirty }, ],
+
+        # Commit all the dirty files before the release.
+        [
+            'Git::Commit' => 'commit generated files' => {
+                allow_dirty => $self->_allow_dirty,
+            },
+        ],
+
+        # Tag the release and push both the above commit and the tag.
+        qw(
+            Git::Tag
+            Git::Push
+            ),
+
+        # Bump all module versions.
+        'BumpVersionAfterRelease',
+
+        # Make another commit with just the version bump.
+        [
+            'Git::Commit' => 'commit version bump' => {
+                allow_dirty_match => ['.+'],
+                commit_msg        => 'Bump version after release'
+            },
+        ],
+
+        # Push the version bump commit.
+        [ 'Git::Push' => 'push version bump' ],
+    );
 }
 
 __PACKAGE__->meta->make_immutable;
