@@ -69,8 +69,7 @@ use Path::Iterator::Rule;
 
 use Moose;
 
-use feature qw( postderef signatures );
-no warnings qw( experimental::postderef experimental::signatures );
+use experimental qw( postderef signatures );
 
 with 'Dist::Zilla::Role::PluginBundle::Easy',
     'Dist::Zilla::Role::PluginBundle::PluginRemover',
