@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Only include the DONATIONS pod section for distros where I am the copyright
+  holder.
+
+
 0.47     2016-04-11
 
 - Revert changes in 0.46 that required a recent Perl. This makes testing on

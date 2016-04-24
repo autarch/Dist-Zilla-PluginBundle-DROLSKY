@@ -48,6 +48,9 @@ sub configure {
     my $licence_filename
         = $licence_plugin ? $licence_plugin->filename : 'LICENCE';
 
+    my $include_donations
+        = $podweaver_plugin->zilla->copyright_holder =~ /Rolsky/;
+
     return (
         '@CorePrep',
         '-SingleEncoding',
@@ -114,13 +117,15 @@ SUPPORT
             },
         ],
 
-        [
-            'GenerateSection' => 'generate DONATIONS' => {
-                title            => 'DONATIONS',
-                main_module_only => 1,
-                is_template      => 0,
-                text             => [
-                    <<'DONATIONS',
+        (
+            $include_donations
+            ? [
+                'GenerateSection' => 'generate DONATIONS' => {
+                    title            => 'DONATIONS',
+                    main_module_only => 1,
+                    is_template      => 0,
+                    text             => [
+                        <<'DONATIONS',
 If you'd like to thank me for the work I've done on this module, please
 consider making a "donation" to me via PayPal. I spend a lot of free time
 creating free software, and would appreciate any support you'd care to offer.
@@ -136,9 +141,11 @@ on free software full time (let's all have a chuckle at that together).
 To donate, log into PayPal and send money to autarch@urth.org, or use the
 button at L<http://www.urth.org/~autarch/fs-donation.html>.
 DONATIONS
+                    ]
+                },
                 ]
-            },
-        ],
+            : ()
+        ),
 
         'Authors',
         [ 'Contributors' => { ':version' => '0.008' } ],
