@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.48     2016-04-24
+
 - Only include the DONATIONS pod section for distros where I am the copyright
   holder.
 
