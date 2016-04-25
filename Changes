@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Always make the Test::TidyAll plugin verbose. There's no downside to seeing
+  diffs on tidy failures.
+
+
 0.49     2016-04-24
 
 - When adding Perl::Critic and Perl::Tidy to development prereqs, ask for the

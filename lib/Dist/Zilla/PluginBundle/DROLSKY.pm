@@ -591,8 +591,8 @@ sub _extra_test_plugins {
             Test::NoTabs
             Test::Portability
             Test::Synopsis
-            Test::TidyAll
             ),
+        [ 'Test::TidyAll'       => { verbose        => 1 } ],
         [ 'Test::Compile'       => { xt_mode        => 1 } ],
         [ 'Test::ReportPrereqs' => { verify_prereqs => 1 } ],
         [ 'Test::Version'       => { is_strict      => 1 } ],
