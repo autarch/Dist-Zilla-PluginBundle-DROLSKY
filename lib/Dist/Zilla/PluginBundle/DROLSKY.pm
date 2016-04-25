@@ -477,8 +477,8 @@ sub _explicit_prereq_plugins {
             'Prereqs' => 'Modules for use with tidyall' => {
                 -phase         => 'develop',
                 -type          => 'requires',
-                'Perl::Critic' => '1.123',
-                'Perl::Tidy'   => '20140711',
+                'Perl::Critic' => '1.126',
+                'Perl::Tidy'   => '20160302',
             }
         ],
     );
