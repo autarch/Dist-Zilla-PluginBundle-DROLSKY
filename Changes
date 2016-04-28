@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.50     2016-04-25
+
 - Always make the Test::TidyAll plugin verbose. There's no downside to seeing
   diffs on tidy failures.
 
