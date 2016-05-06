@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.52     2016-05-06
+
 - Set program-extensions in perlcriticrc
 
 
