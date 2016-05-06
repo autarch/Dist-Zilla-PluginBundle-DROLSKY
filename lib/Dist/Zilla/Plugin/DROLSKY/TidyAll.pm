@@ -145,12 +145,10 @@ sub _new_tidyall_ini {
         'PerlTidy' => {
             select => [$perl_select],
             ignore => [ $self->_default_perl_ignore ],
-            argv   => '--profile=$ROOT/perltidyrc',
         },
         'PerlCritic' => {
             select => [$perl_select],
             ignore => [ $self->_default_perl_ignore ],
-            argv   => '--profile=$ROOT/perltidyrc',
         },
     );
 
@@ -205,6 +203,15 @@ sub _config_to_ini {
         my $suffix = 'non-auto-generated xt';
         for my $plugin (qw( PerlCritic PerlTidy )) {
             $tidyall->{ $plugin . q{ } . $suffix }{select} = \@xt_files;
+        }
+    }
+
+    for my $section ( keys %{$tidyall} ) {
+        if ( $section =~ /PerlTidy/ ) {
+            $tidyall->{$section}{argv} = '--profile=$ROOT/perltidyrc';
+        }
+        elsif ( $section =~ /PerlCritic/ ) {
+            $tidyall->{$section}{argv} = '--profile=$ROOT/perlcriticrc';
         }
     }
 
