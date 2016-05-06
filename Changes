@@ -1,9 +1,12 @@
 {{$NEXT}}
 
+- Set program-extensions in perlcriticrc
+
+
+0.51     2016-05-06
+
 - Make sure we set argv for all PerlCritic & PerlTidy sections when munging
   tidyall.ini.
-
-- Set program-extensions in perlcriticrc
 
 
 0.50     2016-04-25
