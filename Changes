@@ -1,8 +1,11 @@
 {{$NEXT}}
 
+- Add psgi to program-extensions in perlcriticrc.
+
+
 0.52     2016-05-06
 
-- Set program-extensions in perlcriticrc
+- Set program-extensions in perlcriticrc.
 
 
 0.51     2016-05-06
