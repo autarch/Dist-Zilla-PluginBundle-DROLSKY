@@ -139,7 +139,10 @@ has _has_xs => (
     is      => 'ro',
     isa     => 'Bool',
     lazy    => 1,
-    default => sub { !!( scalar glob('*.xs') ) },
+    default => sub {
+        my $rule = Path::Iterator::Rule->new;
+        return scalar $rule->file->name(qr/\.xs$/)->all('.') ? 1 : 0;
+    },
 );
 
 has pod_coverage_class => (

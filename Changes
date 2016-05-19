@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Fix check for XS to check outside of the top-level dir.
+
+
 0.53     2016-05-08
 
 - Add psgi to program-extensions in perlcriticrc.
