@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.54     2016-05-18
+
 - Fix check for XS to check outside of the top-level dir.
 
 
