@@ -349,7 +349,7 @@ sub _build_exclude {
             push @filenames, $exclude;
         }
         else {
-            push @match, $exclude;
+            push @match, qr/$exclude/;
         }
     }
 
