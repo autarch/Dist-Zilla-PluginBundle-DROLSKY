@@ -478,10 +478,12 @@ sub _explicit_prereq_plugins {
         # Because Code::TidyAll does not depend on them
         [
             'Prereqs' => 'Modules for use with tidyall' => {
-                -phase         => 'develop',
-                -type          => 'requires',
-                'Perl::Critic' => '1.126',
-                'Perl::Tidy'   => '20160302',
+                -phase                              => 'develop',
+                -type                               => 'requires',
+                'Code::TidyAll::Plugin::Test::Vars' => '0.02',
+                'Perl::Critic'                      => '1.126',
+                'Perl::Tidy'                        => '20160302',
+                'Test::Vars'                        => '0.009',
             }
         ],
     );

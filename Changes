@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Add the Test::Vars tidyall plugin to my default tidyall.ini.
+
+
 0.55     2016-05-18
 
 - Fix handling of regexes in "exclude" config values.

@@ -151,6 +151,10 @@ sub _new_tidyall_ini {
             select => [$perl_select],
             ignore => [ $self->_default_perl_ignore ],
         },
+        'Test::Vars' => {
+            select => [$perl_select],
+            ignore => [ $self->_default_perl_ignore ],
+        },
     );
 
     return $self->_config_to_ini( \%tidyall );
@@ -162,7 +166,8 @@ sub _munged_tidyall_ini {
     my $tidyall
         = Code::TidyAll::Config::INI::Reader->read_file('tidyall.ini');
 
-    my %has_default_ignore = map { $_ => 1 } qw( PerlTidy PerlCritic );
+    my %has_default_ignore
+        = map { $_ => 1 } qw( PerlTidy PerlCritic Test::Vars );
     for my $section ( grep { $has_default_ignore{$_} } sort keys %{$tidyall} )
     {
         $tidyall->{$section}{ignore} = [
