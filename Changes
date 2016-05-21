@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.56     2016-05-21
+
 - Add the Test::Vars tidyall plugin to my default tidyall.ini.
 
 
