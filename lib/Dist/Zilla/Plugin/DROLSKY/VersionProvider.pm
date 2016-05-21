@@ -23,7 +23,7 @@ sub provide_version {
     $self->log_fatal("Cannot find $file to get \$VERSION from")
         unless -e $file;
 
-    my ( $info, $e ) = Parse::PMFile->new->parse($file);
+    my ( $info, undef ) = Parse::PMFile->new->parse($file);
     ( my $package = $self->zilla->name ) =~ s/-/::/g;
     unless ( $info->{$package}{version} ) {
         $self->log_fatal(
