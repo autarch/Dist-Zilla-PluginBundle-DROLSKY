@@ -492,7 +492,7 @@ sub _explicit_prereq_plugins {
 sub _prompt_if_stale_plugin {
     return [
         'PromptIfStale' => {
-            phase             => 'release',
+            phase             => 'build',
             check_all_plugins => 1,
             check_all_prereqs => 1,
             skip              => [
