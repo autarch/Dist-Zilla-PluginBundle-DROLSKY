@@ -7,7 +7,7 @@ use warnings;
 use autodie;
 use namespace::autoclean;
 
-our $VERSION = '0.57';
+our $VERSION = '0.58';
 
 use Moose;
 
