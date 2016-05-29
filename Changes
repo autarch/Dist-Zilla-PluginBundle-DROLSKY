@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Set the minimum_perl for the Test::Tidyall plugin to 5.10 since Test::Vars
+  requires that version.
+
+
 0.57     2016-05-28
 
 - Move stale module check to build phase.

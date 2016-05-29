@@ -61,7 +61,7 @@ use Dist::Zilla::Plugin::Test::PodSpelling;
 use Dist::Zilla::Plugin::Test::Portability;
 use Dist::Zilla::Plugin::Test::ReportPrereqs;
 use Dist::Zilla::Plugin::Test::Synopsis;
-use Dist::Zilla::Plugin::Test::TidyAll;
+use Dist::Zilla::Plugin::Test::TidyAll 0.03;
 use Dist::Zilla::Plugin::Test::Version;
 use List::Gather;
 use Parse::PMFile;
@@ -597,7 +597,14 @@ sub _extra_test_plugins {
             Test::Portability
             Test::Synopsis
             ),
-        [ 'Test::TidyAll'       => { verbose        => 1 } ],
+        [
+            'Test::TidyAll' => {
+                verbose => 1,
+
+                # Test::Vars requires this version
+                minimum_perl => '5.010',
+            }
+        ],
         [ 'Test::Compile'       => { xt_mode        => 1 } ],
         [ 'Test::ReportPrereqs' => { verify_prereqs => 1 } ],
         [ 'Test::Version'       => { is_strict      => 1 } ],
