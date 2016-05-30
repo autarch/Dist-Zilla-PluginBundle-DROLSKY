@@ -1,6 +1,6 @@
 requires "CPAN::Changes" => "0";
 requires "Code::TidyAll::Config::INI::Reader" => "0.44";
-requires "Dist::Zilla" => "0";
+requires "Dist::Zilla" => "6.0";
 requires "Dist::Zilla::Plugin::Authority" => "0";
 requires "Dist::Zilla::Plugin::AutoPrereqs" => "0";
 requires "Dist::Zilla::Plugin::BumpVersionAfterRelease" => "0";
