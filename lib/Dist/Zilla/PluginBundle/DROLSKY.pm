@@ -9,7 +9,7 @@ use namespace::autoclean;
 
 our $VERSION = '0.59';
 
-use Dist::Zilla;
+use Dist::Zilla 6.0;
 
 # For the benefit of AutoPrereqs
 use Dist::Zilla::Plugin::Authority;

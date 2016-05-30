@@ -22,7 +22,7 @@ sub before_release {
 
     $self->zilla->ensure_built_in;
 
-    my $file = $self->zilla->built_in->file('Changes');
+    my $file = $self->zilla->built_in->child('Changes');
 
     if ( !-e $file ) {
         $self->log_fatal('No Changes file found');

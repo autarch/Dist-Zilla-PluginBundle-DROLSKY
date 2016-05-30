@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+- Make the generated tidyall.ini only use Test::Vars on modules. It ends up
+  running code that it checks, so if you run it on .t files it actually runs
+  them, causing all sorts of problems with the tidyall tests.
+
+
 0.58     2016-05-29
 
 - Set the minimum_perl for the Test::Tidyall plugin to 5.10 since Test::Vars

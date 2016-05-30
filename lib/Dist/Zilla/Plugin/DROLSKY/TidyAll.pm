@@ -152,7 +152,7 @@ sub _new_tidyall_ini {
             ignore => [ $self->_default_perl_ignore ],
         },
         'Test::Vars' => {
-            select => [$perl_select],
+            select => ['**/*.pm'],
             ignore => [ $self->_default_perl_ignore ],
         },
     );
