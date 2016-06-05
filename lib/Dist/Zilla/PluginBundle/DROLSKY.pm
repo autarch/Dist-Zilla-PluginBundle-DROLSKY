@@ -7,7 +7,7 @@ use warnings;
 use autodie;
 use namespace::autoclean;
 
-our $VERSION = '0.60';
+our $VERSION = '0.61';
 
 use Dist::Zilla 6.0;
 
