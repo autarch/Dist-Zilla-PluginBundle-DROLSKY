@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.61     2016-06-05
+
 - Don't include GitHub::Meta when running under Travis.
 
 
