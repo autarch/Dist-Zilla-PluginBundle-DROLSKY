@@ -386,6 +386,8 @@ sub _build_files_to_copy_from_build {
 }
 
 sub _github_plugins {
+    return if $ENV{TRAVIS};
+
     my $self = shift;
 
     return (

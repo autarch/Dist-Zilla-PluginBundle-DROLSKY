@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Don't include GitHub::Meta when running under Travis.
+
+
 0.60     2016-06-04
 
 - Don't include PromptIfStale when running under Travis. It's not like I can
