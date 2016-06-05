@@ -490,6 +490,8 @@ sub _explicit_prereq_plugins {
 }
 
 sub _prompt_if_stale_plugin {
+    return if $ENV{TRAVIS};
+
     return [
         'PromptIfStale' => {
             phase             => 'build',

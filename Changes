@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Don't include PromptIfStale when running under Travis. It's not like I can
+  stop the build and update prereqs anyway.
+
+
 0.59     2016-05-30
 
 - Make the generated tidyall.ini only use Test::Vars on modules. It ends up
