@@ -44,7 +44,7 @@ use Dist::Zilla::Plugin::MojibakeTests;
 use Dist::Zilla::Plugin::NextRelease;
 use Dist::Zilla::Plugin::PPPort;
 use Dist::Zilla::Plugin::PodSyntaxTests;
-use Dist::Zilla::Plugin::PromptIfStale;
+use Dist::Zilla::Plugin::PromptIfStale 0.050;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
 use Dist::Zilla::Plugin::RunExtraTests;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
@@ -492,13 +492,12 @@ sub _explicit_prereq_plugins {
 }
 
 sub _prompt_if_stale_plugin {
-    return if $ENV{TRAVIS};
-
     return [
         'PromptIfStale' => {
             phase             => 'build',
             check_all_plugins => 1,
             check_all_prereqs => 1,
+            check_authordeps  => 1,
             skip              => [
                 qw(
                     Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent
