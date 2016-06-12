@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.62     2016-06-12
+
 - Only run PromptIfStale for release phase.
 
 
