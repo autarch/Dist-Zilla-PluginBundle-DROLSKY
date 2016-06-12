@@ -492,25 +492,34 @@ sub _explicit_prereq_plugins {
 }
 
 sub _prompt_if_stale_plugin {
-    return [
-        'PromptIfStale' => {
-            phase             => 'build',
-            check_all_plugins => 1,
-            check_all_prereqs => 1,
-            check_authordeps  => 1,
-            skip              => [
-                qw(
-                    Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent
-                    Dist::Zilla::Plugin::DROLSKY::Contributors
-                    Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
-                    Dist::Zilla::Plugin::DROLSKY::License
-                    Dist::Zilla::Plugin::DROLSKY::TidyAll
-                    Dist::Zilla::Plugin::DROLSKY::VersionProvider
-                    Pod::Weaver::PluginBundle::DROLSKY
-                    )
-            ],
-        }
-    ];
+    my $name = __PACKAGE__;
+    return (
+        [
+            'PromptIfStale' => $name => {
+                phase  => 'build',
+                module => [__PACKAGE__],
+            },
+        ],
+        [
+            'PromptIfStale' => {
+                phase             => 'release',
+                check_all_plugins => 1,
+                check_all_prereqs => 1,
+                check_authordeps  => 1,
+                skip              => [
+                    qw(
+                        Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent
+                        Dist::Zilla::Plugin::DROLSKY::Contributors
+                        Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
+                        Dist::Zilla::Plugin::DROLSKY::License
+                        Dist::Zilla::Plugin::DROLSKY::TidyAll
+                        Dist::Zilla::Plugin::DROLSKY::VersionProvider
+                        Pod::Weaver::PluginBundle::DROLSKY
+                        )
+                ],
+            }
+        ],
+    );
 }
 
 sub _pod_test_plugins {
