@@ -63,7 +63,6 @@ use Dist::Zilla::Plugin::Test::ReportPrereqs;
 use Dist::Zilla::Plugin::Test::Synopsis;
 use Dist::Zilla::Plugin::Test::TidyAll 0.03;
 use Dist::Zilla::Plugin::Test::Version;
-use List::Gather;
 use Parse::PMFile;
 use Path::Iterator::Rule;
 
