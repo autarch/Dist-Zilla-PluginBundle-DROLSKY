@@ -56,7 +56,6 @@ requires "Dist::Zilla::Role::PluginBundle::Easy" => "0";
 requires "Dist::Zilla::Role::PluginBundle::PluginRemover" => "0";
 requires "Dist::Zilla::Role::TextTemplate" => "0";
 requires "Dist::Zilla::Role::VersionProvider" => "0";
-requires "List::Gather" => "0";
 requires "List::Util" => "1.45";
 requires "Module::Runtime" => "0";
 requires "Moose" => "0";
