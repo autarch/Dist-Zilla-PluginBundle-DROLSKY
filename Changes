@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- If the distro uses Test2 modules, the Test::More prereq is now set to
+  1.302015 instead of 0.96. Suggested by Graham Knop.
+
+
 0.63     2016-06-17
 
 - Small tweak to generated perlcriticrc.

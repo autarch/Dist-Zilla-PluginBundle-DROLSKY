@@ -467,14 +467,26 @@ sub _next_release_plugin {
 }
 
 sub _explicit_prereq_plugins {
+    my $self = shift;
+
+    my $test_more = $self->_dist_uses_test2
+        ? [
+        'Prereqs' => 'Test::More with Test2' => {
+            -phase       => 'test',
+            -type        => 'requires',
+            'Test::More' => '1.302015',
+        }
+        ]
+        : [
+        'Prereqs' => 'Test::More with subtest' => {
+            -phase       => 'test',
+            -type        => 'requires',
+            'Test::More' => '0.96',
+        }
+        ];
+
     return (
-        [
-            'Prereqs' => 'Test::More with subtest' => {
-                -phase       => 'test',
-                -type        => 'requires',
-                'Test::More' => '0.96',
-            }
-        ],
+        $test_more,
 
         # Because Code::TidyAll does not depend on them
         [
@@ -488,6 +500,17 @@ sub _explicit_prereq_plugins {
             }
         ],
     );
+}
+
+sub _dist_uses_test2 {
+    my $rule = Path::Iterator::Rule->new;
+    my $iter = $rule->file->contents_match(qr/^use Test2/m)->iter('t');
+
+    while ( my $file = $iter->() ) {
+        return 1;
+    }
+
+    return 0;
 }
 
 sub _prompt_if_stale_plugin {
