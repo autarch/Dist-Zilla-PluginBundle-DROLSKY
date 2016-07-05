@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Avoid warnings when t/ directory contains non-UTF8 data.
+
+
 0.64     2016-06-26
 
 - If the distro uses Test2 modules, the Test::More prereq is now set to

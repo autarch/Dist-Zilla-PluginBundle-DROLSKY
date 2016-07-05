@@ -504,7 +504,9 @@ sub _explicit_prereq_plugins {
 
 sub _dist_uses_test2 {
     my $rule = Path::Iterator::Rule->new;
-    my $iter = $rule->file->contents_match(qr/^use Test2/m)->iter('t');
+    my $iter
+        = $rule->file->name(qr/\.(t|pm)/)->contents_match(qr/^use Test2/m)
+        ->iter('t');
 
     while ( my $file = $iter->() ) {
         return 1;
