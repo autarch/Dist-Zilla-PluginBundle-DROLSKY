@@ -43,10 +43,11 @@ sub configure {
     my $podweaver_plugin
         = ${ peek_sub( \&Dist::Zilla::Plugin::PodWeaver::weaver )->{'$self'}
         };
-    my $licence_plugin = $podweaver_plugin
+
+    my $license_plugin = $podweaver_plugin
         && $podweaver_plugin->zilla->plugin_named('@Author::DROLSKY/License');
-    my $licence_filename
-        = $licence_plugin ? $licence_plugin->filename : 'LICENCE';
+    my $license_filename
+        = $license_plugin ? $license_plugin->filename : 'LICENSE';
 
     my $include_donations
         = $podweaver_plugin->zilla->copyright_holder =~ /Rolsky/;
@@ -152,7 +153,7 @@ DONATIONS
         [
             'Legal' => {
                 ':version' => '4.011',
-                header     => 'COPYRIGHT AND ' . $licence_filename
+                header     => 'COPYRIGHT AND ' . $license_filename
             }
         ],
         [ 'Region' => 'footer' ],
@@ -313,7 +314,7 @@ following F<weaver.ini>, minus some optimizations:
 
     [Legal]
     :version = 4.011
-    header = COPYRIGHT AND <licence filename>
+    header = COPYRIGHT AND <license filename>
 
     [Region / footer]
 
@@ -357,7 +358,7 @@ be possible without updates to L<Pod::Weaver>.)
 
 =head1 OVERRIDING A SPECIFIC SECTION
 
-This F<weaver.ini> will let you use a custom C<COPYRIGHT AND LICENCE> section
+This F<weaver.ini> will let you use a custom C<COPYRIGHT AND LICENSE> section
 and still use the plugin bundle:
 
     [@Author::DROLSKY]
