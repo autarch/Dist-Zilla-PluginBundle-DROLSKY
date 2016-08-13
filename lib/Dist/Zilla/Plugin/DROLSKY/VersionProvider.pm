@@ -7,7 +7,7 @@ use warnings;
 use autodie;
 use namespace::autoclean;
 
-our $VERSION = '0.66';
+our $VERSION = '0.67';
 
 use Parse::PMFile;
 
