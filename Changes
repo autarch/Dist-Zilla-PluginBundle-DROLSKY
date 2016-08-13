@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.66     2016-08-13
+
 - Implemented a rather convoluted way of passing config into my Pod::Weaver
   bundle in order to allow for disabling the DONATIONS pod section on a
   per-distro basis.
