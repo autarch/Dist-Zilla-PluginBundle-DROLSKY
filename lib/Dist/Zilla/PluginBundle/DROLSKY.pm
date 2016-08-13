@@ -24,6 +24,7 @@ use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::DROLSKY::TidyAll;
 use Dist::Zilla::Plugin::DROLSKY::VersionProvider;
+use Dist::Zilla::Plugin::DROLSKY::WeaverConfig;
 use Dist::Zilla::Plugin::GenerateFile::FromShareDir;
 use Dist::Zilla::Plugin::Git::Check;
 use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
@@ -648,11 +649,14 @@ sub _extra_test_plugins {
 }
 
 sub _pod_weaver_plugin {
-    [
-        SurgicalPodWeaver => {
-            config_plugin => '@DROLSKY',
-        },
-    ];
+    return (
+        [
+            SurgicalPodWeaver => {
+                config_plugin => '@DROLSKY',
+            },
+        ],
+        'DROLSKY::WeaverConfig',
+    );
 }
 
 sub _readme_md_plugin {

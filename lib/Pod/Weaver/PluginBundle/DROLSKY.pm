@@ -44,13 +44,14 @@ sub configure {
         = ${ peek_sub( \&Dist::Zilla::Plugin::PodWeaver::weaver )->{'$self'}
         };
 
-    my $license_plugin = $podweaver_plugin
-        && $podweaver_plugin->zilla->plugin_named('@Author::DROLSKY/License');
+    my $zilla          = $podweaver_plugin->zilla;
+    my $license_plugin = $zilla->plugin_named('@Author::DROLSKY/License');
     my $license_filename
         = $license_plugin ? $license_plugin->filename : 'LICENSE';
 
-    my $include_donations
-        = $podweaver_plugin->zilla->copyright_holder =~ /Rolsky/;
+    my $config = $zilla->plugin_named('@DROLSKY/DROLSKY::WeaverConfig');
+    my $include_donations = $zilla->copyright_holder =~ /Rolsky/
+        && $config->include_donations_pod;
 
     return (
         '@CorePrep',
