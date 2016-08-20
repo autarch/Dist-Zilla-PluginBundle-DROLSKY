@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Various tweaks and cleanups for the pod weaver bundle.
+
+
 0.66     2016-08-13
 
 - Implemented a rather convoluted way of passing config into my Pod::Weaver
