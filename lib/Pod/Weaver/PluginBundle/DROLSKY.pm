@@ -53,13 +53,12 @@ sub configure {
     my $include_donations = $zilla->copyright_holder =~ /Rolsky/
         && $config->include_donations_pod;
 
-    return (
+    my @config = (
         '@CorePrep',
         '-SingleEncoding',
         [ '-Transformer' => List     => { transformer => 'List' } ],
         [ '-Transformer' => Verbatim => { transformer => 'Verbatim' } ],
-
-        [ 'Region' => 'header' ],
+        [ 'Region'       => 'header' ],
         'Name',
         'Version',
         [ 'Region'  => 'prelude' ],
@@ -72,7 +71,6 @@ sub configure {
         [ 'Collect' => 'TYPES' => { command => 'type' } ],
         'Leftovers',
         [ 'Region' => 'postlude' ],
-
         [
             'GenerateSection' => 'generate SUPPORT' => {
                 title            => 'SUPPORT',
@@ -117,15 +115,16 @@ SUPPORT
                 match_anywhere => 0,
             },
         ],
-        (
-            $include_donations
-            ? [
-                'GenerateSection' => 'generate DONATIONS' => {
-                    title            => 'DONATIONS',
-                    main_module_only => 1,
-                    is_template      => 0,
-                    text             => [
-                        <<'DONATIONS',
+    );
+
+    if ($include_donations) {
+        push @config, [
+            'GenerateSection' => 'generate DONATIONS' => {
+                title            => 'DONATIONS',
+                main_module_only => 1,
+                is_template      => 0,
+                text             => [
+                    <<'DONATIONS',
 If you'd like to thank me for the work I've done on this module, please
 consider making a "donation" to me via PayPal. I spend a lot of free time
 creating free software, and would appreciate any support you'd care to offer.
@@ -141,12 +140,12 @@ on free software full time (let's all have a chuckle at that together).
 To donate, log into PayPal and send money to autarch@urth.org, or use the
 button at L<http://www.urth.org/~autarch/fs-donation.html>.
 DONATIONS
-                    ]
-                },
                 ]
-            : ()
-        ),
+            },
+        ];
+    }
 
+    push @config, (
         'Authors',
         [ 'Contributors' => { ':version' => '0.008' } ],
         [
@@ -157,6 +156,8 @@ DONATIONS
         ],
         [ 'Region' => 'footer' ],
     );
+
+    return @config;
 }
 
 sub mvp_bundle_config {
