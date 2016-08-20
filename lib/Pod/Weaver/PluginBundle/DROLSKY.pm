@@ -45,7 +45,7 @@ sub configure {
         };
 
     my $zilla          = $podweaver_plugin->zilla;
-    my $license_plugin = $zilla->plugin_named('@Author::DROLSKY/License');
+    my $license_plugin = $zilla->plugin_named('@DROLSKY/License');
     my $license_filename
         = $license_plugin ? $license_plugin->filename : 'LICENSE';
 
