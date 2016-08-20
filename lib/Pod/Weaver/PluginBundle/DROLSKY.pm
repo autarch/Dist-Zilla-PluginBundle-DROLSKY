@@ -103,14 +103,13 @@ sub configure {
         : (),
 
     ($distmeta->{x_authority} // '') eq 'cpan:DROLSKY'
-    ? "I am also usually active on IRC as 'drolsky' on C<irc://irc.perl.org>."
+    ? q{I am also usually active on IRC as 'drolsky' on C<irc://irc.perl.org>.}
     : (),
 ) }}
 SUPPORT
                 ]
             },
         ],
-
         [
             'AllowOverride' => 'allow override SUPPORT' => {
                 header_re      => '^(SUPPORT|BUGS)\b',
@@ -118,7 +117,6 @@ SUPPORT
                 match_anywhere => 0,
             },
         ],
-
         (
             $include_donations
             ? [
