@@ -214,7 +214,7 @@ sub _expand_config {
 
     use_module( $class, $payload->{':version'} ) if $payload->{':version'};
 
-    # prepend '@Author::DROLSKY/' to each class name,
+    # prepend '@DROLSKY/' to each class name,
     # except for Generic and Collect which are left alone.
     $name = '@' . $self->_prefix . '/' . $name
         if $class ne _exp('Generic')
@@ -237,16 +237,16 @@ __END__
 
 In your F<weaver.ini>:
 
-    [@Author::DROLSKY]
+    [@DROLSKY]
 
 Or in your F<dist.ini>
 
     [PodWeaver]
-    config_plugin = @Author::DROLSKY
+    config_plugin = @DROLSKY
 
 It is also used automatically when your F<dist.ini> contains:
 
-    [@Author::DROLSKY]
+    [@DROLSKY]
     :version = 0.094
 
 =head1 DESCRIPTION
@@ -361,14 +361,14 @@ be possible without updates to L<Pod::Weaver>.)
 This F<weaver.ini> will let you use a custom C<COPYRIGHT AND LICENSE> section
 and still use the plugin bundle:
 
-    [@Author::DROLSKY]
+    [@DROLSKY]
     [AllowOverride / OverrideLegal]
     header_re = ^COPYRIGHT
     match_anywhere = 1
 
 =head1 ADDING STOPWORDS FOR SPELLING TESTS
 
-As noted in L<Dist::Zilla::PluginBundle::Author::DROLSKY>, stopwords for
+As noted in L<Dist::Zilla::PluginBundle::DROLSKY>, stopwords for
 spelling tests can be added by adding a directive to pod:
 
     =for stopwords foo bar baz
@@ -387,6 +387,6 @@ woven ahead of everything else:
 * L<Pod::Weaver>
 * L<Pod::Weaver::PluginBundle::Default>
 * L<Dist::Zilla::Plugin::PodWeaver>
-* L<Dist::Zilla::PluginBundle::Author::DROLSKY>
+* L<Dist::Zilla::PluginBundle::DROLSKY>
 
 =cut
