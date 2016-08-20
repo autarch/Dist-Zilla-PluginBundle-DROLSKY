@@ -55,7 +55,7 @@ sub configure {
 
     my @config = (
         '@CorePrep',
-        '-SingleEncoding',
+        [ '-SingleEncoding' => { encoding => 'UTF-8' } ],
         [ '-Transformer' => List     => { transformer => 'List' } ],
         [ '-Transformer' => Verbatim => { transformer => 'Verbatim' } ],
         [ 'Region'       => 'header' ],
