@@ -13,7 +13,7 @@ use Code::TidyAll::Config::INI::Reader 0.44;
 use List::Util 1.45 qw( uniqstr );
 use Path::Class qw( file );
 use Path::Iterator::Rule;
-use Perl::Critic::Moose 1.01;
+use Perl::Critic::Moose 1.05;
 use Sort::ByExample qw( sbe );
 
 use Moose;
