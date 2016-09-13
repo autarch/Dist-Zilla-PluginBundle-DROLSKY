@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Very tiny wording change in CONTRIBUTING.md.
+
+
 0.68     2016-09-12
 
 - Require Perl::Critic::Moose 1.05;
