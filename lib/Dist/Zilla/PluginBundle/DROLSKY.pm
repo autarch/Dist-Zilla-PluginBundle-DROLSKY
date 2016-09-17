@@ -500,6 +500,17 @@ sub _explicit_prereq_plugins {
                 'Test::Vars'                        => '0.009',
             }
         ],
+
+        # This is solely to work around a bug with Test::Version and
+        # Module::Metadata 1.000019 - see
+        # https://github.com/plicease/Test-Version/issues/7 for details.
+        [
+            'Prereqs' => 'Module::Metadata 1.000033 for Test::Version' => {
+                -phase             => 'develop',
+                -type              => 'requires',
+                'Module::Metadata' => '1.000033',
+            },
+        ],
     );
 }
 

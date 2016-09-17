@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+- Explicitly add Module::Metadata 1.000033 to the develop prereqs in order to
+  work around bugs with Test::Version and earlier versions of
+  Module::Metadata. See https://github.com/plicease/Test-Version/issues/7 for
+  the relevant bug report.
+
+
 0.69     2016-09-13
 
 - Very tiny wording change in CONTRIBUTING.md.
