@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.71     2016-09-17
+
 - Removed Module::Metadata prereq and require Test::Version 2.05 instead.
 
 
