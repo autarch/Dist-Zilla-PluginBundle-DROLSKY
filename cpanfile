@@ -109,6 +109,7 @@ on 'develop' => sub {
   requires "File::Spec" => "0";
   requires "IO::Handle" => "0";
   requires "IPC::Open3" => "0";
+  requires "Module::Metadata" => "1.000033";
   requires "Perl::Critic" => "1.126";
   requires "Perl::Tidy" => "20160302";
   requires "Pod::Coverage::TrustPod" => "0";
