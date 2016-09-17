@@ -193,6 +193,7 @@ sub _default_perl_ignore {
         t/00-*
         t/author-*
         t/release-*
+        t/zzz-*
         xt/**/*
     );
 
