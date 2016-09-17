@@ -303,6 +303,8 @@ following F<weaver.ini>, minus some optimizations:
     action = prepend
     match_anywhere = 0
 
+    ; Can be disabled in dist.ini with
+    ;   DROLSKY::WeaverConfig.include_donations_pod = 0
     [GenerateSection / generate DONATIONS]
     title = DONATIONS
     main_module_only = 1
