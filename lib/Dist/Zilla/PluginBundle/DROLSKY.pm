@@ -56,8 +56,6 @@ use Dist::Zilla::Plugin::Test::Compile;
 use Dist::Zilla::Plugin::Test::EOL 0.14;
 use Dist::Zilla::Plugin::Test::NoTabs;
 use Dist::Zilla::Plugin::Test::Pod::Coverage::Configurable;
-use Dist::Zilla::Plugin::Test::Pod::LinkCheck;
-use Dist::Zilla::Plugin::Test::Pod::No404s;
 use Dist::Zilla::Plugin::Test::PodSpelling;
 use Dist::Zilla::Plugin::Test::Portability;
 use Dist::Zilla::Plugin::Test::ReportPrereqs;
@@ -569,14 +567,6 @@ sub _pod_test_plugins {
             'Test::PodSpelling' => { stopwords => $self->_all_stopwords },
         ],
         'PodSyntaxTests',
-        (
-            $ENV{TRAVIS} ? () : (
-                qw(
-                    Test::Pod::LinkCheck
-                    Test::Pod::No404s
-                    )
-            )
-        ),
     );
 }
 
@@ -923,11 +913,6 @@ This is more or less equivalent to the following F<dist.ini>:
     stopwods = ...
 
     [PodSyntaxTests]
-
-    ; These two are disabled under Travis because they can be flaky and affected
-    ; by issues with the network or remote servers.
-    [Test::Pod::LinkCheck]
-    [Test::Pod::No404s]
 
     [RunExtraTests]
     [MojibakeTests]
