@@ -501,14 +501,12 @@ sub _explicit_prereq_plugins {
             }
         ],
 
-        # This is solely to work around a bug with Test::Version and
-        # Module::Metadata 1.000019 - see
-        # https://github.com/plicease/Test-Version/issues/7 for details.
+        # This version fixes https://github.com/plicease/Test-Version/issues/7
         [
-            'Prereqs' => 'Module::Metadata 1.000033 for Test::Version' => {
+            'Prereqs' => 'Test::Version' => {
                 -phase             => 'develop',
                 -type              => 'requires',
-                'Module::Metadata' => '1.000033',
+                'Module::Metadata' => '2.05',
             },
         ],
     );

@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Removed Module::Metadata prereq and require Test::Version 2.05 instead.
+
+
 0.70     2016-09-16
 
 - Explicitly add Module::Metadata 1.000033 to the develop prereqs in order to
