@@ -44,12 +44,21 @@ sub configure {
         = ${ peek_sub( \&Dist::Zilla::Plugin::PodWeaver::weaver )->{'$self'}
         };
 
-    my $zilla          = $podweaver_plugin->zilla;
-    my $license_plugin = $zilla->plugin_named('@DROLSKY/License');
+    my $zilla = $podweaver_plugin->zilla;
+    my $bundle_prefix;
+    for my $name ( map { $_->plugin_name } @{ $zilla->plugins } ) {
+
+        # We want a plugin that was added by our bundle.
+        next unless ($bundle_prefix) = $name =~ m{^(.+)/};
+        last;
+    }
+
+    my $license_plugin = $zilla->plugin_named( $bundle_prefix . '/License' );
     my $license_filename
         = $license_plugin ? $license_plugin->filename : 'LICENSE';
 
-    my $config = $zilla->plugin_named('@DROLSKY/DROLSKY::WeaverConfig');
+    my $config
+        = $zilla->plugin_named( $bundle_prefix . '/DROLSKY::WeaverConfig' );
     my $include_donations = $zilla->copyright_holder =~ /Rolsky/
         && $config->include_donations_pod;
 
@@ -166,13 +175,16 @@ sub mvp_bundle_config {
     return map { $self->_expand_config($_) } $self->configure;
 }
 
-my $prefix;
+{
+    my $prefix;
 
-sub _prefix {
-    my $self = shift;
-    return $prefix if defined $prefix;
-    ( $prefix = ( ref($self) || $self ) ) =~ s/^Pod::Weaver::PluginBundle:://;
-    return $prefix;
+    sub _prefix {
+        my $self = shift;
+        return $prefix if defined $prefix;
+        ( $prefix = ( ref($self) || $self ) )
+            =~ s/^Pod::Weaver::PluginBundle:://;
+        return $prefix;
+    }
 }
 
 sub _expand_config {
