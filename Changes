@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.72     2016-09-25
+
 - Make the Pod::Weaver bits work when used from a subclass of this bundle.
 
 

@@ -4,7 +4,7 @@ Dist::Zilla::PluginBundle::DROLSKY - DROLSKY's plugin bundle
 
 # VERSION
 
-version 0.71
+version 0.72
 
 # SYNOPSIS
 
@@ -22,7 +22,7 @@ version 0.71
     ; Default is DROLSKY
     authority = DROLSKY
     ; Passed to AutoPrereqs - can be repeated
-    prereqs_skkip = ...
+    prereqs_skip = ...
     ; Passed to Test::Pod::Coverage::Configurable if set
     pod_coverage_class = ...
     ; Oassed to Test::Pod::Coverage::Configurable if set - can be repeated
