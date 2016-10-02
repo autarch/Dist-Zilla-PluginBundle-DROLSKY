@@ -60,7 +60,7 @@ use Dist::Zilla::Plugin::Test::PodSpelling;
 use Dist::Zilla::Plugin::Test::Portability;
 use Dist::Zilla::Plugin::Test::ReportPrereqs;
 use Dist::Zilla::Plugin::Test::Synopsis;
-use Dist::Zilla::Plugin::Test::TidyAll 0.03;
+use Dist::Zilla::Plugin::Test::TidyAll 0.04;
 use Dist::Zilla::Plugin::Test::Version;
 use Parse::PMFile;
 use Path::Iterator::Rule;
@@ -479,6 +479,7 @@ sub _explicit_prereq_plugins {
                 -phase                              => 'develop',
                 -type                               => 'requires',
                 'Code::TidyAll::Plugin::Test::Vars' => '0.02',
+                'Parallel::ForkManager'             => '1.19',
                 'Perl::Critic'                      => '1.126',
                 'Perl::Tidy'                        => '20160302',
                 'Test::Vars'                        => '0.009',
@@ -615,6 +616,7 @@ sub _extra_test_plugins {
         [
             'Test::TidyAll' => {
                 verbose => 1,
+                jobs    => 4,
 
                 # Test::Vars requires this version
                 minimum_perl => '5.010',
@@ -874,6 +876,7 @@ This is more or less equivalent to the following F<dist.ini>:
     -phase = develop
     -type  = requires
     Code::TidyAll::Plugin::Test::Vars = 0.02
+    Parallel::ForkManager'            = 1.19
     Perl::Critic                      = 1.126
     Perl::Tidy                        = 20160302
     Test::Vars                        = 0.009
@@ -926,6 +929,7 @@ This is more or less equivalent to the following F<dist.ini>:
 
     [Test::TidyAll]
     verbose = 1
+    jobs    = 4
     minimum_perl = 5.010
 
     [Test::Compile]
