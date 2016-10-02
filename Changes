@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.73     2016-10-02
+
 - Set jobs for Test::TidyAll plugin to 4 by default.
 
 

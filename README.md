@@ -4,7 +4,7 @@ Dist::Zilla::PluginBundle::DROLSKY - DROLSKY's plugin bundle
 
 # VERSION
 
-version 0.72
+version 0.73
 
 # SYNOPSIS
 
@@ -131,6 +131,7 @@ This is more or less equivalent to the following `dist.ini`:
     -phase = develop
     -type  = requires
     Code::TidyAll::Plugin::Test::Vars = 0.02
+    Parallel::ForkManager'            = 1.19
     Perl::Critic                      = 1.126
     Perl::Tidy                        = 20160302
     Test::Vars                        = 0.009
@@ -183,6 +184,7 @@ This is more or less equivalent to the following `dist.ini`:
 
     [Test::TidyAll]
     verbose = 1
+    jobs    = 4
     minimum_perl = 5.010
 
     [Test::Compile]
