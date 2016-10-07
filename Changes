@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.74     2016-10-07
+
 - Added CheckSelfDependency and CheckStrictVersion plugins.
 
 
