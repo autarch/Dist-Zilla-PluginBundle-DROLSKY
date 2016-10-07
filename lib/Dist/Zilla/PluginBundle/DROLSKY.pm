@@ -17,6 +17,8 @@ use Dist::Zilla::Plugin::AutoPrereqs;
 use Dist::Zilla::Plugin::BumpVersionAfterRelease;
 use Dist::Zilla::Plugin::CPANFile;
 use Dist::Zilla::Plugin::CheckPrereqsIndexed;
+use Dist::Zilla::Plugin::CheckSelfDependency;
+use Dist::Zilla::Plugin::CheckStrictVersion;
 use Dist::Zilla::Plugin::CheckVersionIncrement;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
 use Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent;
@@ -677,11 +679,15 @@ sub _maybe_ppport_plugin {
 }
 
 sub _release_check_plugins {
-    qw(
-        CheckPrereqsIndexed
-        DROLSKY::CheckChangesHasContent
-        DROLSKY::Git::CheckFor::CorrectBranch
-        Git::CheckFor::MergeConflicts
+    return (
+        [ CheckStrictVersion => { decimal_only => 1 } ],
+        qw(
+            CheckSelfDependency
+            CheckPrereqsIndexed
+            DROLSKY::CheckChangesHasContent
+            DROLSKY::Git::CheckFor::CorrectBranch
+            Git::CheckFor::MergeConflicts
+            ),
     );
 }
 
