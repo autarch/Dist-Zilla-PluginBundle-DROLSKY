@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.75     2016-10-11
+
 - Added pod_coverage_also_private to pass more stuff to
   Test::Pod::Coverage::Configurable
 

@@ -4,7 +4,7 @@ Dist::Zilla::PluginBundle::DROLSKY - DROLSKY's plugin bundle
 
 # VERSION
 
-version 0.74
+version 0.75
 
 # SYNOPSIS
 
@@ -24,8 +24,10 @@ version 0.74
     ; Passed to AutoPrereqs - can be repeated
     prereqs_skip = ...
     ; Passed to Test::Pod::Coverage::Configurable if set
+    pod_coverage_also_private = ...
+    ; Passed to Test::Pod::Coverage::Configurable if set - can be repeated
     pod_coverage_class = ...
-    ; Oassed to Test::Pod::Coverage::Configurable if set - can be repeated
+    ; Passed to Test::Pod::Coverage::Configurable if set - can be repeated
     pod_coverage_skip = ...
     ; Passed to Test::Pod::Coverage::Configurable if set - can be repeated
     pod_coverage_trustme = ...
@@ -303,6 +305,10 @@ button at [http://www.urth.org/~autarch/fs-donation.html](http://www.urth.org/~a
 # AUTHOR
 
 Dave Rolsky <autarch@urth.org>
+
+# CONTRIBUTOR
+
+Mark Fowler <mark@twoshortplanks.com>
 
 # COPYRIGHT AND LICENSE
 
