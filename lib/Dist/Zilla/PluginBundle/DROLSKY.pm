@@ -148,7 +148,7 @@ has _has_xs => (
 has pod_coverage_class => (
     is        => 'ro',
     isa       => 'Str',
-    predicate => '_has_coverage_class',
+    predicate => '_has_pod_coverage_class',
 );
 
 has pod_coverage_skip => (
@@ -157,7 +157,7 @@ has pod_coverage_skip => (
     isa      => 'ArrayRef[Str]',
     required => 1,
     handles  => {
-        _has_coverage_skip => 'count',
+        _has_pod_coverage_skip => 'count',
     },
 );
 
@@ -167,7 +167,7 @@ has pod_coverage_trustme => (
     isa      => 'ArrayRef[Str]',
     required => 1,
     handles  => {
-        _has_coverage_trustme => 'count',
+        _has_pod_coverage_trustme => 'count',
     },
 );
 
@@ -177,7 +177,7 @@ has pod_coverage_also_private => (
     isa      => 'ArrayRef[Str]',
     required => 1,
     handles  => {
-        _has_coverage_also_private => 'count',
+        _has_pod_coverage_also_private => 'count',
     },
 );
 
@@ -560,22 +560,22 @@ sub _pod_test_plugins {
         [
             'Test::Pod::Coverage::Configurable' => {
                 (
-                    $self->_has_coverage_also_private
+                    $self->_has_pod_coverage_also_private
                     ? ( also_private => $self->pod_coverage_also_private )
                     : ()
                 ),
                 (
-                    $self->_has_coverage_skip
+                    $self->_has_pod_coverage_skip
                     ? ( skip => $self->pod_coverage_skip )
                     : ()
                 ),
                 (
-                    $self->_has_coverage_trustme
+                    $self->_has_pod_coverage_trustme
                     ? ( trustme => $self->pod_coverage_trustme )
                     : ()
                 ),
                 (
-                    $self->_has_coverage_class
+                    $self->_has_pod_coverage_class
                     ? ( class => $self->pod_coverage_class )
                     : ()
                 ),
