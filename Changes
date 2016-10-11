@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Added pod_coverage_also_private to pass more stuff to
+  Test::Pod::Coverage::Configurable
+
+
 0.74     2016-10-07
 
 - Added CheckSelfDependency and CheckStrictVersion plugins.
