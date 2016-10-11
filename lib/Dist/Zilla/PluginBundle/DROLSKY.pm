@@ -171,6 +171,16 @@ has pod_coverage_trustme => (
     },
 );
 
+has pod_coverage_also_private => (
+    traits   => ['Array'],
+    is       => 'ro',
+    isa      => 'ArrayRef[Str]',
+    required => 1,
+    handles  => {
+        _has_coverage_also_private => 'count',
+    },
+);
+
 has stopwords => (
     traits   => ['Array'],
     is       => 'ro',
@@ -550,6 +560,11 @@ sub _pod_test_plugins {
         [
             'Test::Pod::Coverage::Configurable' => {
                 (
+                    $self->_has_coverage_also_private
+                    ? ( also_private => $self->pod_coverage_also_private )
+                    : ()
+                ),
+                (
                     $self->_has_coverage_skip
                     ? ( skip => $self->pod_coverage_skip )
                     : ()
@@ -775,8 +790,10 @@ __END__
     ; Passed to AutoPrereqs - can be repeated
     prereqs_skip = ...
     ; Passed to Test::Pod::Coverage::Configurable if set
+    pod_coverage_also_private = ...
+    ; Passed to Test::Pod::Coverage::Configurable if set - can be repeated
     pod_coverage_class = ...
-    ; Oassed to Test::Pod::Coverage::Configurable if set - can be repeated
+    ; Passed to Test::Pod::Coverage::Configurable if set - can be repeated
     pod_coverage_skip = ...
     ; Passed to Test::Pod::Coverage::Configurable if set - can be repeated
     pod_coverage_trustme = ...
