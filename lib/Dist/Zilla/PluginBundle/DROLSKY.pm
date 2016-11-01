@@ -382,17 +382,21 @@ sub _copy_files_from_build_plugin {
 # These are files which are generated as part of the build process and then
 # copied back into the git repo and checked in.
 sub _build_files_to_copy_from_build {
-    [
-        qw(
-            Build.PL
-            CONTRIBUTING.md
-            LICENSE
-            Makefile.PL
-            README.md
-            cpanfile
-            ppport.h
-            )
-    ];
+    my $self = shift;
+
+    my @files = qw(
+        CONTRIBUTING.md
+        LICENSE
+        README.md
+        cpanfile
+    );
+
+    push @files,
+        $self->make_tool eq 'MakeMaker' ? 'Makefile.PL' : 'Build.PL';
+
+    push @files, 'ppport.h' if $self->_has_xs;
+
+    return \@files;
 }
 
 sub _github_plugins {
