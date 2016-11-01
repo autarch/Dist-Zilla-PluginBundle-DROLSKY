@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.76     2016-11-01
+
 - Only tell CopyFileFromBuild to copy files that which actually exist in the
   distro. The latest version of that plugin now dies on missing files.
 
