@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Generated POD said my IRC nick was "drolsky" instead of "autarch". Reported
+  by mst.
+
+
 0.76     2016-11-01
 
 - Only tell CopyFileFromBuild to copy files that which actually exist in the

@@ -110,7 +110,7 @@ sub configure {
         : (),
 
     ($distmeta->{x_authority} // '') eq 'cpan:DROLSKY'
-    ? q{I am also usually active on IRC as 'drolsky' on C<irc://irc.perl.org>.}
+    ? q{I am also usually active on IRC as 'autarch' on C<irc://irc.perl.org>.}
     : (),
 ) }}
 SUPPORT
