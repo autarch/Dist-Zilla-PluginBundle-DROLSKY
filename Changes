@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.77     2016-11-12
+
 - Generated POD said my IRC nick was "drolsky" instead of "autarch". Reported
   by mst.
 

@@ -4,7 +4,7 @@ Dist::Zilla::PluginBundle::DROLSKY - DROLSKY's plugin bundle
 
 # VERSION
 
-version 0.76
+version 0.77
 
 # SYNOPSIS
 
@@ -283,7 +283,7 @@ This is more or less equivalent to the following `dist.ini`:
 Bugs may be submitted through [the RT bug tracker](http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-DROLSKY)
 (or [bug-dist-zilla-pluginbundle-drolsky@rt.cpan.org](mailto:bug-dist-zilla-pluginbundle-drolsky@rt.cpan.org)).
 
-I am also usually active on IRC as 'drolsky' on `irc://irc.perl.org`.
+I am also usually active on IRC as 'autarch' on `irc://irc.perl.org`.
 
 # DONATIONS
 
