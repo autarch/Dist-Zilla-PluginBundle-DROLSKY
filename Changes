@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Handle a ppport.h file being generated in a subdirectory as well as in the
+  root of the distro.
+
+
 0.77     2016-11-12
 
 - Generated POD said my IRC nick was "drolsky" instead of "autarch". Reported
