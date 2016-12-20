@@ -7,6 +7,7 @@ our $VERSION = '0.79';
 
 use namespace::autoclean -also => ['_exp'];
 
+use Dist::Zilla::Plugin::PodWeaver;
 use Module::Runtime qw( use_module );
 use PadWalker qw( peek_sub );
 use Pod::Elemental::Transformer::List;
@@ -38,8 +39,11 @@ sub configure {
     # containing plugin specifications. The goal is to make this look as close
     # to what weaver.ini looks like as possible.
 
-    # I wouldn't have to do this ugliness if I could have some configuration values passed in from weaver.ini or
-    # the [PodWeaver] plugin's use of config_plugin (where I could define a 'licence' option)
+    # I wouldn't have to do this ugliness if I could have some configuration
+    # values passed in from weaver.ini or the [PodWeaver] plugin's use of
+    # config_plugin (where I could define a 'licence' option)
+
+    ## no critic (Subroutines::ProhibitCallsToUnexportedSubs)
     my $podweaver_plugin
         = ${ peek_sub( \&Dist::Zilla::Plugin::PodWeaver::weaver )->{'$self'}
         };
