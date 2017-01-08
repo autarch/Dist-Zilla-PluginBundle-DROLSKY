@@ -64,7 +64,6 @@ use Dist::Zilla::Plugin::Test::Synopsis;
 use Dist::Zilla::Plugin::Test::TidyAll 0.04;
 use Dist::Zilla::Plugin::Test::Version;
 use Dist::Zilla::Plugin::VersionFromMainModule;
-use Parse::PMFile;
 use Path::Iterator::Rule;
 
 use Moose;
