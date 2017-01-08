@@ -798,7 +798,7 @@ __END__
 
     [@DROLSKY]
     dist = My-Module
-    ; Fefault is MakeMaker - or set it to ModuleBuild
+    ; Default is MakeMaker - or set it to ModuleBuild
     make_tool = MakeMaker
     ; These files won't be added to tarball
     exclude_files = ...
