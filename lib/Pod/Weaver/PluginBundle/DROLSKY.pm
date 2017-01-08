@@ -163,8 +163,9 @@ DONATIONS
         [ 'Contributors' => { ':version' => '0.008' } ],
         [
             'Legal' => {
-                ':version' => '4.011',
-                header     => 'COPYRIGHT AND ' . $license_filename
+                ':version'   => '4.011',
+                header       => 'COPYRIGHT AND ' . $license_filename,
+                license_file => $license_filename,
             }
         ],
         [ 'Region' => 'footer' ],
