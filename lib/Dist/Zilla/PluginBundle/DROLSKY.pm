@@ -562,7 +562,6 @@ sub _prompt_if_stale_plugin {
                         Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
                         Dist::Zilla::Plugin::DROLSKY::License
                         Dist::Zilla::Plugin::DROLSKY::TidyAll
-                        Dist::Zilla::Plugin::DROLSKY::VersionProvider
                         Pod::Weaver::PluginBundle::DROLSKY
                         )
                 ],
@@ -856,8 +855,7 @@ This is more or less equivalent to the following F<dist.ini>:
     [TestRelease]
     [ConfirmRelease]
     [UploadToCPAN]
-    ; Opens up the main module and finds a $VERSION
-    [DROLSKY::VersionProvider]
+    [VersionFromMainModule]
 
     [Authority]
     ; Configured by setting authority for the bundle
@@ -936,12 +934,10 @@ This is more or less equivalent to the following F<dist.ini>:
     check_all_plugins = 1
     check_all_prereqs = 1
     check_authordeps  = 1
-    skip = Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent
     skip = Dist::Zilla::Plugin::DROLSKY::Contributors
     skip = Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
     skip = Dist::Zilla::Plugin::DROLSKY::License
     skip = Dist::Zilla::Plugin::DROLSKY::TidyAll
-    skip = Dist::Zilla::Plugin::DROLSKY::VersionProvider
     skip = Pod::Weaver::PluginBundle::DROLSKY
 
     [Test::Pod::Coverage::Configurable]
@@ -1019,10 +1015,7 @@ This is more or less equivalent to the following F<dist.ini>:
     [DROLSKY::License]
 
     [CheckPrereqsIndexed]
-
-    ; More or less like Dist::Zilla::Plugin::CheckChangesHasContent but uses
-    ; CPAN::Changes to parse the Changes file.
-    [DROLSKY::CheckChangesHasContent]
+    [EnsureChangesHasContent]
 
     ; Just like Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch except that
     ; it allows releases from any branch for TRIAL
