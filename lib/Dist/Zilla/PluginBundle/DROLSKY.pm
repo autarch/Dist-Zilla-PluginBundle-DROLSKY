@@ -21,12 +21,12 @@ use Dist::Zilla::Plugin::CheckSelfDependency;
 use Dist::Zilla::Plugin::CheckStrictVersion;
 use Dist::Zilla::Plugin::CheckVersionIncrement;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
-use Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent;
 use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::DROLSKY::TidyAll;
 use Dist::Zilla::Plugin::DROLSKY::VersionProvider;
 use Dist::Zilla::Plugin::DROLSKY::WeaverConfig;
+use Dist::Zilla::Plugin::EnsureChangesHasContent;
 use Dist::Zilla::Plugin::GenerateFile::FromShareDir 0.013;
 use Dist::Zilla::Plugin::Git::Check;
 use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
@@ -559,7 +559,6 @@ sub _prompt_if_stale_plugin {
                 check_authordeps  => 1,
                 skip              => [
                     qw(
-                        Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent
                         Dist::Zilla::Plugin::DROLSKY::Contributors
                         Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
                         Dist::Zilla::Plugin::DROLSKY::License
@@ -719,8 +718,8 @@ sub _release_check_plugins {
         qw(
             CheckSelfDependency
             CheckPrereqsIndexed
-            DROLSKY::CheckChangesHasContent
             DROLSKY::Git::CheckFor::CorrectBranch
+            EnsureChangesHasContent
             Git::CheckFor::MergeConflicts
             ),
     );

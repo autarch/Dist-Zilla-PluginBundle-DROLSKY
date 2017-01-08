@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Replaced DROLSKY::CheckChangesHasContent plugin with
+  EnsureChangesHasContent.
+
+
 0.78     2016-11-29
 
 - Handle a ppport.h file being generated in a subdirectory as well as in the
