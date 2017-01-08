@@ -24,7 +24,6 @@ use Dist::Zilla::Plugin::CopyFilesFromBuild;
 use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::DROLSKY::TidyAll;
-use Dist::Zilla::Plugin::DROLSKY::VersionProvider;
 use Dist::Zilla::Plugin::DROLSKY::WeaverConfig;
 use Dist::Zilla::Plugin::EnsureChangesHasContent;
 use Dist::Zilla::Plugin::GenerateFile::FromShareDir 0.013;
@@ -64,6 +63,7 @@ use Dist::Zilla::Plugin::Test::ReportPrereqs;
 use Dist::Zilla::Plugin::Test::Synopsis;
 use Dist::Zilla::Plugin::Test::TidyAll 0.04;
 use Dist::Zilla::Plugin::Test::Version;
+use Dist::Zilla::Plugin::VersionFromMainModule;
 use Parse::PMFile;
 use Path::Iterator::Rule;
 
@@ -331,7 +331,7 @@ sub _build_exclude {
 sub _basic_plugins {
 
     # These are a subset of the @Basic bundle except for CheckVersionIncrement
-    # and DROLSKY::VersionProvider.
+    # and VersionFromMainModule.
     qw(
         ManifestSkip
         License
@@ -342,7 +342,7 @@ sub _basic_plugins {
         TestRelease
         ConfirmRelease
         UploadToCPAN
-        DROLSKY::VersionProvider
+        VersionFromMainModule
     );
 }
 

@@ -3,6 +3,8 @@
 - Replaced DROLSKY::CheckChangesHasContent plugin with
   EnsureChangesHasContent.
 
+- Replaced DROLSKY::VersionProvider with VersionFromMainModule.
+
 
 0.78     2016-11-29
 
