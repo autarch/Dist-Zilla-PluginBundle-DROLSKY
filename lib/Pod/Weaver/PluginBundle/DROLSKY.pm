@@ -113,33 +113,52 @@ sub _support_section {
     # weaver bundle is configured before this is ready, leading to an endless
     # loop in Dist::Zilla::_build_distmeta (a bug in DZ? maybe).
     my $template = <<'SUPPORT';
-{{ join("\n\n",
-    $bugtracker_email
-    ? "Bugs may be submitted at L<$bugtracker_web> or via email to L<$bugtracker_email|mailto:$bugtracker_email>."
-    : $bugtracker_web
-    ? "Bugs may be submitted at L<$bugtracker_web>."
-    : (),
+{{
+join "\n\n", (
+    (
+        $bugtracker_email
+        ? "Bugs may be submitted at L<$bugtracker_web> or via email to L<$bugtracker_email|mailto:$bugtracker_email>."
+        : $bugtracker_web ? "Bugs may be submitted at L<$bugtracker_web>."
+        : (),
+        ),
+    (
+        $distmeta->{resources}{x_MailingList}
+        ? 'There is a mailing list available for users of this distribution,'
+            . "\nL<mailto:"
+            . $distmeta->{resources}{x_MailingList} . '>.'
+        : (),
+    ),
+    (
+        $distmeta->{resources}{x_IRC}
+        ? 'This distribution also has an IRC channel at' . "\nL<" . do {
 
-    $distmeta->{resources}{x_MailingList} ? 'There is a mailing list available for users of this distribution,' . "\nL<mailto:" . $distmeta->{resources}{x_MailingList} . '>.' : (),
-
-    $distmeta->{resources}{x_IRC}
-        ? 'This distribution also has an IRC channel at' . "\nL<"
-            . do {
-                # try to extract the channel
-                if (my ($network, $channel) = ($distmeta->{resources}{x_IRC} =~ m!(?:://)?(\w+(?:\.\w+)*)/?(#\w+)!)) {
-                    'C<' . $channel . '> on C<' . $network . '>|' . $distmeta->{resources}{x_IRC}
-                }
-                else {
+            # try to extract the channel
+            if (
+                my ( $network, $channel ) = (
                     $distmeta->{resources}{x_IRC}
-                }
+                        =~ m!(?:://)?(\w+(?:\.\w+)*)/?(#\w+)!
+                )
+                ) {
+                'C<'
+                    . $channel
+                    . '> on C<'
+                    . $network . '>|'
+                    . $distmeta->{resources}{x_IRC};
+            }
+            else {
+                $distmeta->{resources}{x_IRC};
+            }
             }
             . '>.'
         : (),
-
-    ($distmeta->{x_authority} // '') eq 'cpan:DROLSKY'
-    ? q{I am also usually active on IRC as 'autarch' on C<irc://irc.perl.org>.}
-    : (),
-) }}
+    ),
+    (
+        ( $distmeta->{x_authority} // '' ) eq 'cpan:DROLSKY'
+        ? q{I am also usually active on IRC as 'autarch' on C<irc://irc.perl.org>.}
+        : (),
+    ),
+    )
+}}
 SUPPORT
 
     return (
