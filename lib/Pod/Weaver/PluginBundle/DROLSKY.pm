@@ -80,7 +80,11 @@ sub configure {
                 match_anywhere => 0,
             },
         ],
-        [ $self->_source_section ],
+
+        # We don't enable GitHub::Meta under Travis so we don't have
+        # repository metadata. That means we end up generating an empty L<>
+        # tag and our pod syntax test fails.
+        ( $ENV{TRAVIS} ? () : [ $self->_source_section ] ),
     );
 
     my $config

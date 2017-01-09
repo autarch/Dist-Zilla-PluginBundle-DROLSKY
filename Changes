@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Fix test failures related to how POD is generated when running in Travis.
+
+
 0.79     2017-01-08
 
 - Replaced DROLSKY::CheckChangesHasContent plugin with
