@@ -25,7 +25,7 @@ use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::DROLSKY::TidyAll;
 use Dist::Zilla::Plugin::DROLSKY::WeaverConfig;
-use Dist::Zilla::Plugin::EnsureChangesHasContent;
+use Dist::Zilla::Plugin::EnsureChangesHasContent 0.02;
 use Dist::Zilla::Plugin::GenerateFile::FromShareDir 0.013;
 use Dist::Zilla::Plugin::Git::Check;
 use Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts;
