@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.79     2017-01-08
+
 - Replaced DROLSKY::CheckChangesHasContent plugin with
   EnsureChangesHasContent.
 

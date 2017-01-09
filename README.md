@@ -4,7 +4,7 @@ Dist::Zilla::PluginBundle::DROLSKY - DROLSKY's plugin bundle
 
 # VERSION
 
-version 0.78
+version 0.79
 
 # SYNOPSIS
 
@@ -15,7 +15,7 @@ version 0.78
 
     [@DROLSKY]
     dist = My-Module
-    ; Fefault is MakeMaker - or set it to ModuleBuild
+    ; Default is MakeMaker - or set it to ModuleBuild
     make_tool = MakeMaker
     ; These files won't be added to tarball
     exclude_files = ...
@@ -72,8 +72,7 @@ This is more or less equivalent to the following `dist.ini`:
     [TestRelease]
     [ConfirmRelease]
     [UploadToCPAN]
-    ; Opens up the main module and finds a $VERSION
-    [DROLSKY::VersionProvider]
+    [VersionFromMainModule]
 
     [Authority]
     ; Configured by setting authority for the bundle
@@ -152,12 +151,10 @@ This is more or less equivalent to the following `dist.ini`:
     check_all_plugins = 1
     check_all_prereqs = 1
     check_authordeps  = 1
-    skip = Dist::Zilla::Plugin::DROLSKY::CheckChangesHasContent
     skip = Dist::Zilla::Plugin::DROLSKY::Contributors
     skip = Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
     skip = Dist::Zilla::Plugin::DROLSKY::License
     skip = Dist::Zilla::Plugin::DROLSKY::TidyAll
-    skip = Dist::Zilla::Plugin::DROLSKY::VersionProvider
     skip = Pod::Weaver::PluginBundle::DROLSKY
 
     [Test::Pod::Coverage::Configurable]
@@ -235,10 +232,7 @@ This is more or less equivalent to the following `dist.ini`:
     [DROLSKY::License]
 
     [CheckPrereqsIndexed]
-
-    ; More or less like Dist::Zilla::Plugin::CheckChangesHasContent but uses
-    ; CPAN::Changes to parse the Changes file.
-    [DROLSKY::CheckChangesHasContent]
+    [EnsureChangesHasContent]
 
     ; Just like Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch except that
     ; it allows releases from any branch for TRIAL
@@ -280,10 +274,13 @@ This is more or less equivalent to the following `dist.ini`:
 
 # SUPPORT
 
-Bugs may be submitted through [the RT bug tracker](http://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-PluginBundle-DROLSKY)
-(or [bug-dist-zilla-pluginbundle-drolsky@rt.cpan.org](mailto:bug-dist-zilla-pluginbundle-drolsky@rt.cpan.org)).
+Bugs may be submitted at [https://github.com/autarch/Dist-Zilla-PluginBundle-DROLSKY/issues](https://github.com/autarch/Dist-Zilla-PluginBundle-DROLSKY/issues).
 
 I am also usually active on IRC as 'autarch' on `irc://irc.perl.org`.
+
+# SOURCE
+
+The source code repository for Dist-Zilla-PluginBundle-DROLSKY can be found at [https://github.com/autarch/Dist-Zilla-PluginBundle-DROLSKY](https://github.com/autarch/Dist-Zilla-PluginBundle-DROLSKY).
 
 # DONATIONS
 
@@ -312,8 +309,11 @@ Mark Fowler <mark@twoshortplanks.com>
 
 # COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2016 by Dave Rolsky.
+This software is Copyright (c) 2013 - 2017 by Dave Rolsky.
 
 This is free software, licensed under:
 
     The Artistic License 2.0 (GPL Compatible)
+
+The full text of the license can be found in the
+`LICENSE` file included with this distribution.
