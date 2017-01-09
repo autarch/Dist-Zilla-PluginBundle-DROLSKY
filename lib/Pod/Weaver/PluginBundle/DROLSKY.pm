@@ -47,26 +47,14 @@ sub configure {
     my $podweaver_plugin
         = ${ peek_sub( \&Dist::Zilla::Plugin::PodWeaver::weaver )->{'$self'}
         };
-
     my $zilla = $podweaver_plugin->zilla;
-    my $bundle_prefix;
-    for my $name ( map { $_->plugin_name } @{ $zilla->plugins } ) {
 
-        # We want a plugin that was added by our bundle.
-        next unless ($bundle_prefix) = $name =~ m{^(.+)/};
-        last;
-    }
-
-    my $license_plugin = $zilla->plugin_named( $bundle_prefix . '/License' );
+    my $license_plugin
+        = $zilla->plugin_named( '@' . $self->_prefix . '/License' );
     my $license_filename
         = $license_plugin ? $license_plugin->filename : 'LICENSE';
 
-    my $config
-        = $zilla->plugin_named( $bundle_prefix . '/DROLSKY::WeaverConfig' );
-    my $include_donations = $zilla->copyright_holder =~ /Rolsky/
-        && $config->include_donations_pod;
-
-    my @config = (
+    my @weaver_config = (
         '@CorePrep',
         [ '-SingleEncoding' => { encoding => 'UTF-8' } ],
         [ '-Transformer' => List     => { transformer => 'List' } ],
@@ -84,17 +72,52 @@ sub configure {
         [ 'Collect' => 'TYPES' => { command => 'type' } ],
         'Leftovers',
         [ 'Region' => 'postlude' ],
+        [ $self->_support_section ],
         [
-            'GenerateSection' => 'generate SUPPORT' => {
-                title            => 'SUPPORT',
-                main_module_only => 0,
-                text             => [
-                    <<'SUPPORT',
+            'AllowOverride' => 'allow override SUPPORT' => {
+                header_re      => '^(SUPPORT|BUGS)\b',
+                action         => 'prepend',
+                match_anywhere => 0,
+            },
+        ],
+        [ $self->_source_section ],
+    );
+
+    my $config
+        = $zilla->plugin_named(
+        '@' . $self->_prefix . '/DROLSKY::WeaverConfig' );
+    push @weaver_config, [ $self->_donation_section ]
+        if $zilla->copyright_holder =~ /Rolsky/
+        && $config->include_donations_pod;
+
+    push @weaver_config, (
+        'Authors',
+        [ 'Contributors' => { ':version' => '0.008' } ],
+        [
+            'Legal' => {
+                ':version'   => '4.011',
+                header       => 'COPYRIGHT AND ' . $license_filename,
+                license_file => $license_filename,
+            }
+        ],
+        [ 'Region' => 'footer' ],
+    );
+
+    return @weaver_config;
+}
+
+sub _support_section {
+    my $self = shift;
+
+    # It'd be simpler to just get the dist meta stuff right now but the pod
+    # weaver bundle is configured before this is ready, leading to an endless
+    # loop in Dist::Zilla::_build_distmeta (a bug in DZ? maybe).
+    my $template = <<'SUPPORT';
 {{ join("\n\n",
-    ($bugtracker_email && $bugtracker_email =~ /rt\.cpan\.org/)
-    ? "Bugs may be submitted through L<the RT bug tracker|$bugtracker_web>\n(or L<$bugtracker_email|mailto:$bugtracker_email>)."
+    $bugtracker_email
+    ? "Bugs may be submitted at L<$bugtracker_web> or via email to L<$bugtracker_email|mailto:$bugtracker_email>."
     : $bugtracker_web
-    ? "Bugs may be submitted through L<$bugtracker_web>."
+    ? "Bugs may be submitted at L<$bugtracker_web>."
     : (),
 
     $distmeta->{resources}{x_MailingList} ? 'There is a mailing list available for users of this distribution,' . "\nL<mailto:" . $distmeta->{resources}{x_MailingList} . '>.' : (),
@@ -118,26 +141,42 @@ sub configure {
     : (),
 ) }}
 SUPPORT
-                ]
-            },
-        ],
-        [
-            'AllowOverride' => 'allow override SUPPORT' => {
-                header_re      => '^(SUPPORT|BUGS)\b',
-                action         => 'prepend',
-                match_anywhere => 0,
-            },
-        ],
-    );
 
-    if ($include_donations) {
-        push @config, [
-            'GenerateSection' => 'generate DONATIONS' => {
-                title            => 'DONATIONS',
-                main_module_only => 1,
-                is_template      => 0,
-                text             => [
-                    <<'DONATIONS',
+    return (
+        'GenerateSection' => 'generate SUPPORT' => {
+            title            => 'SUPPORT',
+            main_module_only => 0,
+            is_template      => 1,
+            text             => [$template],
+        },
+    );
+}
+
+sub _source_section {
+    my $self = shift;
+
+    my $template = <<'SOURCE';
+The source code repository for {{ $name }} can be found at L<{{ $repository_web }}>.
+SOURCE
+
+    return (
+        'GenerateSection' => 'generate SOURCE' => {
+            title            => 'SOURCE',
+            main_module_only => 0,
+            is_template      => 1,
+            text             => [$template],
+        },
+    );
+}
+
+sub _donation_section {
+    return (
+        'GenerateSection' => 'generate DONATIONS' => {
+            title            => 'DONATIONS',
+            main_module_only => 1,
+            is_template      => 0,
+            text             => [
+                <<'DONATIONS',
 If you'd like to thank me for the work I've done on this module, please
 consider making a "donation" to me via PayPal. I spend a lot of free time
 creating free software, and would appreciate any support you'd care to offer.
@@ -153,25 +192,9 @@ on free software full time (let's all have a chuckle at that together).
 To donate, log into PayPal and send money to autarch@urth.org, or use the
 button at L<http://www.urth.org/~autarch/fs-donation.html>.
 DONATIONS
-                ]
-            },
-        ];
-    }
-
-    push @config, (
-        'Authors',
-        [ 'Contributors' => { ':version' => '0.008' } ],
-        [
-            'Legal' => {
-                ':version'   => '4.011',
-                header       => 'COPYRIGHT AND ' . $license_filename,
-                license_file => $license_filename,
-            }
-        ],
-        [ 'Region' => 'footer' ],
+            ]
+        },
     );
-
-    return @config;
 }
 
 sub mvp_bundle_config {
