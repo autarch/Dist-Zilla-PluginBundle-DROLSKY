@@ -615,6 +615,7 @@ sub _all_stopwords {
         open my $fh, '<:encoding(UTF-8)', $self->stopwords_file;
         while (<$fh>) {
             chomp;
+            next unless length $_ && $_ !~ /^\#/;
             push @stopwords, $_;
         }
         close $fh;
