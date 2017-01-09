@@ -63,7 +63,7 @@ use Dist::Zilla::Plugin::Test::ReportPrereqs;
 use Dist::Zilla::Plugin::Test::Synopsis;
 use Dist::Zilla::Plugin::Test::TidyAll 0.04;
 use Dist::Zilla::Plugin::Test::Version;
-use Dist::Zilla::Plugin::VersionFromMainModule;
+use Dist::Zilla::Plugin::VersionFromMainModule 0.02;
 use Path::Iterator::Rule;
 
 use Moose;
