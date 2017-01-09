@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.80     2017-01-08
+
 - Fix test failures related to how POD is generated when running in Travis.
 
 
