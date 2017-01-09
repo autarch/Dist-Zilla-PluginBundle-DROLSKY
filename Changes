@@ -5,6 +5,8 @@
 
 - Replaced DROLSKY::VersionProvider with VersionFromMainModule.
 
+- Improved some POD generation code and the POD which is generated.
+
 
 0.78     2016-11-29
 
