@@ -144,20 +144,12 @@ sub _tidyall_ini_content {
 sub _new_tidyall_ini {
     my $self = shift;
 
-    my $perl_select = '**/*.{pl,pm,t,psgi}';
+    my $perl_select = ['**/*.{pl,pm,t,psgi}'];
     my %tidyall     = (
-        'PerlTidy' => {
-            select => [$perl_select],
-            ignore => [ $self->_default_perl_ignore ],
-        },
-        'PerlCritic' => {
-            select => [$perl_select],
-            ignore => [ $self->_default_perl_ignore ],
-        },
-        'Test::Vars' => {
-            select => ['**/*.pm'],
-            ignore => [ $self->_default_perl_ignore ],
-        },
+        q{_}         => { ignore => $self->_default_perl_ignore },
+        'PerlTidy'   => { select => $perl_select },
+        'PerlCritic' => { select => $perl_select },
+        'Test::Vars' => { select => ['**/*.pm'] },
     );
 
     return $self->_config_to_ini( \%tidyall );
@@ -168,18 +160,6 @@ sub _munged_tidyall_ini {
 
     my $tidyall
         = Code::TidyAll::Config::INI::Reader->read_file('tidyall.ini');
-
-    my %has_default_ignore
-        = map { $_ => 1 } qw( PerlTidy PerlCritic Test::Vars );
-    for my $section ( grep { $has_default_ignore{$_} } sort keys %{$tidyall} )
-    {
-        $tidyall->{$section}{ignore} = [
-            uniqstr(
-                @{ $tidyall->{$section}{ignore} },
-                $self->_default_perl_ignore,
-            )
-        ];
-    }
 
     return $self->_config_to_ini($tidyall);
 }
@@ -200,7 +180,7 @@ sub _default_perl_ignore {
     my $dist = $self->zilla->name;
     push @ignore, "$dist-*/**/*";
 
-    return @ignore;
+    return \@ignore;
 }
 
 sub _config_to_ini {
@@ -233,8 +213,10 @@ sub _config_to_ini {
     );
 
     my $ini = q{};
-    for my $section ( sort keys %{$tidyall} ) {
-        $ini .= "[$section]\n";
+    for my $section ( q{_}, sort grep { $_ ne q{_} } keys %{$tidyall} ) {
+        if ( $section ne q{_} ) {
+            $ini .= "[$section]\n";
+        }
 
         for my $key ( $sorter->( keys %{ $tidyall->{$section} } ) ) {
             for my $val (

@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Require Code::TidyAll 0.56 so we can use the global ignore feature in the
+  geneated tidyall.ini file.
+
+
 0.80     2017-01-08
 
 - Fix test failures related to how POD is generated when running in Travis.

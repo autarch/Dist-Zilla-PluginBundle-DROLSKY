@@ -509,6 +509,7 @@ sub _explicit_prereq_plugins {
             'Prereqs' => 'Modules for use with tidyall' => {
                 -phase                              => 'develop',
                 -type                               => 'requires',
+                'Code::TidyAll'                     => '0.56',
                 'Code::TidyAll::Plugin::Test::Vars' => '0.02',
                 'Parallel::ForkManager'             => '1.19',
                 'Perl::Critic'                      => '1.126',
