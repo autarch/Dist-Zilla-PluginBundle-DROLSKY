@@ -131,7 +131,7 @@ pull request page. If your build fails, please take a look at the output.'
 } }}
 {{ if ( -e 'tidyall.ini' ) {
 '
-## Tidyall
+## TidyAll
 
 This distribution uses
 [Code::TidyAll](https://metacpan.org/release/Code-TidyAll) to enforce a
