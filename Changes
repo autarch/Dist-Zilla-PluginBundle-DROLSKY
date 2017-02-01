@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.81     2017-02-01
+
 - Require Code::TidyAll 0.56 so we can use the global ignore feature in the
   geneated tidyall.ini file.
 
