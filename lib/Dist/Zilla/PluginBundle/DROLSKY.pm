@@ -563,6 +563,7 @@ sub _prompt_if_stale_plugin {
                         Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
                         Dist::Zilla::Plugin::DROLSKY::License
                         Dist::Zilla::Plugin::DROLSKY::TidyAll
+                        Dist::Zilla::Plugin::DROLSKY::WeaverConfig
                         Pod::Weaver::PluginBundle::DROLSKY
                         )
                 ],
