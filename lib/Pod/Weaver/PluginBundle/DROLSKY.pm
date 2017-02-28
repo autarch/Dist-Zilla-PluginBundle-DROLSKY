@@ -8,6 +8,7 @@ our $VERSION = '0.82';
 use namespace::autoclean -also => ['_exp'];
 
 use Dist::Zilla::Plugin::PodWeaver;
+use List::Util qw( first );
 use Module::Runtime qw( use_module );
 use PadWalker qw( peek_sub );
 use Pod::Elemental::Transformer::List;
@@ -49,8 +50,7 @@ sub configure {
         };
     my $zilla = $podweaver_plugin->zilla;
 
-    my $license_plugin
-        = $zilla->plugin_named( '@' . $self->_prefix . '/License' );
+    my $license_plugin = $self->_plugin_matching( $zilla, 'License' );
     my $license_filename
         = $license_plugin ? $license_plugin->filename : 'LICENSE';
 
@@ -87,9 +87,7 @@ sub configure {
         ( $ENV{TRAVIS} ? () : [ $self->_source_section ] ),
     );
 
-    my $config
-        = $zilla->plugin_named(
-        '@' . $self->_prefix . '/DROLSKY::WeaverConfig' );
+    my $config = $self->_plugin_matching( $zilla, 'DROLSKY::WeaverConfig' );
     push @weaver_config, [ $self->_donation_section ]
         if $zilla->copyright_holder =~ /Rolsky/
         && $config->include_donations_pod;
@@ -108,6 +106,14 @@ sub configure {
     );
 
     return @weaver_config;
+}
+
+sub _plugin_matching {
+    my $self  = shift;
+    my $zilla = shift;
+    my $name  = shift;
+
+    return first { $_->plugin_name =~ m{/\Q$name} } @{ $zilla->plugins };
 }
 
 sub _support_section {
