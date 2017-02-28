@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.82     2017-02-28
+
 - Don't assume that our dzil and podweaver plugin bundles have the same
   prefix.
 
