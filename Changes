@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.83     2017-03-05
+
 - Made tidyall.ini generation smarter and more configurable.
 
 - Fix a formatting issue with the generated tidyall.ini when there were no
