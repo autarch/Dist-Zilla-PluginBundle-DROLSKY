@@ -18,10 +18,172 @@ use Sort::ByExample qw( sbe );
 
 use Moose;
 
+has sections => (
+    is      => 'ro',
+    isa     => 'ArrayRef[Str]',
+    default => sub { [] },
+);
+
+has stopwords_file => (
+    is        => 'ro',
+    isa       => 'Str',
+    predicate => '_has_stopwords_file',
+);
+
+sub mvp_multivalue_args {'sections'}
+
 with qw(
     Dist::Zilla::Role::BeforeBuild
     Dist::Zilla::Role::TextTemplate
 );
+
+sub before_build {
+    my $self = shift;
+
+    file('tidyall.ini')->spew( $self->_tidyall_ini_content );
+
+    $self->_maybe_write_file( 'perltidyrc',   $self->_perltidyrc );
+    $self->_maybe_write_file( 'perlcriticrc', $self->_perlcriticrc );
+
+    return;
+}
+
+sub _tidyall_ini_content {
+    my $self = shift;
+
+    return $self->_new_tidyall_ini
+        unless -e 'tidyall.ini';
+
+    return $self->_munged_tidyall_ini;
+}
+
+sub _new_tidyall_ini {
+    my $self = shift;
+
+    my $perl_select = ['**/*.{pl,pm,t,psgi}'];
+    my %tidyall     = (
+        q{_}         => { ignore => $self->_default_perl_ignore },
+        'PerlTidy'   => { select => $perl_select },
+        'PerlCritic' => { select => $perl_select },
+        'Test::Vars' => { select => ['**/*.pm'] },
+    );
+
+    if ( $self->_has_stopwords_file ) {
+        $tidyall{SortLines} = { select => $self->stopwords_file };
+    }
+
+    for my $line ( @{ $self->sections } ) {
+        my ( $section, $config ) = split /\s*:\s*/, $line,   2;
+        my ( $key,     $val )    = split /\s*=\s*/, $config, 2;
+        $tidyall{$section}{$key} //= [];
+        push @{ $tidyall{$section}{$key} }, $val;
+    }
+
+    return $self->_config_to_ini( \%tidyall );
+}
+
+sub _munged_tidyall_ini {
+    my $self = shift;
+
+    my $tidyall
+        = Code::TidyAll::Config::INI::Reader->read_file('tidyall.ini');
+
+    return $self->_config_to_ini($tidyall);
+}
+
+sub _default_perl_ignore {
+    my $self = shift;
+
+    my @ignore = qw(
+        .build/**/*
+        blib/**/*
+        t/00-*
+        t/author-*
+        t/release-*
+        t/zzz-*
+        xt/**/*
+    );
+
+    my $dist = $self->zilla->name;
+    push @ignore, "$dist-*/**/*";
+
+    if ( grep { $_->plugin_name =~ /\bConflicts/ }
+        @{ $self->zilla->plugins } ) {
+
+        my $conflicts_dir = $self->zilla->name =~ s{-}{/}gr;
+        push @ignore, "lib/$conflicts_dir/Conflicts.pm";
+    }
+
+    return \@ignore;
+}
+
+sub _config_to_ini {
+    my $self    = shift;
+    my $tidyall = shift;
+
+    my @xt_files = Path::Iterator::Rule->new->file->name(qr/\.t$/)->all('xt');
+
+    if (@xt_files) {
+        my $suffix = 'non-auto-generated xt';
+        for my $plugin (qw( PerlCritic PerlTidy )) {
+            $tidyall->{ $plugin . q{ } . $suffix }{select} = \@xt_files;
+        }
+    }
+
+    for my $section ( keys %{$tidyall} ) {
+        if ( $section =~ /PerlTidy/ ) {
+            $tidyall->{$section}{argv} = '--profile=$ROOT/perltidyrc';
+        }
+        elsif ( $section =~ /PerlCritic/ ) {
+            $tidyall->{$section}{argv} = '--profile=$ROOT/perlcriticrc';
+        }
+    }
+
+    my $sorter = sbe(
+        [ 'select', 'ignore' ],
+        {
+            fallback => sub { $_[0] cmp $_[1] },
+        },
+    );
+
+    my $ini = q{};
+    for my $section ( q{_}, sort grep { $_ ne q{_} } keys %{$tidyall} ) {
+        next unless keys %{ $tidyall->{$section} };
+
+        if ( $section ne q{_} ) {
+            $ini .= "[$section]\n";
+        }
+
+        for my $key ( $sorter->( keys %{ $tidyall->{$section} } ) ) {
+            for my $val (
+                sort ref $tidyall->{$section}{$key}
+                ? @{ $tidyall->{$section}{$key} }
+                : $tidyall->{$section}{$key}
+                ) {
+
+                $ini .= "$key = $val\n";
+            }
+        }
+
+        $ini .= "\n";
+    }
+
+    chomp $ini;
+
+    return $ini;
+}
+
+sub _maybe_write_file {
+    my $self    = shift;
+    my $file    = shift;
+    my $content = shift;
+
+    return if -e $file;
+
+    file($file)->spew($content);
+
+    return;
+}
 
 my $perltidyrc = <<'EOF';
 -l=78
@@ -47,6 +209,8 @@ my $perltidyrc = <<'EOF';
 --iterations=2
 -wbb="% + - * / x != == >= <= =~ !~ < > | & >= < = **= += *= &= <<= &&= -= /= |= >>= ||= .= %= ^= x="
 EOF
+
+sub _perltidyrc {$perltidyrc}
 
 my $perlcriticrc = <<'EOF';
 severity = 3
@@ -121,133 +285,7 @@ add_packages = Carp Test::Builder
 [-ControlStructures::ProhibitNegativeExpressionsInUnlessAndUntilConditions]
 EOF
 
-sub before_build {
-    my $self = shift;
-
-    file('tidyall.ini')->spew( $self->_tidyall_ini_content );
-
-    $self->_maybe_write_file( 'perlcriticrc', $perlcriticrc );
-    $self->_maybe_write_file( 'perltidyrc',   $perltidyrc );
-
-    return;
-}
-
-sub _tidyall_ini_content {
-    my $self = shift;
-
-    return $self->_new_tidyall_ini
-        unless -e 'tidyall.ini';
-
-    return $self->_munged_tidyall_ini;
-}
-
-sub _new_tidyall_ini {
-    my $self = shift;
-
-    my $perl_select = ['**/*.{pl,pm,t,psgi}'];
-    my %tidyall     = (
-        q{_}         => { ignore => $self->_default_perl_ignore },
-        'PerlTidy'   => { select => $perl_select },
-        'PerlCritic' => { select => $perl_select },
-        'Test::Vars' => { select => ['**/*.pm'] },
-    );
-
-    return $self->_config_to_ini( \%tidyall );
-}
-
-sub _munged_tidyall_ini {
-    my $self = shift;
-
-    my $tidyall
-        = Code::TidyAll::Config::INI::Reader->read_file('tidyall.ini');
-
-    return $self->_config_to_ini($tidyall);
-}
-
-sub _default_perl_ignore {
-    my $self = shift;
-
-    my @ignore = qw(
-        .build/**/*
-        blib/**/*
-        t/00-*
-        t/author-*
-        t/release-*
-        t/zzz-*
-        xt/**/*
-    );
-
-    my $dist = $self->zilla->name;
-    push @ignore, "$dist-*/**/*";
-
-    return \@ignore;
-}
-
-sub _config_to_ini {
-    my $self    = shift;
-    my $tidyall = shift;
-
-    my @xt_files = Path::Iterator::Rule->new->file->name(qr/\.t$/)->all('xt');
-
-    if (@xt_files) {
-        my $suffix = 'non-auto-generated xt';
-        for my $plugin (qw( PerlCritic PerlTidy )) {
-            $tidyall->{ $plugin . q{ } . $suffix }{select} = \@xt_files;
-        }
-    }
-
-    for my $section ( keys %{$tidyall} ) {
-        if ( $section =~ /PerlTidy/ ) {
-            $tidyall->{$section}{argv} = '--profile=$ROOT/perltidyrc';
-        }
-        elsif ( $section =~ /PerlCritic/ ) {
-            $tidyall->{$section}{argv} = '--profile=$ROOT/perlcriticrc';
-        }
-    }
-
-    my $sorter = sbe(
-        [ 'select', 'ignore' ],
-        {
-            fallback => sub { $_[0] cmp $_[1] },
-        },
-    );
-
-    my $ini = q{};
-    for my $section ( q{_}, sort grep { $_ ne q{_} } keys %{$tidyall} ) {
-        if ( $section ne q{_} ) {
-            $ini .= "[$section]\n";
-        }
-
-        for my $key ( $sorter->( keys %{ $tidyall->{$section} } ) ) {
-            for my $val (
-                sort ref $tidyall->{$section}{$key}
-                ? @{ $tidyall->{$section}{$key} }
-                : $tidyall->{$section}{$key}
-                ) {
-
-                $ini .= "$key = $val\n";
-            }
-        }
-
-        $ini .= "\n";
-    }
-
-    chomp $ini;
-
-    return $ini;
-}
-
-sub _maybe_write_file {
-    my $self    = shift;
-    my $file    = shift;
-    my $content = shift;
-
-    return if -e $file;
-
-    file($file)->spew($content);
-
-    return;
-}
+sub _perlcriticrc {$perlcriticrc}
 
 __PACKAGE__->meta->make_immutable;
 

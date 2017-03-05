@@ -193,6 +193,16 @@ has stopwords_file => (
     predicate => '_has_stopwords_file',
 );
 
+has tidyall_section => (
+    traits   => ['Array'],
+    is       => 'ro',
+    isa      => 'ArrayRef[Str]',
+    required => 1,
+    handles  => {
+        _has_tidyall_section => 'count',
+    },
+);
+
 has next_release_width => (
     is      => 'ro',
     isa     => 'Int',
@@ -289,7 +299,7 @@ sub _build_plugins {
         $self->_maybe_ppport_plugin,
         'DROLSKY::License',
         $self->_release_check_plugins,
-        'DROLSKY::TidyAll',
+        $self->_tidyall_plugin,
         $self->_git_plugins,
     ];
 }
@@ -724,6 +734,19 @@ sub _release_check_plugins {
             Git::CheckFor::MergeConflicts
             ),
     );
+}
+
+sub _tidyall_plugin {
+    my $self = shift;
+
+    my %tidyall_config;
+    $tidyall_config{sections} = $self->tidyall_section
+        if $self->_has_tidyall_section;
+    $tidyall_config{stopwords_file} = $self->stopwords_file
+        if $self->_has_stopwords_file;
+
+    return 'DROLSKY::TidyAll' unless keys %tidyall_config;
+    return [ 'DROLSKY::TidyAll' => \%tidyall_config ];
 }
 
 sub _git_plugins {
