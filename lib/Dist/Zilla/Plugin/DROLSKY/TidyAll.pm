@@ -69,7 +69,8 @@ sub _new_tidyall_ini {
     );
 
     if ( $self->_has_stopwords_file ) {
-        $tidyall{SortLines} = { select => $self->stopwords_file };
+        $tidyall{'SortLines::Naturally'}
+            = { select => $self->stopwords_file };
     }
 
     for my $line ( @{ $self->sections } ) {

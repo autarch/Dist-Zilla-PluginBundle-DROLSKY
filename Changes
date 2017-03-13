@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Use SortLines::Naturally tidyall plugin to sort lists of stopwords instead
+  of SortLines.
+
+
 0.83     2017-03-05
 
 - Made tidyall.ini generation smarter and more configurable.
