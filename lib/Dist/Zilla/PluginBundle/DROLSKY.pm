@@ -517,14 +517,15 @@ sub _explicit_prereq_plugins {
         # Because Code::TidyAll does not depend on them
         [
             'Prereqs' => 'Modules for use with tidyall' => {
-                -phase                              => 'develop',
-                -type                               => 'requires',
-                'Code::TidyAll'                     => '0.56',
-                'Code::TidyAll::Plugin::Test::Vars' => '0.02',
-                'Parallel::ForkManager'             => '1.19',
-                'Perl::Critic'                      => '1.126',
-                'Perl::Tidy'                        => '20160302',
-                'Test::Vars'                        => '0.009',
+                -phase                                        => 'develop',
+                -type                                         => 'requires',
+                'Code::TidyAll'                               => '0.56',
+                'Code::TidyAll::Plugin::SortLines::Naturally' => '0.000003',
+                'Code::TidyAll::Plugin::Test::Vars'           => '0.02',
+                'Parallel::ForkManager'                       => '1.19',
+                'Perl::Critic'                                => '1.126',
+                'Perl::Tidy'                                  => '20160302',
+                'Test::Vars'                                  => '0.009',
             }
         ],
         [
