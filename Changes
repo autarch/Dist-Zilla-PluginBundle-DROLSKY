@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.85     2017-03-14
+
 - Add Code::TidyAll::Plugin::SortLines::Naturally to develop prereqs for
   modules which use this bundle.
 
