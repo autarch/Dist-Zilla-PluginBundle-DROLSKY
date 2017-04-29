@@ -400,22 +400,13 @@ sub _build_files_to_copy_from_build {
     push @files,
         $self->make_tool eq 'MakeMaker' ? 'Makefile.PL' : 'Build.PL';
 
-    my $rule = Path::Iterator::Rule->new;
-    my $dist = $self->dist;
-
-    # We need to skip any existing build dirs
-    my $iter = $rule->file->name('ppport.h')->skip(
-        $rule->new->dir->name(qr{^\Q$dist\E-\d+\.\d+}),
-        $rule->new->dir->name('.build')
-    )->iter('.');
-
-    if ( my $ppport = $iter->() ) {
-
-        # If the file is in a subdir we end up with a name like
-        # "./foo/ppport.h" - the initial "./" bit will confuse the gatherdir
-        # exclude rules.
-        $ppport =~ s{^\./}{};
-        push @files, $ppport;
+    if ( $self->_has_xs ) {
+        if ( $self->payload->{'PPPort.filename'} ) {
+            push @files, $self->payload->{'PPPort.filename'};
+        }
+        else {
+            push @files, 'ppport.h';
+        }
     }
 
     return \@files;
