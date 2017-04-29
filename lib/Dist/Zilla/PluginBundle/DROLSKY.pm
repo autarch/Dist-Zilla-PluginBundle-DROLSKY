@@ -138,10 +138,7 @@ has _has_xs => (
     is      => 'ro',
     isa     => 'Bool',
     lazy    => 1,
-    default => sub {
-        my $rule = Path::Iterator::Rule->new;
-        return scalar $rule->file->name(qr/\.xs$/)->all('.') ? 1 : 0;
-    },
+    builder => '_build_has_xs',
 );
 
 has pod_coverage_class => (
@@ -804,6 +801,16 @@ sub _build_allow_dirty {
             tidyall.ini
             )
     ];
+}
+
+sub _build_has_xs {
+    my $self = shift;
+
+    my $rule = Path::Iterator::Rule->new;
+    return $rule->skip_dirs(
+        '.build',
+        $self->dist . '-*',
+    )->file->name(qr/\.xs$/)->iter('.')->() ? 1 : 0;
 }
 
 __PACKAGE__->meta->make_immutable;
