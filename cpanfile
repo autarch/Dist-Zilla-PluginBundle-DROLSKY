@@ -27,6 +27,7 @@ requires "Dist::Zilla::Plugin::MetaConfig" => "0";
 requires "Dist::Zilla::Plugin::MetaJSON" => "0";
 requires "Dist::Zilla::Plugin::MetaProvides::Package" => "0";
 requires "Dist::Zilla::Plugin::MetaResources" => "0";
+requires "Dist::Zilla::Plugin::MinimumPerl" => "0";
 requires "Dist::Zilla::Plugin::MojibakeTests" => "0";
 requires "Dist::Zilla::Plugin::NextRelease" => "0";
 requires "Dist::Zilla::Plugin::PPPort" => "0";
@@ -84,7 +85,7 @@ requires "Sort::ByExample" => "0";
 requires "String::RewritePrefix" => "0";
 requires "autodie" => "0";
 requires "namespace::autoclean" => "0";
-requires "perl" => "v5.10.0";
+requires "perl" => "5.013002";
 requires "strict" => "0";
 requires "warnings" => "0";
 
@@ -92,6 +93,7 @@ on 'test' => sub {
   requires "ExtUtils::MakeMaker" => "0";
   requires "File::Spec" => "0";
   requires "Test::More" => "0.96";
+  requires "perl" => "5.013002";
 };
 
 on 'test' => sub {
@@ -101,6 +103,7 @@ on 'test' => sub {
 on 'configure' => sub {
   requires "ExtUtils::MakeMaker" => "0";
   requires "File::ShareDir::Install" => "0.06";
+  requires "perl" => "5.013002";
 };
 
 on 'develop' => sub {
@@ -129,5 +132,4 @@ on 'develop' => sub {
   requires "Test::Spelling" => "0.12";
   requires "Test::Vars" => "0.009";
   requires "Test::Version" => "2.05";
-  requires "blib" => "1.01";
 };
