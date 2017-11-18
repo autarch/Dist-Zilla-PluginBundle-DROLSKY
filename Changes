@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.87     2017-11-18
+
 - Add a has_xs configuration option. Normally this is determined by looking
   for XS files in the distro, but I have a new distro where I need to set this
   explicitly.
