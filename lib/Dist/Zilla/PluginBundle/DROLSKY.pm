@@ -107,6 +107,13 @@ has exclude_files => (
     required => 1,
 );
 
+has has_xs => (
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    builder => '_build_has_xs',
+);
+
 has _exclude => (
     is      => 'ro',
     isa     => 'HashRef[ArrayRef]',
@@ -133,13 +140,6 @@ has _allow_dirty => (
     isa     => 'ArrayRef[Str]',
     lazy    => 1,
     builder => '_build_allow_dirty',
-);
-
-has _has_xs => (
-    is      => 'ro',
-    isa     => 'Bool',
-    lazy    => 1,
-    builder => '_build_has_xs',
 );
 
 has pod_coverage_class => (
@@ -402,7 +402,7 @@ sub _build_files_to_copy_from_build {
     push @files,
         $self->make_tool eq 'MakeMaker' ? 'Makefile.PL' : 'Build.PL';
 
-    if ( $self->_has_xs ) {
+    if ( $self->has_xs ) {
         if ( $self->payload->{'PPPort.filename'} ) {
             push @files, $self->payload->{'PPPort.filename'};
         }
@@ -639,6 +639,8 @@ sub _default_stopwords {
 }
 
 sub _extra_test_plugins {
+    my $self = shift;
+
     return (
         qw(
             RunExtraTests
@@ -702,7 +704,7 @@ sub _contributing_md_plugin {
         'GenerateFile::FromShareDir' => 'Generate CONTRIBUTING.md' => {
             -dist     => ( __PACKAGE__ =~ s/::/-/gr ),
             -filename => 'CONTRIBUTING.md',
-            has_xs    => $self->_has_xs,
+            has_xs    => $self->has_xs,
         },
     ];
 }
@@ -710,7 +712,7 @@ sub _contributing_md_plugin {
 sub _maybe_ppport_plugin {
     my $self = shift;
 
-    return unless $self->_has_xs;
+    return unless $self->has_xs;
     return 'PPPort';
 }
 
@@ -831,6 +833,8 @@ __END__
     exclude_files = ...
     ; Default is DROLSKY
     authority = DROLSKY
+    ; Used to do things like add the PPPort plugin - determined automatically but can be overridden
+    has_xs = ...
     ; Passed to AutoPrereqs - can be repeated
     prereqs_skip = ...
     ; Passed to Test::Pod::Coverage::Configurable if set
