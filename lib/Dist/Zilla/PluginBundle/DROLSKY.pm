@@ -42,7 +42,6 @@ use Dist::Zilla::Plugin::MetaConfig;
 use Dist::Zilla::Plugin::MetaJSON;
 use Dist::Zilla::Plugin::MetaProvides::Package;
 use Dist::Zilla::Plugin::MetaResources;
-use Dist::Zilla::Plugin::MinimumPerl;
 use Dist::Zilla::Plugin::MojibakeTests;
 use Dist::Zilla::Plugin::NextRelease;
 use Dist::Zilla::Plugin::PPPort;
@@ -276,7 +275,6 @@ sub _build_plugins {
         $self->make_tool,
         $self->_gather_dir_plugin,
         $self->_basic_plugins,
-        'MinimumPerl',
         $self->_authority_plugin,
         $self->_auto_prereqs_plugin,
         $self->_copy_files_from_build_plugin,
