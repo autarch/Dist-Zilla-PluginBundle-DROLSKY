@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.88     2017-11-21
+
 - Removed the MinimumPerl plugin. It scans all sorts of non-perl files (like
   html) and comes up with bogus minimum versions because of that.
 
