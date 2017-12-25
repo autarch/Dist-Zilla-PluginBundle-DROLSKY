@@ -160,7 +160,7 @@ sub _config_to_ini {
                 sort ref $tidyall->{$section}{$key}
                 ? @{ $tidyall->{$section}{$key} }
                 : $tidyall->{$section}{$key}
-                ) {
+            ) {
 
                 $ini .= "$key = $val\n";
             }
