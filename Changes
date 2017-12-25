@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- The generated perlcriticrc now does a better job of selecting themes.
+
+
 0.88     2017-11-21
 
 - Removed the MinimumPerl plugin. It scans all sorts of non-perl files (like
