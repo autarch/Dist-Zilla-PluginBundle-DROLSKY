@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.89     2017-12-24
+
 - The generated perlcriticrc now does a better job of selecting themes.
 
 
