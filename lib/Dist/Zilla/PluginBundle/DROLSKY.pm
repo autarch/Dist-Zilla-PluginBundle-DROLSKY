@@ -23,6 +23,8 @@ use Dist::Zilla::Plugin::CheckVersionIncrement;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
 use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::License;
+use Dist::Zilla::Plugin::DROLSKY::MakeMaker;
+use Dist::Zilla::Plugin::DROLSKY::RunExtraTests;
 use Dist::Zilla::Plugin::DROLSKY::TidyAll;
 use Dist::Zilla::Plugin::DROLSKY::WeaverConfig;
 use Dist::Zilla::Plugin::EnsureChangesHasContent 0.02;
@@ -48,7 +50,6 @@ use Dist::Zilla::Plugin::PPPort;
 use Dist::Zilla::Plugin::PodSyntaxTests;
 use Dist::Zilla::Plugin::PromptIfStale 0.050;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
-use Dist::Zilla::Plugin::RunExtraTests;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
 use Dist::Zilla::Plugin::Test::CPAN::Changes;
 use Dist::Zilla::Plugin::Test::CPAN::Meta::JSON;
@@ -81,7 +82,7 @@ has dist => (
 has make_tool => (
     is      => 'ro',
     isa     => 'Str',
-    default => 'MakeMaker',
+    default => 'DROLSKY::MakeMaker',
 );
 
 has authority => (
@@ -398,7 +399,7 @@ sub _build_files_to_copy_from_build {
     );
 
     push @files,
-        $self->make_tool eq 'MakeMaker' ? 'Makefile.PL' : 'Build.PL';
+        $self->make_tool =~ /MakeMaker/ ? 'Makefile.PL' : 'Build.PL';
 
     if ( $self->has_xs ) {
         if ( $self->payload->{'PPPort.filename'} ) {
@@ -641,7 +642,7 @@ sub _extra_test_plugins {
 
     return (
         qw(
-            RunExtraTests
+            DROLSKY::RunExtraTests
             MojibakeTests
             Test::CleanNamespaces
             Test::CPAN::Changes
@@ -825,8 +826,8 @@ __END__
 
     [@DROLSKY]
     dist = My-Module
-    ; Default is MakeMaker - or set it to ModuleBuild
-    make_tool = MakeMaker
+    ; Default is DROLSKY::MakeMaker - or set it to ModuleBuild
+    make_tool = DROLSKY::MakeMaker
     ; These files won't be added to tarball
     exclude_files = ...
     ; Default is DROLSKY
@@ -864,8 +865,8 @@ configure any plugin as needed.
 
 This is more or less equivalent to the following F<dist.ini>:
 
-    ; Picks one of these - defaults to MakeMaker
-    [MakeMaker]
+    ; Picks one of these - defaults to DROLSKY::MakeMaker
+    [DROLSKY::MakeMaker]
     [ModuleBuild]
 
     [Git::GatherDir]
@@ -983,7 +984,7 @@ This is more or less equivalent to the following F<dist.ini>:
 
     [PodSyntaxTests]
 
-    [RunExtraTests]
+    [DROLSKY::RunExtraTests]
     [MojibakeTests]
     [Test::CleanNamespaces]
     [Test::CPAN::Changes]
