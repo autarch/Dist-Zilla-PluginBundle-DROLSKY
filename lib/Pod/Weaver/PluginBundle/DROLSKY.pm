@@ -57,9 +57,9 @@ sub configure {
     my @weaver_config = (
         '@CorePrep',
         [ '-SingleEncoding' => { encoding => 'UTF-8' } ],
-        [ '-Transformer' => List     => { transformer => 'List' } ],
-        [ '-Transformer' => Verbatim => { transformer => 'Verbatim' } ],
-        [ 'Region'       => 'header' ],
+        [ '-Transformer'    => List => { transformer => 'List' } ],
+        [ '-Transformer'    => Verbatim => { transformer => 'Verbatim' } ],
+        [ 'Region'          => 'header' ],
         'Name',
         'Version',
         [ 'Region'  => 'prelude' ],
