@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.92     2018-05-26
+
 - Require Devel::PPPort 3.42. The included in the core with older perl
   versions leads to warnings when compiling XS code with newer Perls.
 
