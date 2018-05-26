@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- The generated Makefile.PL for XS modules. will add "-Wall" and "-Werror" as
+  a compiler flags when AUTHOR_TESTING is true.
+
+
 0.90     2018-05-13
 
 - Added some hackish plugins to make tests run in parallel by default,

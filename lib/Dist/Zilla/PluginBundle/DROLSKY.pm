@@ -9,7 +9,9 @@ use namespace::autoclean;
 
 our $VERSION = '0.91';
 
+use Class::MOP;
 use Dist::Zilla 6.0;
+use Path::Iterator::Rule;
 
 # For the benefit of AutoPrereqs
 use Dist::Zilla::Plugin::Authority;
@@ -65,7 +67,6 @@ use Dist::Zilla::Plugin::Test::Synopsis;
 use Dist::Zilla::Plugin::Test::TidyAll 0.04;
 use Dist::Zilla::Plugin::Test::Version;
 use Dist::Zilla::Plugin::VersionFromMainModule 0.02;
-use Path::Iterator::Rule;
 
 use Moose;
 
@@ -272,8 +273,13 @@ sub configure {
 sub _build_plugins {
     my $self = shift;
 
+    my %make_tool_args;
+    if ( $self->make_tool =~ /MakeMaker/ ) {
+        $make_tool_args{has_xs} = $self->has_xs;
+    }
+
     return [
-        $self->make_tool,
+        [ $self->make_tool => \%make_tool_args ],
         $self->_gather_dir_plugin,
         $self->_basic_plugins,
         $self->_authority_plugin,
