@@ -21,6 +21,12 @@ has has_xs => (
     default => 0,
 );
 
+has wall_min_perl_version => (
+    is      => 'ro',
+    isa     => 'Str',
+    default => '5.008008',
+);
+
 with 'Dist::Zilla::Plugin::DROLSKY::Role::CoreCounter';
 
 # Dist::Zilla provides no way to pass a `-j` option when running dzil release
@@ -35,10 +41,13 @@ override _build_WriteMakefile_dump => sub {
     my $dump = super();
     return $dump unless $self->has_xs;
 
-    $dump .= <<'EOF';
+    my $wall_min_version = $self->wall_min_version;
+
+    $dump .= sprintf( <<'EOF', $self->wall_min_version );
 my $gcc_warnings = $ENV{AUTHOR_TESTING} ? q{ -Wall -Werror} : q{};
 $WriteMakefileArgs{DEFINE}
-    = ( $WriteMakefileArgs{DEFINE} || q{} ) . $gcc_warnings;
+    = ( $WriteMakefileArgs{DEFINE} || q{} ) . $gcc_warnings
+    if $] >= %s;
 
 EOF
 

@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+- Make it possible to only add the compiler warning flags with a minimum Perl
+  version. Some modules I maintain will not compile warning-free on older
+  Perls because of warnings from the Perl core headers.
+
+
 0.92     2018-05-26
 
 - Require Devel::PPPort 3.42. The included in the core with older perl
@@ -8,7 +13,7 @@
 
 0.91     2018-05-26
 
-- The generated Makefile.PL for XS modules. will add "-Wall" and "-Werror" as
+- The generated Makefile.PL for XS modules will add "-Wall" and "-Werror" as
   a compiler flags when AUTHOR_TESTING is true.
 
 
