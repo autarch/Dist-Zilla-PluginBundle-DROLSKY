@@ -9,7 +9,7 @@ use namespace::autoclean;
 
 our $VERSION = '0.92';
 
-use Class::MOP;
+use Devel::PPPort 3.42;
 use Dist::Zilla 6.0;
 use Path::Iterator::Rule;
 
