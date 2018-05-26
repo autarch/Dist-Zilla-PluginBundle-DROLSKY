@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.91     2018-05-26
+
 - The generated Makefile.PL for XS modules. will add "-Wall" and "-Werror" as
   a compiler flags when AUTHOR_TESTING is true.
 
