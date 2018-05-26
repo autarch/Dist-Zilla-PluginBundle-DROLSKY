@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.93     2018-05-26
+
 - Make it possible to only add the compiler warning flags with a minimum Perl
   version. Some modules I maintain will not compile warning-free on older
   Perls because of warnings from the Perl core headers.
