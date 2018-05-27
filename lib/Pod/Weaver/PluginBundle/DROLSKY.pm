@@ -3,7 +3,7 @@ package Pod::Weaver::PluginBundle::DROLSKY;
 use strict;
 use warnings;
 
-our $VERSION = '0.95';
+our $VERSION = '0.96';
 
 use namespace::autoclean -also => ['_exp'];
 
