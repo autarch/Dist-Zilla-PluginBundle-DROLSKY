@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Require version 0.45 of the GitHub plugins and always authenticate when
+  getting repo metadata.
+
+
 0.94     2018-05-26
 
 - Fix my broken code.

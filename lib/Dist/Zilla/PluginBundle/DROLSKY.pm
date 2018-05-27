@@ -38,8 +38,8 @@ use Dist::Zilla::Plugin::Git::Contributors;
 use Dist::Zilla::Plugin::Git::GatherDir;
 use Dist::Zilla::Plugin::Git::Push;
 use Dist::Zilla::Plugin::Git::Tag;
-use Dist::Zilla::Plugin::GitHub::Meta;
-use Dist::Zilla::Plugin::GitHub::Update;
+use Dist::Zilla::Plugin::GitHub::Meta 0.45;
+use Dist::Zilla::Plugin::GitHub::Update 0.45;
 use Dist::Zilla::Plugin::InstallGuide;
 use Dist::Zilla::Plugin::Meta::Contributors;
 use Dist::Zilla::Plugin::MetaConfig;
@@ -427,8 +427,9 @@ sub _github_plugins {
     return (
         [
             'GitHub::Meta' => {
-                bugs     => $self->use_github_issues,
-                homepage => $self->use_github_homepage,
+                bugs         => $self->use_github_issues,
+                homepage     => $self->use_github_homepage,
+                require_auth => 1,
             },
         ],
         [ 'GitHub::Update' => { metacpan => 1 } ],
