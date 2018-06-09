@@ -9,12 +9,6 @@ maintainer(s) through the bug queue described later in this document
 follow any of the steps in this document to submit a patch or bug report;
 these are just recommendations, intended to help you (and help us help you
 faster).
-{{
-!$ENV{AUTOMATED_TESTING} && -d '.git' && `git ls-files TODO` eq "TODO\n"
-  ? "\nThis distribution has a TODO file in the repository; you may want to check
-there to see if your issue or patch idea is mentioned.\n"
-  : ''
-}}
 
 The distribution is managed with
 [Dist::Zilla](https://metacpan.org/release/Dist-Zilla).
