@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- More tweaks to the CONTRIBUTING.md file.
+
+
 0.97     2018-06-09
 
 - Fixed a small issue in the generated CONTRIBUTING.md file for distros.
