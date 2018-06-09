@@ -7,7 +7,7 @@ use warnings;
 use autodie;
 use namespace::autoclean;
 
-our $VERSION = '0.98';
+our $VERSION = '0.99';
 
 use Devel::PPPort 3.42;
 use Dist::Zilla 6.0;
