@@ -117,8 +117,7 @@ my $extra = $dist->distmeta->{resources}{x_MailingList}
 $extra .= $dist->distmeta->{resources}{x_IRC}
     ? "\n\n" . 'This distribution also has an IRC channel at' . "\n" . $dist->distmeta->{resources}{x_IRC}
     : '';
-# send questions to the bugtracker if nowhere better
-$extra ||= 'This is a good place to send your questions about the usage of this distribution.';
+$extra;
 }}
 {{ if ( -e '.travis.yml' ) {
 '
