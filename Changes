@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Fixed a small issue in the generated CONTRIBUTING.md file for distros.
+
+
 0.96     2018-06-09
 
 - Work around a bug in MakeMaker::Awesome that causes it to not include code

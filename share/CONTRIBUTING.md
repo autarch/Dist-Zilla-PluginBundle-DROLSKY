@@ -109,8 +109,7 @@ https://help.github.com/articles/creating-a-pull-request' }
 }}
 
 If you have found a bug, but do not have an accompanying patch to fix it, you
-can submit an issue report [via the web]({{ $dist->distmeta->{resources}{bugtracker}{web} // 'WARNING: bugtracker data not set!' }})
-{{ $dist->distmeta->{resources}{bugtracker}{mailto} ? 'or [via email](' . $dist->distmeta->{resources}{bugtracker}{mailto} : ')' }}.
+can submit an issue report [via the web]({{ $dist->distmeta->{resources}{bugtracker}{web} // 'WARNING: bugtracker data not set!' }}){{ $dist->distmeta->{resources}{bugtracker}{mailto} ? ' or [via email](' . $dist->distmeta->{resources}{bugtracker}{mailto} . ')' : q{} }}.
 {{
 my $extra = $dist->distmeta->{resources}{x_MailingList}
     ? "\n\n" . 'There is a mailing list available for users of this distribution,' . "\n" . $dist->distmeta->{resources}{x_MailingList}
