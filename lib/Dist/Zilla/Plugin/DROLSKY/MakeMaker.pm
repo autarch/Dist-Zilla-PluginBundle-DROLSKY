@@ -42,10 +42,9 @@ override _build_WriteMakefile_dump => sub {
     return $dump unless $self->has_xs;
 
     $dump .= sprintf( <<'EOF', $self->wall_min_perl_version );
-my $gcc_warnings = $ENV{AUTHOR_TESTING} ? q{ -Wall -Werror} : q{};
+my $gcc_warnings = $ENV{AUTHOR_TESTING} && $] >= %s ? q{ -Wall -Werror} : q{};
 $WriteMakefileArgs{DEFINE}
-    = ( $WriteMakefileArgs{DEFINE} || q{} ) . $gcc_warnings
-    if $] >= %s;
+    = ( $WriteMakefileArgs{DEFINE} || q{} ) . $gcc_warnings;
 
 EOF
 
