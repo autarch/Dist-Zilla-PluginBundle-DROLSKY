@@ -1,5 +1,12 @@
 {{$NEXT}}
 
+- Work around a bug in MakeMaker::Awesome that causes it to not include code
+  in the Makefile.PL to indicate the minimum required version of Perl when one
+  exists. See
+  https://github.com/avar/dist-zilla-plugin-makemaker-awesome/pull/9 for more
+  details.
+
+
 0.95     2018-05-27
 
 - Require version 0.45 of the GitHub plugins and always authenticate when

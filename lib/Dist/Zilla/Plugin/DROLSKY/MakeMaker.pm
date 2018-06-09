@@ -35,6 +35,13 @@ sub default_jobs {
     return shift->_core_count;
 }
 
+# This is needed until
+# https://github.com/avar/dist-zilla-plugin-makemaker-awesome/pull/9 is merged
+# or some other fix is made for the underlying issue.
+has '+eumm_version' => (
+    default => '0',
+);
+
 override _build_WriteMakefile_dump => sub {
     my $self = shift;
 
