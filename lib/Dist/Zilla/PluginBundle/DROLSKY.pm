@@ -279,7 +279,6 @@ sub _build_plugins {
     }
 
     return [
-        [ $self->make_tool => \%make_tool_args ],
         $self->_gather_dir_plugin,
         $self->_basic_plugins,
         $self->_authority_plugin,
@@ -306,6 +305,11 @@ sub _build_plugins {
         $self->_release_check_plugins,
         $self->_tidyall_plugin,
         $self->_git_plugins,
+
+        # This needs to be last so that MakeMaker::Awesome can see all the
+        # prereqs that a distro has. If it comes first, it tries to check the
+        # prereqs before they've been added and makes a mess of things.
+        [ $self->make_tool => \%make_tool_args ],
     ];
 }
 
