@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.99     2018-06-21
+
 - Add a plugin to generate a CODE_OF_CONDUCT.md and copy this into the repo
   after release. The text is from
   https://www.contributor-covenant.org/version/1/4/code-of-conduct.html.
