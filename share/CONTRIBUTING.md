@@ -98,19 +98,18 @@ $extra .= $dist->distmeta->{resources}{x_IRC}
 $extra;
 }}
 {{ if ( -e '.travis.yml' ) {
-    my $ci = '
+    my ($path) = `git remote show -n origin` =~ /github\.com:(.+)\.git/;
+    my $ci_links = "on Linux by [Travis](https://travis-ci.org/$path)";
+    if ( -e 'appveyor.yml' ) {
+        # AppVeyor paths use my username, not the GitHub group name.
+        $path =~ s{^.+/}{autarch/};
+        $ci_links .= " and on Windows by [AppVeyor](https://ci.appveyor.com/project/$path)";
+    }
+    my $ci = "
 ## Continuous Integration
 
-All pull requests for this distribution will be automatically tested by
-[Travis](https://travis-ci.org/) and the build status will be reported on the
-pull request page. If your build fails, please take a look at the output.';
-
-    if ( -e 'appyeyor.yml' ) {
-        $ci .='
-
-Pull requests are also tested on Windows by [AppVeyor](https://www.appveyor.com/).';
-
-}
+All pull requests for this distribution will be automatically tested
+$ci_links.";
 
 $ci .= '
 
