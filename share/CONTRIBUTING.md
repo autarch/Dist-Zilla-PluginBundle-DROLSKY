@@ -81,8 +81,9 @@ if ((my $link = $dist->distmeta->{resources}{repository}{web}) =~ /github/) {
 "\n" . 'The code for this distribution is [hosted on GitHub](' . $link . ').'
 . "\n" .'
 You can submit code changes by forking the repository, pushing your code
-changes to your clone, and then submitting a pull request. See the GitHub
-documentation for [detailed instructions on pull
+changes to your clone, and then submitting a pull request. Please update the
+Changes file with a user-facing description of your changes as part of your
+work. See the GitHub documentation for [detailed instructions on pull
 requests](https://help.github.com/articles/creating-a-pull-request)'; }
 }}
 
