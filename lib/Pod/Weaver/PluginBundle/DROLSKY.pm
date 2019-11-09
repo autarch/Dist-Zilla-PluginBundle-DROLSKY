@@ -57,9 +57,9 @@ sub configure {
     my @weaver_config = (
         '@CorePrep',
         [ '-SingleEncoding' => { encoding => 'UTF-8' } ],
-        [ '-Transformer'    => List => { transformer => 'List' } ],
-        [ '-Transformer'    => Verbatim => { transformer => 'Verbatim' } ],
-        [ 'Region'          => 'header' ],
+        [ '-Transformer' => List     => { transformer => 'List' } ],
+        [ '-Transformer' => Verbatim => { transformer => 'Verbatim' } ],
+        [ 'Region'       => 'header' ],
         'Name',
         'Version',
         [ 'Region'  => 'prelude' ],
@@ -277,7 +277,7 @@ sub _expand_config {
     # Region plugins have the custom plugin name moved to 'region_name' parameter,
     # because we don't want our bundle name to be part of the region name.
     if ( $class eq _exp('Region') ) {
-        $name = $this_spec->[1];
+        $name    = $this_spec->[1];
         $payload = { region_name => $this_spec->[1], %$payload };
     }
 
