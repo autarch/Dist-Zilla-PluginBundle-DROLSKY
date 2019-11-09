@@ -114,7 +114,8 @@ $ci_links.";
 $ci .= '
 
 All CI results will be visible in the pull request on GitHub. Follow the
-appropriate links for details when tests fail.';
+appropriate links for details when tests fail. PRs cannot be merged until tests
+pass.';
 
 $ci;
 
