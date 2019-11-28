@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Don't include GitHub::Meta when running under Azure Pipelines.
+
+
 1.02     2019-11-09
 
 - And more tweaks to the generated CONTRIBUTING.md file.
