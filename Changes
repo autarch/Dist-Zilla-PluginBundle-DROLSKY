@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.04     2019-11-28
+
 - Fix check for whether we're being run in CI.
 
 
