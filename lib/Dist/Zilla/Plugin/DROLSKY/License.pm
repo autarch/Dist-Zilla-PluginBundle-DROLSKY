@@ -7,7 +7,7 @@ use warnings;
 use autodie;
 use namespace::autoclean;
 
-our $VERSION = '1.04';
+our $VERSION = '1.05';
 
 use Module::Runtime qw( use_module );
 use String::RewritePrefix;
