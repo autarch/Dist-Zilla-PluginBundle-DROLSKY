@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Fix check for whether we're being run in CI.
+
+
 1.03     2019-11-28
 
 - Don't include GitHub::Meta when running under Azure Pipelines.

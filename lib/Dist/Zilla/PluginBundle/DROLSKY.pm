@@ -242,7 +242,7 @@ has _running_in_ci => (
     default => sub {
 
         # AGENT_ID is Azure Pipelines.
-        return $ENV{TRAVIS} || $ENV{AGENT_ID};
+        return $ENV{TRAVIS} || $ENV{AGENT_ID} ? 1 : 0;
     },
 );
 
