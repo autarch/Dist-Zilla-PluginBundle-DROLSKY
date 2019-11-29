@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Fix check for whether we're being run in CI in the Pod::Weaver bundle as
+  well. Without this the bundle generated bad POD with an empty `L<>` tag.
+
+
 1.04     2019-11-28
 
 - Fix check for whether we're being run in CI.

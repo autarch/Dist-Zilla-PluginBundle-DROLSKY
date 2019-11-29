@@ -81,10 +81,10 @@ sub configure {
             },
         ],
 
-        # We don't enable GitHub::Meta under Travis so we don't have
+        # We don't enable GitHub::Meta under CI so we don't have
         # repository metadata. That means we end up generating an empty L<>
         # tag and our pod syntax test fails.
-        ( $ENV{TRAVIS} ? () : [ $self->_source_section ] ),
+        ( $self->_running_in_ci ? () : [ $self->_source_section ] ),
     );
 
     my $config = $self->_plugin_matching( $zilla, 'DROLSKY::WeaverConfig' );
@@ -290,6 +290,12 @@ sub _expand_config {
         and $class ne _exp('Collect');
 
     return [ $name => $class => $payload ];
+}
+
+sub _running_in_ci {
+
+    # AGENT_ID is Azure Pipelines.
+    return $ENV{TRAVIS} || $ENV{AGENT_ID} ? 1 : 0;
 }
 
 1;
