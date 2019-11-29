@@ -7,7 +7,7 @@ use warnings;
 use autodie;
 use namespace::autoclean;
 
-our $VERSION = '1.05';
+our $VERSION = '1.06';
 
 use File::Which qw( which );
 
