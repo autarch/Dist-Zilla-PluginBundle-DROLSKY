@@ -474,14 +474,14 @@ sub _meta_resources {
 
     unless ( $self->use_github_homepage ) {
         $resources{homepage}
-            = sprintf( 'http://metacpan.org/release/%s', $self->dist );
+            = sprintf( 'https://metacpan.org/release/%s', $self->dist );
     }
 
     unless ( $self->use_github_issues ) {
         %resources = (
             %resources,
             'bugtracker.web' => sprintf(
-                'http://rt.cpan.org/Public/Dist/Display.html?Name=%s',
+                'https://rt.cpan.org/Public/Dist/Display.html?Name=%s',
                 $self->dist
             ),
             'bugtracker.mailto' =>
@@ -948,9 +948,9 @@ This is more or less equivalent to the following F<dist.ini>:
     homepage = 0
 
     [MetaResources]
-    homepage = http://metacpan.org/release/My-Module
+    homepage = https://metacpan.org/release/My-Module
     ; RT bits are omitted if use_github_issue is true
-    bugtracker.web  = http://rt.cpan.org/Public/Dist/Display.html?Name=My-Module
+    bugtracker.web  = https://rt.cpan.org/Public/Dist/Display.html?Name=My-Module
     bugtracker.mail = bug-My-Module@rt.cpan.org
 
     [MetaProvides::Pckage]
