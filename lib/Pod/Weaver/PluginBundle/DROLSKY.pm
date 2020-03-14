@@ -70,7 +70,7 @@ sub configure {
         [ $self->_support_section ],
         [
             'AllowOverride' => 'allow override SUPPORT' => {
-                header_re      => '^(SUPPORT|BUGS)\b',
+                header_re      => '^(?:SUPPORT|BUGS)\b',
                 action         => 'prepend',
                 match_anywhere => 0,
             },
@@ -96,6 +96,13 @@ sub configure {
                 header       => 'COPYRIGHT AND ' . $license_filename,
                 license_file => $license_filename,
             }
+        ],
+        [
+            'AllowOverride' => 'allow override Legal' => {
+                header_re      => '^(?:COPYRIGHT(?: AND LICEN[CS]E)?)\b',
+                action         => 'replace',
+                match_anywhere => 0,
+            },
         ],
         [ 'Region' => 'footer' ],
     );
