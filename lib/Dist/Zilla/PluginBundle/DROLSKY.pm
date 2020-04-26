@@ -967,7 +967,7 @@ This is more or less equivalent to the following F<dist.ini>:
 
     [MetaResources]
     homepage = https://metacpan.org/release/My-Module
-    ; RT bits are omitted if use_github_issue is true
+    ; RT bits are omitted if use_github_issues is true
     bugtracker.web  = https://rt.cpan.org/Public/Dist/Display.html?Name=My-Module
     bugtracker.mail = bug-My-Module@rt.cpan.org
 
@@ -983,13 +983,13 @@ This is more or less equivalent to the following F<dist.ini>:
     ; Width is configured by setting next_release_width for the bundle
     format = %-8v %{yyyy-MM-dd}d%{ (TRIAL RELEASE)}T
 
-    ; Scans the test files for use of Test2 and picks either
+    ; Scans the test files for use of Test2 and picks either this:
     [Prereqs / Test::More with Test2]
     -phase = test
     -type  = requires
     Test::More = 1.302015
 
-    ; If the distro doesn't use Test2
+    ; or, if the distro doesn't use Test2:
     [Prereqs / Test::More with subtest]
     -phase = test
     -type  = requires
