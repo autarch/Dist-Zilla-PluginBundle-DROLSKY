@@ -12,7 +12,7 @@ our $VERSION = '1.07';
 use Code::TidyAll::Config::INI::Reader 0.44;
 use List::Util 1.45 qw( uniqstr );
 use Path::Class qw( file );
-use Path::Iterator::Rule;
+use Path::Tiny::Rule;
 use Perl::Critic::Moose 1.05;
 use Sort::ByExample qw( sbe );
 
@@ -122,7 +122,7 @@ sub _config_to_ini {
     my $self    = shift;
     my $tidyall = shift;
 
-    my @xt_files = Path::Iterator::Rule->new->file->name(qr/\.t$/)->all('xt');
+    my @xt_files = Path::Tiny::Rule->new->file->name(qr/\.t$/)->all('xt');
 
     if (@xt_files) {
         my $suffix = 'non-auto-generated xt';
