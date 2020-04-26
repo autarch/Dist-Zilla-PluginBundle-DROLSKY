@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.07     2020-04-26
+
 - Make the PromptIfStale plugin skip all inc::* packages that live in the inc/
   dir.
 
