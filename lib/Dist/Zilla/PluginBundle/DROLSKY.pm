@@ -50,7 +50,7 @@ use Dist::Zilla::Plugin::MojibakeTests;
 use Dist::Zilla::Plugin::NextRelease;
 use Dist::Zilla::Plugin::PPPort;
 use Dist::Zilla::Plugin::PodSyntaxTests;
-use Dist::Zilla::Plugin::PromptIfStale 0.050;
+use Dist::Zilla::Plugin::PromptIfStale 0.056;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
 use Dist::Zilla::Plugin::Test::CPAN::Changes;
@@ -566,8 +566,6 @@ sub _dist_uses_test2 {
 }
 
 sub _prompt_if_stale_plugin {
-    my $self = shift;
-
     my $name = __PACKAGE__;
     return (
         [
@@ -590,27 +588,11 @@ sub _prompt_if_stale_plugin {
                         Dist::Zilla::Plugin::DROLSKY::TidyAll
                         Dist::Zilla::Plugin::DROLSKY::WeaverConfig
                         Pod::Weaver::PluginBundle::DROLSKY
-                        ),
-                    $self->_inc_packages,
+                        )
                 ],
             }
         ],
     );
-}
-
-sub _inc_packages {
-    return unless -d 'inc';
-
-    my @packages;
-    my $rule = Path::Tiny::Rule->new;
-    my $iter = $rule->file->name(qr/\.pm$/)->iter('inc');
-    while ( my $pm = $iter->() ) {
-        my ($first) = $pm->lines( { count => 1 } );
-        push @packages, $1
-            if $first =~ /package (inc::.+);/;
-    }
-
-    return @packages;
 }
 
 sub _pod_test_plugins {
@@ -1023,7 +1005,6 @@ This is more or less equivalent to the following F<dist.ini>:
     skip = Dist::Zilla::Plugin::DROLSKY::License
     skip = Dist::Zilla::Plugin::DROLSKY::TidyAll
     skip = Pod::Weaver::PluginBundle::DROLSKY
-    ; also skips any package starting with inc:: that lives in the inc/ dir.
 
     [Test::Pod::Coverage::Configurable]
     ; Configured by setting pod_coverage_class for the bundle
