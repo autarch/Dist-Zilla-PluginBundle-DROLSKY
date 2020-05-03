@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.08     2020-05-03
+
 - Require PromptIfStale 0.056. That version skips all local plugins when
   checking for staleness. This lets me revert the change in 1.07.
 
