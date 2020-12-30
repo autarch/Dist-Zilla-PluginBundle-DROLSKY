@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Replace code to set up tidyall with code to set up precious
+  (https://github.com/houseabsolute/precious).
+
+
 1.09     2020-07-20
 
 - Update generated perltidyrc to work around changes in recent Perl::Tidy

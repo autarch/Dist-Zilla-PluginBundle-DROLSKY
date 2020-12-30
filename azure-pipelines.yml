@@ -12,7 +12,12 @@ stages:
 
   - template: templates/helpers/linux.yml@ci-perl-helpers
     parameters:
-      coverage: codecov
+      pre_test_steps:
+        - bash: |
+            curl https://raw.githubusercontent.com/houseabsolute/precious/master/dev/bin/install-precious.packed.pl \
+                | perl
+            echo "##vso[task.setvariable variable=PATH]$PATH:./bin"
+          displayName: Install precious
       debug: true
       test_xt: true
       from_perl: 5.32
