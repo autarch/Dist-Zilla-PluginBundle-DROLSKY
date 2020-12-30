@@ -32,7 +32,7 @@ sub _maybe_write_file {
 
     return if -e $file;
 
-    file($file)->spew($content);
+    path($file)->spew_utf8($content);
 
     return;
 }
