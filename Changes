@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.10     2020-12-29
+
 - Replace code to set up tidyall with code to set up precious
   (https://github.com/houseabsolute/precious).
 
