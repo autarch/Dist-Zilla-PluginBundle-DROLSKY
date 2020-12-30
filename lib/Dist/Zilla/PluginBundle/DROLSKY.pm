@@ -598,7 +598,7 @@ sub _prompt_if_stale_plugin {
                         Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
                         Dist::Zilla::Plugin::DROLSKY::License
                         Dist::Zilla::Plugin::DROLSKY::MakeMaker
-                        Dist::Zilla::Plugin::DROLSKY::PerlLinterConfigFile
+                        Dist::Zilla::Plugin::DROLSKY::PerlLinterConfigFiles
                         Dist::Zilla::Plugin::DROLSKY::Precious
                         Dist::Zilla::Plugin::DROLSKY::Role::CoreCounter
                         Dist::Zilla::Plugin::DROLSKY::RunExtraTests
@@ -1008,7 +1008,7 @@ This is more or less equivalent to the following F<dist.ini>:
     skip = Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
     skip = Dist::Zilla::Plugin::DROLSKY::License
     skip = Dist::Zilla::Plugin::DROLSKY::MakeMaker
-    skip = Dist::Zilla::Plugin::DROLSKY::PerlLinterConfigFile
+    skip = Dist::Zilla::Plugin::DROLSKY::PerlLinterConfigFiles
     skip = Dist::Zilla::Plugin::DROLSKY::Precious
     skip = Dist::Zilla::Plugin::DROLSKY::Role::CoreCounter
     skip = Dist::Zilla::Plugin::DROLSKY::RunExtraTests
