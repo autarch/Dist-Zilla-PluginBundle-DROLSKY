@@ -4,7 +4,7 @@ Dist::Zilla::PluginBundle::DROLSKY - DROLSKY's plugin bundle
 
 # VERSION
 
-version 1.10
+version 1.11
 
 # SYNOPSIS
 
@@ -155,7 +155,7 @@ This is more or less equivalent to the following `dist.ini`:
     skip = Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
     skip = Dist::Zilla::Plugin::DROLSKY::License
     skip = Dist::Zilla::Plugin::DROLSKY::MakeMaker
-    skip = Dist::Zilla::Plugin::DROLSKY::PerlLinterConfigFile
+    skip = Dist::Zilla::Plugin::DROLSKY::PerlLinterConfigFiles
     skip = Dist::Zilla::Plugin::DROLSKY::Precious
     skip = Dist::Zilla::Plugin::DROLSKY::Role::CoreCounter
     skip = Dist::Zilla::Plugin::DROLSKY::RunExtraTests
