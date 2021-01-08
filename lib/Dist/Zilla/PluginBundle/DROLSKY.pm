@@ -24,6 +24,7 @@ use Dist::Zilla::Plugin::CheckStrictVersion;
 use Dist::Zilla::Plugin::CheckVersionIncrement;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
 use Dist::Zilla::Plugin::DROLSKY::Contributors;
+use Dist::Zilla::Plugin::DROLSKY::DevTools;
 use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::DROLSKY::MakeMaker;
 use Dist::Zilla::Plugin::DROLSKY::PerlLinterConfigFiles;
@@ -545,6 +546,8 @@ sub _explicit_prereq_plugins {
                 -type          => 'requires',
                 'Perl::Critic' => '1.126',
                 'Perl::Tidy'   => '20160302',
+                'Pod::Checker' => '1.74',
+                'Pod::Tidy'    => '0.10',
             },
         );
     }
@@ -775,12 +778,20 @@ sub _release_check_plugins {
 sub _precious_plugin {
     my $self = shift;
 
+    return if -e 'tidyall.ini';
+
     my %precious_config;
     $precious_config{stopwords_file} = $self->stopwords_file
         if $self->_has_stopwords_file;
 
-    return 'DROLSKY::Precious' unless keys %precious_config;
-    return [ 'DROLSKY::Precious' => \%precious_config ];
+    return (
+        'DROLSKY::DevTools',
+        (
+            keys %precious_config
+            ? [ 'DROLSKY::Precious' => \%precious_config ]
+            : 'DROLSKY::Precious'
+        ),
+    );
 }
 
 sub _git_plugins {
@@ -902,8 +913,8 @@ this directly for your own distributions, but you may find it useful as a
 source of ideas for building your own bundle.
 
 This bundle uses L<Dist::Zilla::Role::PluginBundle::PluginRemover> and
-L<Dist::Zilla::Role::PluginBundle::Config::Slicer> so I can remove or
-configure any plugin as needed.
+L<Dist::Zilla::Role::PluginBundle::Config::Slicer> so I can remove or configure
+any plugin as needed.
 
 This is more or less equivalent to the following F<dist.ini>:
 
@@ -1103,6 +1114,8 @@ This is more or less equivalent to the following F<dist.ini>:
     [DROLSKY::PerlLinterConfigFiles]
     ; Generates/updates precious.toml
     [DROLSKY::Precious]
+    ; Generates some dev tool helper scripts when using precious.
+    [DROLSKY::DevTools]
 
     ; The allow_dirty list is basically all of the generated or munged files
     ; in the distro, including:

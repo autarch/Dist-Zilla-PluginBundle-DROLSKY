@@ -1,5 +1,14 @@
 {{$NEXT}}
 
+- Fixed a bug in the generated precious.toml config for perlcritic.
+
+- Added podchecker and podtidy to the generated precious.toml.
+
+- Added a helper to generate some additional dev tooling to bootstrap
+  installing precious and omegasort, as well as a pre-commit script and a
+  helper to set that up.
+
+
 1.11     2020-12-29
 
 - Fix bug in DROLSKY::PerlLinterConfigFiles plugin.

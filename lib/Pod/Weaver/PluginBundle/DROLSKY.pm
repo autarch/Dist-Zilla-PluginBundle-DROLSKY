@@ -453,8 +453,8 @@ and still use the plugin bundle:
 
 =head1 ADDING STOPWORDS FOR SPELLING TESTS
 
-As noted in L<Dist::Zilla::PluginBundle::DROLSKY>, stopwords for
-spelling tests can be added by adding a directive to pod:
+As noted in L<Dist::Zilla::PluginBundle::DROLSKY>, stopwords for spelling tests
+can be added by adding a directive to pod:
 
     =for stopwords foo bar baz
 
