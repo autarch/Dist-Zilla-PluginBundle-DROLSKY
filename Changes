@@ -8,6 +8,9 @@
   installing precious and omegasort, as well as a pre-commit script and a
   helper to set that up.
 
+- Added a plugin that updates the dist.ini to depend on the latest version of
+  this bundle.
+
 
 1.11     2020-12-29
 

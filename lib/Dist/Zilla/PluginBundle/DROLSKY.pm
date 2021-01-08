@@ -23,6 +23,7 @@ use Dist::Zilla::Plugin::CheckSelfDependency;
 use Dist::Zilla::Plugin::CheckStrictVersion;
 use Dist::Zilla::Plugin::CheckVersionIncrement;
 use Dist::Zilla::Plugin::CopyFilesFromBuild;
+use Dist::Zilla::Plugin::DROLSKY::BundleAuthordep;
 use Dist::Zilla::Plugin::DROLSKY::Contributors;
 use Dist::Zilla::Plugin::DROLSKY::DevTools;
 use Dist::Zilla::Plugin::DROLSKY::License;
@@ -281,6 +282,7 @@ sub _build_plugins {
     }
 
     return [
+        'DROLSKY::BundleAuthordep',
         $self->_gather_dir_plugin,
         $self->_basic_plugins,
         $self->_authority_plugin,
@@ -917,6 +919,10 @@ L<Dist::Zilla::Role::PluginBundle::Config::Slicer> so I can remove or configure
 any plugin as needed.
 
 This is more or less equivalent to the following F<dist.ini>:
+
+    ; updates the dist.ini to include an authordep on this bundle at its
+    ; current $VERSION.
+    [DROLSKY::BundleAuthordep]
 
     ; Picks one of these - defaults to DROLSKY::MakeMaker
     [DROLSKY::MakeMaker]
