@@ -54,6 +54,10 @@ any plugin as needed.
 
 This is more or less equivalent to the following `dist.ini`:
 
+    ; updates the dist.ini to include an authordep on this bundle at its
+    ; current $VERSION.
+    [DROLSKY::BundleAuthordep]
+
     ; Picks one of these - defaults to DROLSKY::MakeMaker
     [DROLSKY::MakeMaker]
     [ModuleBuild]

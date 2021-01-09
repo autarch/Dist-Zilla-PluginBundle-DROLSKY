@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.12     2021-01-08
+
 - Fixed a bug in the generated precious.toml config for perlcritic.
 
 - Added podchecker and podtidy to the generated precious.toml.
