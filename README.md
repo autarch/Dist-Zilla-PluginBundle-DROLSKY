@@ -4,7 +4,7 @@ Dist::Zilla::PluginBundle::DROLSKY - DROLSKY's plugin bundle
 
 # VERSION
 
-version 1.12
+version 1.13
 
 # SYNOPSIS
 
@@ -39,8 +39,6 @@ version 1.12
     stopwords_file = ..
     ; Defaults to false
     use_github_homepage = 0
-    ; Defaults to false
-    use_github_issues = 0
 
 # DESCRIPTION
 
@@ -100,16 +98,13 @@ This is more or less equivalent to the following `dist.ini`:
     copy = ppport.h
 
     [GitHub::Meta]
-    ; Configured by setting use_github_issues for the bundle
-    bugs = 0
+    bugs = 1
     ; Configured by setting use_github_homepage for the bundle
     homepage = 0
 
     [MetaResources]
     homepage = https://metacpan.org/release/My-Module
-    ; RT bits are omitted if use_github_issues is true
-    bugtracker.web  = https://rt.cpan.org/Public/Dist/Display.html?Name=My-Module
-    bugtracker.mail = bug-My-Module@rt.cpan.org
+    bugtracker.web  = https://github.com/...
 
     [MetaProvides::Pckage]
     meta_noindex = 1
