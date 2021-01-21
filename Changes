@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Use GitHub issues for all distros.
+
+
 1.12     2021-01-08
 
 - Fixed a bug in the generated precious.toml config for perlcritic.

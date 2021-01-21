@@ -207,12 +207,6 @@ has use_github_homepage => (
     default => 0,
 );
 
-has use_github_issues => (
-    is      => 'ro',
-    isa     => 'Bool',
-    default => 0,
-);
-
 has _plugins => (
     is       => 'ro',
     isa      => 'ArrayRef',
@@ -438,7 +432,7 @@ sub _github_plugins {
     return (
         [
             'GitHub::Meta' => {
-                bugs         => $self->use_github_issues,
+                bugs         => 1,
                 homepage     => $self->use_github_homepage,
                 require_auth => 1,
             },
@@ -458,7 +452,7 @@ sub _meta_plugins {
             MetaConfig
             MetaJSON
             MetaYAML
-            ),
+        ),
     );
 }
 
@@ -470,18 +464,6 @@ sub _meta_resources {
     unless ( $self->use_github_homepage ) {
         $resources{homepage}
             = sprintf( 'https://metacpan.org/release/%s', $self->dist );
-    }
-
-    unless ( $self->use_github_issues ) {
-        %resources = (
-            %resources,
-            'bugtracker.web' => sprintf(
-                'https://rt.cpan.org/Public/Dist/Display.html?Name=%s',
-                $self->dist
-            ),
-            'bugtracker.mailto' =>
-                sprintf( 'bug-%s@rt.cpan.org', lc $self->dist ),
-        );
     }
 
     return \%resources;
@@ -610,7 +592,7 @@ sub _prompt_if_stale_plugin {
                         Dist::Zilla::Plugin::DROLSKY::Test::Precious
                         Dist::Zilla::Plugin::DROLSKY::WeaverConfig
                         Pod::Weaver::PluginBundle::DROLSKY
-                        )
+                    )
                 ],
             }
         ],
@@ -697,7 +679,7 @@ sub _extra_test_plugins {
             Test::NoTabs
             Test::Portability
             Test::Synopsis
-            ),
+        ),
         [ 'Test::Compile'       => { xt_mode        => 1 } ],
         [ 'Test::ReportPrereqs' => { verify_prereqs => 1 } ],
         [ 'Test::Version'       => { is_strict      => 1 } ],
@@ -773,7 +755,7 @@ sub _release_check_plugins {
             DROLSKY::Git::CheckFor::CorrectBranch
             EnsureChangesHasContent
             Git::CheckFor::MergeConflicts
-            ),
+        ),
     );
 }
 
@@ -820,7 +802,7 @@ sub _git_plugins {
         qw(
             Git::Tag
             Git::Push
-            ),
+        ),
 
         # Bump all module versions.
         'BumpVersionAfterRelease',
@@ -848,7 +830,7 @@ sub _build_allow_dirty {
         qw(
             Changes
             precious.toml
-            )
+        )
     ];
 }
 
@@ -905,8 +887,6 @@ __END__
     stopwords_file = ..
     ; Defaults to false
     use_github_homepage = 0
-    ; Defaults to false
-    use_github_issues = 0
 
 =head1 DESCRIPTION
 
@@ -966,16 +946,13 @@ This is more or less equivalent to the following F<dist.ini>:
     copy = ppport.h
 
     [GitHub::Meta]
-    ; Configured by setting use_github_issues for the bundle
-    bugs = 0
+    bugs = 1
     ; Configured by setting use_github_homepage for the bundle
     homepage = 0
 
     [MetaResources]
     homepage = https://metacpan.org/release/My-Module
-    ; RT bits are omitted if use_github_issues is true
-    bugtracker.web  = https://rt.cpan.org/Public/Dist/Display.html?Name=My-Module
-    bugtracker.mail = bug-My-Module@rt.cpan.org
+    bugtracker.web  = https://github.com/...
 
     [MetaProvides::Pckage]
     meta_noindex = 1
