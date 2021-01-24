@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.15     2021-01-24
+
 - Fix generated precious.toml to expect `perltidy --assert-tidy` to exit with
   2 when a file is not tidy, not 1.
 
