@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.17     2021-01-24
+
 - Fix the generated precious.toml to expect stderr output from omegasort.
 
 
