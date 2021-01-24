@@ -7,7 +7,7 @@ use warnings;
 use autodie;
 use namespace::autoclean;
 
-our $VERSION = '1.15';
+our $VERSION = '1.16';
 
 use Path::Tiny qw( path );
 use Path::Tiny::Rule;
