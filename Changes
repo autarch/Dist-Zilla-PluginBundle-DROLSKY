@@ -2,6 +2,8 @@
 
 - Include Test::TidyAll plugin if there's a tidyall.ini file present.
 
+- Skip the DROLSKY::BundleAuthordep plugin when checking for stale prereqs.
+
 
 1.13     2021-01-21
 

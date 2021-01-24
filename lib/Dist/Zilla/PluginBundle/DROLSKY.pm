@@ -581,6 +581,7 @@ sub _prompt_if_stale_plugin {
                 check_authordeps  => 1,
                 skip              => [
                     qw(
+                        Dist::Zilla::Plugin::DROLSKY::BundleAuthordep
                         Dist::Zilla::Plugin::DROLSKY::Contributors
                         Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
                         Dist::Zilla::Plugin::DROLSKY::License
@@ -1002,6 +1003,7 @@ This is more or less equivalent to the following F<dist.ini>:
     check_all_plugins = 1
     check_all_prereqs = 1
     check_authordeps  = 1
+    skip = Dist::Zilla::Plugin::DROLSKY::BundleAuthordep
     skip = Dist::Zilla::Plugin::DROLSKY::Contributors
     skip = Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
     skip = Dist::Zilla::Plugin::DROLSKY::License
