@@ -32,7 +32,7 @@ cmd = [ "perltidy", "--profile=$PRECIOUS_ROOT/perltidyrc" ]
 lint_flags = [ "--assert-tidy", "--standard-output" ]
 tidy_flags = [ "--backup-and-modify-in-place", "--backup-file-extension=/" ]
 ok_exit_codes = 0
-lint_failure_exit_codes = 1
+lint_failure_exit_codes = 2
 
 [commands.podchecker]
 type = "lint"

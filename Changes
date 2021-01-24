@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Fix generated precious.toml to expect `perltidy --assert-tidy` to exit with
+  2 when a file is not tidy, not 1.
+
+
 1.14     2021-01-24
 
 - Include Test::TidyAll plugin if there's a tidyall.ini file present.

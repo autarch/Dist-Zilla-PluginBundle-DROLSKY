@@ -64,7 +64,7 @@ sub _new_precious_toml {
             tidy_flags => [
                 qw( --backup-and-modify-in-place --backup-file-extension=/ )],
             ok_exit_codes           => 0,
-            lint_failure_exit_codes => 1,
+            lint_failure_exit_codes => 2,
         },
         'commands.omegasort-gitignore' => {
             type                    => 'both',
