@@ -4,7 +4,7 @@ Dist::Zilla::PluginBundle::DROLSKY - DROLSKY's plugin bundle
 
 # VERSION
 
-version 1.13
+version 1.14
 
 # SYNOPSIS
 
@@ -150,6 +150,7 @@ This is more or less equivalent to the following `dist.ini`:
     check_all_plugins = 1
     check_all_prereqs = 1
     check_authordeps  = 1
+    skip = Dist::Zilla::Plugin::DROLSKY::BundleAuthordep
     skip = Dist::Zilla::Plugin::DROLSKY::Contributors
     skip = Dist::Zilla::Plugin::DROLSKY::Git::CheckFor::CorrectBranch
     skip = Dist::Zilla::Plugin::DROLSKY::License
@@ -158,6 +159,7 @@ This is more or less equivalent to the following `dist.ini`:
     skip = Dist::Zilla::Plugin::DROLSKY::Precious
     skip = Dist::Zilla::Plugin::DROLSKY::Role::CoreCounter
     skip = Dist::Zilla::Plugin::DROLSKY::RunExtraTests
+    skip = Dist::Zilla::Plugin::DROLSKY::Test::Precious
     skip = Dist::Zilla::Plugin::DROLSKY::WeaverConfig
     skip = Pod::Weaver::PluginBundle::DROLSKY
 
