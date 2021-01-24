@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Fix the generated precious.toml to expect stderr output from omegasort.
+
+
 1.16     2021-01-24
 
 - Really fix generated precious.toml for perltidy.

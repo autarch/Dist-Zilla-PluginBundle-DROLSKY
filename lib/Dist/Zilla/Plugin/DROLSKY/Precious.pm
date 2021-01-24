@@ -81,7 +81,8 @@ sub _new_precious_toml {
             lint_flags              => '--check',
             tidy_flags              => '--in-place',
             ok_exit_codes           => 0,
-            lint_failure_exit_codes => 1
+            lint_failure_exit_codes => 1,
+            expect_stderr           => 'true',
         },
         'commands.podchecker' => {
             type          => 'lint',
@@ -111,7 +112,8 @@ sub _new_precious_toml {
             lint_flags    => '--check',
             tidy_flags    => '--in-place',
             ok_exit_codes => 0,
-            lint_failure_exit_codes => 1
+            lint_failure_exit_codes => 1,
+            expect_stderr           => 'true',
         };
     }
 
