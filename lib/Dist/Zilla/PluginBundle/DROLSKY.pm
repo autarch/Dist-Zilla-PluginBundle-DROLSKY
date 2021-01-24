@@ -1012,6 +1012,7 @@ This is more or less equivalent to the following F<dist.ini>:
     skip = Dist::Zilla::Plugin::DROLSKY::Precious
     skip = Dist::Zilla::Plugin::DROLSKY::Role::CoreCounter
     skip = Dist::Zilla::Plugin::DROLSKY::RunExtraTests
+    skip = Dist::Zilla::Plugin::DROLSKY::Test::Precious
     skip = Dist::Zilla::Plugin::DROLSKY::WeaverConfig
     skip = Pod::Weaver::PluginBundle::DROLSKY
 
