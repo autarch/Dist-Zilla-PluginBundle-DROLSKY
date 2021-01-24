@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Really fix generated precious.toml for perltidy.
+
+
 1.15     2021-01-24
 
 - Fix generated precious.toml to expect `perltidy --assert-tidy` to exit with

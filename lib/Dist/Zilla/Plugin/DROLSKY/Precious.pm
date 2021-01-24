@@ -60,11 +60,19 @@ sub _new_precious_toml {
             type    => 'both',
             include => $perl_include,
             cmd     => [qw( perltidy --profile=$PRECIOUS_ROOT/perltidyrc )],
-            lint_flags => [qw( --assert-tidy --standard-output )],
+            lint_flags => [
+                '--assert-tidy',
+                '--no-standard-output',
+                '--outfile=/dev/null'
+            ],
             tidy_flags => [
                 qw( --backup-and-modify-in-place --backup-file-extension=/ )],
             ok_exit_codes           => 0,
             lint_failure_exit_codes => 2,
+
+            # I think this is really only true for linting mode, but perltidy
+            # is so complicated it's hard for me to tell.
+            expect_stderr => 'true',
         },
         'commands.omegasort-gitignore' => {
             type                    => 'both',
