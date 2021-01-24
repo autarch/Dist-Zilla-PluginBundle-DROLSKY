@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Include Test::TidyAll plugin if there's a tidyall.ini file present.
+
+
 1.13     2021-01-21
 
 - Use GitHub issues for all distros.

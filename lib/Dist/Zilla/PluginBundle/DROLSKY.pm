@@ -667,10 +667,9 @@ sub _default_stopwords {
 sub _extra_test_plugins {
     my $self = shift;
 
-    return (
+    my @plugins = (
         qw(
             DROLSKY::RunExtraTests
-            DROLSKY::Test::Precious
             MojibakeTests
             Test::CleanNamespaces
             Test::CPAN::Changes
@@ -684,6 +683,11 @@ sub _extra_test_plugins {
         [ 'Test::ReportPrereqs' => { verify_prereqs => 1 } ],
         [ 'Test::Version'       => { is_strict      => 1 } ],
     );
+
+    push @plugins,
+        -f 'tidyall.ini' ? 'Test::TidyAll' : 'DROLSKY::Test::Precious';
+
+    return @plugins;
 }
 
 sub _contributors_plugins {
