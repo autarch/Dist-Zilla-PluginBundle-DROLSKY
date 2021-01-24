@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean -also => ['_exp'];
 
-our $VERSION = '1.17';
+our $VERSION = '1.18';
 
 use Dist::Zilla::Plugin::PodWeaver;
 use List::Util qw( first );
