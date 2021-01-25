@@ -506,7 +506,7 @@ sub _explicit_prereq_plugins {
     my %shared_lint_prereqs = (
         'Perl::Critic'        => '1.138',
         'Perl::Critic::Moose' => '1.05',
-        'Perl::Tidy'          => '20201207',
+        'Perl::Tidy'          => '20210111',
     );
 
     if ( -e 'tidyall.ini' ) {
@@ -528,10 +528,9 @@ sub _explicit_prereq_plugins {
             'Prereqs' => 'Tools for use with precious' => {
                 -phase         => 'develop',
                 -type          => 'requires',
-                'Perl::Critic' => '1.126',
-                'Perl::Tidy'   => '20160302',
                 'Pod::Checker' => '1.74',
                 'Pod::Tidy'    => '0.10',
+                %shared_lint_prereqs,
             },
         );
     }
@@ -986,8 +985,11 @@ This is more or less equivalent to the following F<dist.ini>:
     [Prereqs / Modules for use with precious]
     -phase = develop
     -type  = requires
-    Perl::Critic                      = 1.126
-    Perl::Tidy                        = 20160302
+    Perl::Critic        = 1.138
+    Perl::Critic::Moose = 1.05
+    Perl::Tidy          = 20210111
+    Pod::Checker        = 1.74
+    Pod::Tidy           = 0.10
 
     [Prereqs / Test::Version which fixes https://github.com/plicease/Test-Version/issues/7]
     -phase = develop
