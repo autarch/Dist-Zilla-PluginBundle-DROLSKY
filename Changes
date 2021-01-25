@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.18     2021-01-24
+
 - Fix development prereqs for projects that use precious. This was still using
   very old Perl::Tidy and Perl::Critic versions.
 

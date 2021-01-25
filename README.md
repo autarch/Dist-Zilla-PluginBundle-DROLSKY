@@ -4,7 +4,7 @@ Dist::Zilla::PluginBundle::DROLSKY - DROLSKY's plugin bundle
 
 # VERSION
 
-version 1.17
+version 1.18
 
 # SYNOPSIS
 
@@ -133,8 +133,11 @@ This is more or less equivalent to the following `dist.ini`:
     [Prereqs / Modules for use with precious]
     -phase = develop
     -type  = requires
-    Perl::Critic                      = 1.126
-    Perl::Tidy                        = 20160302
+    Perl::Critic        = 1.138
+    Perl::Critic::Moose = 1.05
+    Perl::Tidy          = 20210111
+    Pod::Checker        = 1.74
+    Pod::Tidy           = 0.10
 
     [Prereqs / Test::Version which fixes https://github.com/plicease/Test-Version/issues/7]
     -phase = develop
