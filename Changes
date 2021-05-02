@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- When the precious lint test fails, it now prints out the output from
+  precious (though with garbled UTF-8 for reasons I haven't figured out yet).
+
 - Remove my RunExtraTests plugin. This is no longer needed now that dzil
   supports passing the --jobs flags to `dzil test` and `dzil release`.
 
