@@ -7,7 +7,7 @@ use warnings;
 use autodie;
 use namespace::autoclean;
 
-our $VERSION = '1.19';
+our $VERSION = '1.20';
 
 use Dist::Zilla::File::InMemory;
 
