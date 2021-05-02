@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Remove my RunExtraTests plugin. This is no longer needed now that dzil
+  supports passing the --jobs flags to `dzil test` and `dzil release`.
+
+
 1.18     2021-01-24
 
 - Fix development prereqs for projects that use precious. This was still using

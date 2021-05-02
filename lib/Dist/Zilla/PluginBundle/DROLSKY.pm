@@ -30,7 +30,6 @@ use Dist::Zilla::Plugin::DROLSKY::License;
 use Dist::Zilla::Plugin::DROLSKY::MakeMaker;
 use Dist::Zilla::Plugin::DROLSKY::PerlLinterConfigFiles;
 use Dist::Zilla::Plugin::DROLSKY::Precious;
-use Dist::Zilla::Plugin::DROLSKY::RunExtraTests;
 use Dist::Zilla::Plugin::DROLSKY::Test::Precious;
 use Dist::Zilla::Plugin::DROLSKY::WeaverConfig;
 use Dist::Zilla::Plugin::EnsureChangesHasContent 0.02;
@@ -56,6 +55,7 @@ use Dist::Zilla::Plugin::PPPort;
 use Dist::Zilla::Plugin::PodSyntaxTests;
 use Dist::Zilla::Plugin::PromptIfStale 0.056;
 use Dist::Zilla::Plugin::ReadmeAnyFromPod;
+use Dist::Zilla::Plugin::RunExtraTests;
 use Dist::Zilla::Plugin::SurgicalPodWeaver;
 use Dist::Zilla::Plugin::Test::CPAN::Changes;
 use Dist::Zilla::Plugin::Test::CPAN::Meta::JSON;
@@ -587,8 +587,6 @@ sub _prompt_if_stale_plugin {
                         Dist::Zilla::Plugin::DROLSKY::MakeMaker
                         Dist::Zilla::Plugin::DROLSKY::PerlLinterConfigFiles
                         Dist::Zilla::Plugin::DROLSKY::Precious
-                        Dist::Zilla::Plugin::DROLSKY::Role::CoreCounter
-                        Dist::Zilla::Plugin::DROLSKY::RunExtraTests
                         Dist::Zilla::Plugin::DROLSKY::Test::Precious
                         Dist::Zilla::Plugin::DROLSKY::WeaverConfig
                         Pod::Weaver::PluginBundle::DROLSKY
@@ -669,8 +667,8 @@ sub _extra_test_plugins {
 
     my @plugins = (
         qw(
-            DROLSKY::RunExtraTests
             MojibakeTests
+            RunExtraTests
             Test::CleanNamespaces
             Test::CPAN::Changes
             Test::CPAN::Meta::JSON
@@ -1012,8 +1010,6 @@ This is more or less equivalent to the following F<dist.ini>:
     skip = Dist::Zilla::Plugin::DROLSKY::MakeMaker
     skip = Dist::Zilla::Plugin::DROLSKY::PerlLinterConfigFiles
     skip = Dist::Zilla::Plugin::DROLSKY::Precious
-    skip = Dist::Zilla::Plugin::DROLSKY::Role::CoreCounter
-    skip = Dist::Zilla::Plugin::DROLSKY::RunExtraTests
     skip = Dist::Zilla::Plugin::DROLSKY::Test::Precious
     skip = Dist::Zilla::Plugin::DROLSKY::WeaverConfig
     skip = Pod::Weaver::PluginBundle::DROLSKY
@@ -1032,7 +1028,6 @@ This is more or less equivalent to the following F<dist.ini>:
 
     [PodSyntaxTests]
 
-    [DROLSKY::RunExtraTests]
     [DROLSKY::Test::Precious]
     [MojibakeTests]
     [Test::CleanNamespaces]
