@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Removed references to IRC in generated docs since I haven't been active in
+  IRC for years.
+
+
 1.19     2021-05-02
 
 - When the precious lint test fails, it now prints out the output from
