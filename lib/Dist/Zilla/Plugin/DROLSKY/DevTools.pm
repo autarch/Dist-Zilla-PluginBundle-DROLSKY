@@ -120,7 +120,7 @@ __PACKAGE__->meta->make_immutable;
 
 1;
 
-# ABSTRACT: Creates default perltidyrc and perlcriticrc files if they don't yet exist
+# ABSTRACT: Creates scripts to install precious and git hooks
 
 __END__
 

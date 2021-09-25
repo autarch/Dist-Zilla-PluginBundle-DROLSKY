@@ -47,7 +47,7 @@ __PACKAGE__->meta->make_immutable;
 
 1;
 
-# ABSTRACT: Subclasses MakeMaker::Awesome to always run tests in parallel and add -W flags for XS code
+# ABSTRACT: Subclasses MakeMaker::Awesome to add -W flags for XS code
 
 __END__
 

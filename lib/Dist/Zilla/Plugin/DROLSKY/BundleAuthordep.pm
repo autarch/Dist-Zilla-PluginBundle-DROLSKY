@@ -46,7 +46,7 @@ __PACKAGE__->meta->make_immutable;
 
 1;
 
-# ABSTRACT: Creates a .mailmap to populate Contributors in docs
+# ABSTRACT: Sets an authordep on this bundle in the dist.ini
 
 __END__
 
