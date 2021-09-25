@@ -3,6 +3,9 @@
 - Removed references to IRC in generated docs since I haven't been active in
   IRC for years.
 
+- Removed use of CoreCounter role, which I removed in a previous release, but
+  was still consuming in one plugin.
+
 
 1.19     2021-05-02
 

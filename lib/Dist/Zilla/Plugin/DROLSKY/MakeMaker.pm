@@ -27,14 +27,6 @@ has wall_min_perl_version => (
     default => '5.008008',
 );
 
-with 'Dist::Zilla::Plugin::DROLSKY::Role::CoreCounter';
-
-# Dist::Zilla provides no way to pass a `-j` option when running dzil release
-# but I really would like faster releases.
-sub default_jobs {
-    return shift->_core_count;
-}
-
 override _build_WriteMakefile_dump => sub {
     my $self = shift;
 
