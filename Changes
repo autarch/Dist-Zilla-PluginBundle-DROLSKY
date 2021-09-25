@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.20     2021-09-24
+
 - Removed references to IRC in generated docs since I haven't been active in
   IRC for years.
 
