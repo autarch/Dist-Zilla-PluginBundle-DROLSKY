@@ -124,8 +124,6 @@ sub _munged_precious_toml {
     my $self = shift;
 
     return path('precious.toml')->slurp_utf8;
-
-    #    return $self->_config_to_toml($precious);
 }
 
 sub _default_perl_exclude {
