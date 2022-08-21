@@ -7,9 +7,9 @@ use namespace::autoclean -also => ['_exp'];
 our $VERSION = '1.21';
 
 use Dist::Zilla::Plugin::PodWeaver;
-use List::Util qw( first );
+use List::Util      qw( first );
 use Module::Runtime qw( use_module );
-use PadWalker qw( peek_sub );
+use PadWalker       qw( peek_sub );
 use Pod::Elemental::Transformer::List;
 use Pod::Elemental::Transformer::Verbatim;
 use Pod::Weaver::Config::Assembler;
