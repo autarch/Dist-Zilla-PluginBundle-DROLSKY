@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- The config generator for precious has been changed to use hte
+  "ignore_stderr" config key added in precious 0.3.0.
+
+
 1.20     2021-09-24
 
 - Removed references to IRC in generated docs since I haven't been active in
