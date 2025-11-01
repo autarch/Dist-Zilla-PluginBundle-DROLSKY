@@ -9,6 +9,7 @@ use namespace::autoclean;
 
 our $VERSION = '1.23';
 
+use Carp::Always;
 use Path::Tiny qw( path );
 
 use Moose::Role;
@@ -25,7 +26,7 @@ sub _maybe_write_file {
     return if $file->exists;
 
     ## no critic (ValuesAndExpressions::ProhibitLeadingZeros )
-    $file->parent->mkpath( 0, 0755 );
+    $file->parent->mkdir( { chmod => 0755 } );
     $file->spew_utf8($content);
     $file->chmod(0755) if $is_executable;
 
