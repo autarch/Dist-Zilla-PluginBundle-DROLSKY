@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.23     2025-11-01
+
 - Fixed call to `Path::Tiny->mkdir` .
 
 
