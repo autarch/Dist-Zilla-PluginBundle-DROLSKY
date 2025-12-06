@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.24     2025-12-06
+
 - Updated the generated `CONTRIBUTING.md` to reflect my switch to `mise` and `precious` for all my
   projects.
 
