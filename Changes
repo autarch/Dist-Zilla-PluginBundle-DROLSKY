@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+- Updated the generated `CONTRIBUTING.md` to reflect my switch to `mise` and `precious` for all my
+  projects.
+
+
 1.23     2025-11-01
 
 - Fixed call to `Path::Tiny->mkdir` .
